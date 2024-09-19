@@ -194,14 +194,15 @@ class _DrawingScreenState extends State<DrawingScreen> {
             Expanded(
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  // Collect drawing points without triggering setState
                   RenderBox? renderBox = _drawingAreaKey.currentContext
                       ?.findRenderObject() as RenderBox?;
                   if (renderBox != null) {
                     Offset localPosition =
                         renderBox.globalToLocal(details.globalPosition);
+
+                    // Trigger the state change immediately for smoother updates
                     setState(() {
-                      drawnPoints.add(localPosition);
+                      drawnPoints = List.from(drawnPoints)..add(localPosition);
                     });
                   }
                 },
