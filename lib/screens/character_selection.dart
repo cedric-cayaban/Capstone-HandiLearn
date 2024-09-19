@@ -41,7 +41,7 @@ class _LetterSelectionsScreenState extends State<CharacterSelectionScreen> {
                 child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, childAspectRatio: 1),
-              itemCount: 26,
+              itemCount: widget.lesson.length,
               itemBuilder: (context, index) => InkWell(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(

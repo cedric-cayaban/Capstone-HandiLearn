@@ -55,6 +55,7 @@ flutter:
       - assets/images/standard_letters/small/
       - assets/images/cursive_letters/capital/
       - assets/images/cursive_letters/small/
+      - assets/images/numbers/
       - assets/guide_points.json
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

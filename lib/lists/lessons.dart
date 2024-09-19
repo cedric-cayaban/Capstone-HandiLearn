@@ -334,7 +334,61 @@ List<List<Lesson>> lessonData = [
   [
     Lesson(
       character: '0',
-      svgPath: 'assets/images/numbers/.svg',
+      svgPath: 'assets/images/numbers/number_0.svg',
+      type: 'number',
+      isCapital: true,
+    ),
+    Lesson(
+      character: '1',
+      svgPath: 'assets/images/numbers/number_1.svg',
+      type: 'number',
+      isCapital: true,
+    ),
+    Lesson(
+      character: '2',
+      svgPath: 'assets/images/numbers/number_2.svg',
+      type: 'number',
+      isCapital: true,
+    ),
+    Lesson(
+      character: '3',
+      svgPath: 'assets/images/numbers/number_3.svg',
+      type: 'number',
+      isCapital: true,
+    ),
+    Lesson(
+      character: '4',
+      svgPath: 'assets/images/numbers/number_4.svg',
+      type: 'number',
+      isCapital: true,
+    ),
+    Lesson(
+      character: '5',
+      svgPath: 'assets/images/numbers/number_5.svg',
+      type: 'number',
+      isCapital: true,
+    ),
+    Lesson(
+      character: '6',
+      svgPath: 'assets/images/numbers/number_6.svg',
+      type: 'number',
+      isCapital: true,
+    ),
+    Lesson(
+      character: '7',
+      svgPath: 'assets/images/numbers/number_7.svg',
+      type: 'number',
+      isCapital: true,
+    ),
+    Lesson(
+      character: '8',
+      svgPath: 'assets/images/numbers/number_8.svg',
+      type: 'number',
+      isCapital: true,
+    ),
+    Lesson(
+      character: '9',
+      svgPath: 'assets/images/numbers/number_9.svg',
       type: 'number',
       isCapital: true,
     ),
