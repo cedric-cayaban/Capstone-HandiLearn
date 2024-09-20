@@ -260,7 +260,7 @@ List<List<Lesson>> lessonData = [
     ),
     Lesson(
       character: 'q',
-      svgPath: 'assets/images/standard_letters/small/small_a.svg',
+      svgPath: 'assets/images/standard_letters/small/small_q.svg',
       type: 'standard',
       isCapital: false,
     ),
