@@ -36,28 +36,28 @@ class _DrawingScreenState extends State<DrawingScreen> {
   //   print('initState called');
   // }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   print('didChangeDependencies called');
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print('didChangeDependencies called');
 
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     loadGuidePoints().then((data) {
-  //       // setState(() {
-  //       //   guidePoints = data;
-  //       //   isLoading = false; // Set loading to false when data is ready
-  //       // });
-  //       guidePoints = data;
-  //       isLoading = false;
-  //     }).catchError((error) {
-  //       print('Error loading guide points: $error');
-  //       // setState(() {
-  //       //   isLoading = false; // Even on error, stop showing loading indicator
-  //       // });
-  //       isLoading = false;
-  //     });
-  //   });
-  // }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadGuidePoints().then((data) {
+        // setState(() {
+        //   guidePoints = data;
+        //   isLoading = false; // Set loading to false when data is ready
+        // });
+        guidePoints = data;
+        isLoading = false;
+      }).catchError((error) {
+        print('Error loading guide points: $error');
+        // setState(() {
+        //   isLoading = false; // Even on error, stop showing loading indicator
+        // });
+        isLoading = false;
+      });
+    });
+  }
 
   Future<Map<String, dynamic>> loadGuidePoints() async {
     try {
@@ -89,11 +89,13 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   bool drawingChecker(
       List<Offset?> userPoints, List<Offset?> guidePoints, double threshold) {
-    if (guidePoints.isEmpty) {
-      print('Invalid guide points');
+    // Check if the user has drawn anything
+    if (userPoints.isEmpty || guidePoints.isEmpty) {
+      print('User has not drawn anything or guide points are missing.');
       return false;
     }
 
+    // Iterate over the points and compare
     for (int i = 0; i < guidePoints.length; i++) {
       if (i >= userPoints.length || userPoints[i] == null) {
         print('Point $i is null or out of bounds');
@@ -146,16 +148,17 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
     return resampledPoints;
   }
-  //BABALIKAN
-  // List<Offset?> getGuidePoints(
-  //     String letterType, String characterKey, Size canvasSize) {
-  //   if (guidePoints.isEmpty) {
-  //     return [];
-  //   }
 
-  //   List<dynamic> pointsJson = guidePoints[letterType][characterKey];
-  //   return parseGuidePoints(pointsJson, canvasSize);
-  // }
+  //BABALIKAN
+  List<Offset?> getGuidePoints(
+      String letterType, String characterKey, Size canvasSize) {
+    if (guidePoints.isEmpty) {
+      return [];
+    }
+
+    List<dynamic> pointsJson = guidePoints[letterType][characterKey];
+    return parseGuidePoints(pointsJson, canvasSize);
+  }
 
   Widget loadSvg(String path) {
     try {
@@ -183,8 +186,8 @@ class _DrawingScreenState extends State<DrawingScreen> {
     Size canvasSize = Size(canvasWidth, canvasHeight);
 
     //BABALIKAN
-    // List<Offset?> guidePointsForLetter =
-    //     getGuidePoints(widget.type, characterKey, canvasSize);
+    List<Offset?> guidePointsForLetter =
+        getGuidePoints(widget.type, characterKey, canvasSize);
 
     return SafeArea(
       child: Scaffold(
@@ -241,11 +244,11 @@ class _DrawingScreenState extends State<DrawingScreen> {
                 setState(() {
                   checkPressed = true;
                   Size canvasSize = Size(canvasWidth, canvasHeight);
-                  // BABALIKAN
-                  // List<Offset?> guidePointsForLetter =
-                  //     getGuidePoints(widget.type, characterKey, canvasSize);
-                  // isMatch =
-                  //     drawingChecker(drawnPoints, guidePointsForLetter, 40);
+                  // BABALIKAN ANDITO THRESHOLD
+                  List<Offset?> guidePointsForLetter =
+                      getGuidePoints(widget.type, characterKey, canvasSize);
+                  isMatch =
+                      drawingChecker(drawnPoints, guidePointsForLetter, 30);
                   if (isMatch) {
                     print('Drawing matches!');
                   } else {
