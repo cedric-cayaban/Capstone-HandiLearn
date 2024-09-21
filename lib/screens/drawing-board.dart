@@ -51,22 +51,22 @@ class _DrawingScreenState extends State<DrawingScreen> {
     }
 
     //BABALIKAN
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   loadGuidePoints().then((data) {
-    //     // setState(() {
-    //     //   guidePoints = data;
-    //     //   isLoading = false; // Set loading to false when data is ready
-    //     // });
-    //     guidePoints = data;
-    //     isLoading = false;
-    //   }).catchError((error) {
-    //     print('Error loading guide points: $error');
-    //     // setState(() {
-    //     //   isLoading = false; // Even on error, stop showing loading indicator
-    //     // });
-    //     isLoading = false;
-    //   });
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadGuidePoints().then((data) {
+        // setState(() {
+        //   guidePoints = data;
+        //   isLoading = false; // Set loading to false when data is ready
+        // });
+        guidePoints = data;
+        isLoading = false;
+      }).catchError((error) {
+        print('Error loading guide points: $error');
+        // setState(() {
+        //   isLoading = false; // Even on error, stop showing loading indicator
+        // });
+        isLoading = false;
+      });
+    });
   }
 
   @override
@@ -109,31 +109,70 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   bool drawingChecker(
       List<Offset?> userPoints, List<Offset?> guidePoints, double threshold) {
-    // Check if the user has drawn anything
-    if (userPoints.isEmpty || guidePoints.isEmpty) {
-      print('User has not drawn anything or guide points are missing.');
-      return false;
+    // Function to split points into strokes based on null values
+    List<List<Offset>> splitIntoStrokes(List<Offset?> points) {
+      List<List<Offset>> strokes = [];
+      List<Offset> currentStroke = [];
+
+      for (var point in points) {
+        if (point == null) {
+          if (currentStroke.isNotEmpty) {
+            strokes.add(currentStroke);
+            currentStroke = [];
+          }
+        } else {
+          currentStroke.add(point);
+        }
+      }
+
+      if (currentStroke.isNotEmpty) {
+        strokes.add(currentStroke);
+      }
+
+      return strokes;
     }
 
-    // Iterate over the points and compare
-    for (int i = 0; i < guidePoints.length; i++) {
-      if (i >= userPoints.length || userPoints[i] == null) {
-        print('Point $i is null or out of bounds');
-        continue;
+    List<List<Offset>> userStrokes = splitIntoStrokes(userPoints);
+    List<List<Offset>> guideStrokes = splitIntoStrokes(guidePoints);
+
+    // Compare each stroke
+    if (userStrokes.length < guideStrokes.length) {
+      print(
+          'Number of strokes does not match: ${userStrokes.length} vs ${guideStrokes.length}');
+      return false; // If the number of strokes is different, return false
+    }
+
+    for (int i = 0; i < guideStrokes.length; i++) {
+      List<Offset> userStroke = userStrokes[i];
+      List<Offset> guideStroke = guideStrokes[i];
+
+      // Check points in the stroke
+      for (int j = 0; j < guideStroke.length; j++) {
+        // Check if userStroke has enough points
+        if (j < userStroke.length) {
+          if ((userStroke[j] - guideStroke[j]).distance > threshold) {
+            print(
+                'Point mismatch in stroke $i at index $j: ${userStroke[j]} vs ${guideStroke[j]}');
+            return false; // If any point in the stroke doesn't match, return false
+          }
+        } else {
+          // If user stroke is shorter than guide stroke, count as mismatch
+          print('User stroke $i is shorter than guide stroke $i');
+          return false;
+        }
       }
 
-      if (guidePoints[i] == null) {
-        print('Guide point $i is null');
-        continue;
-      }
-
-      if ((userPoints[i]! - guidePoints[i]!).distance > threshold) {
-        print('Point $i mismatch: ${userPoints[i]} vs ${guidePoints[i]}');
-        return false;
+      // Check if the last point of the user stroke is too far from the last guide stroke point
+      if (userStroke.length > guideStroke.length) {
+        // Check distance between the last points
+        if ((userStroke.last - guideStroke.last).distance > threshold) {
+          print('User stroke $i exceeds the endpoint of guide stroke $i');
+          return false; // If the last user stroke point is too far from the guide stroke point
+        }
       }
     }
 
-    return true;
+    return true; // All strokes and points match
   }
 
   List<Offset?> resamplePoints(List<Offset?> points, double interval) {
@@ -203,8 +242,8 @@ class _DrawingScreenState extends State<DrawingScreen> {
     Size canvasSize = Size(canvasWidth, canvasHeight);
 
     //BABALIKAN
-    // List<Offset?> guidePointsForLetter =
-    //     getGuidePoints(widget.type, characterKey, canvasSize);
+    List<Offset?> guidePointsForLetter =
+        getGuidePoints(widget.type, characterKey, canvasSize);
 
     return SafeArea(
       child: Scaffold(
@@ -261,11 +300,11 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
                 setState(() {
                   checkPressed = true;
-                  // BABALIKAN ANDITO THRESHOLD
-                  // List<Offset?> guidePointsForLetter =
-                  //     getGuidePoints(widget.type, characterKey, canvasSize);
-
                   // Checking the match using the current canvas size
+                  // BABALIKAN ANDITO THRESHOLD
+                  List<Offset?> guidePointsForLetter =
+                      getGuidePoints(widget.type, characterKey, canvasSize);
+
                   isMatch = drawingChecker(
                       resampledPoints,
                       getGuidePoints(widget.type, characterKey, canvasSize),
