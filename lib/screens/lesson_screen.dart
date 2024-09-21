@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:test_drawing/lists/images.dart';
 import 'package:test_drawing/lists/lessons.dart';
 import 'package:test_drawing/screens/character_selection.dart';
@@ -122,12 +123,36 @@ class _LessonScreenState extends State<LessonScreen> {
                                     image: AssetImage(lessonsBg[index]),
                                     fit: BoxFit.cover,
                                   ),
-                                  color: Colors.blue.shade200,
                                   borderRadius: const BorderRadius.all(
                                     Radius.circular(10),
                                   ),
                                 ),
                                 height: 125,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 20, left: 10),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Lesson ${index + 1}:',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      const Gap(10),
+                                      Text(
+                                        lessonNames[index],
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.w500),
+                                      )
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
                           ),
