@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_drawing/lists/images.dart';
 import 'package:test_drawing/lists/lessons.dart';
 import 'package:test_drawing/screens/character_selection.dart';
 
@@ -10,13 +11,13 @@ class LessonScreen extends StatefulWidget {
 }
 
 List<String> lessonNames = [
-  'Lesson 1: Capital Letters',
-  'Lesson 2: Small Letters',
-  'Lesson 3: Words',
-  'Lesson 4: Numbers',
-  'Lesson 5: Cursive Capital Letters',
-  'Lesson 6: Cursive Small Letters',
-  'Lesson 7: Cursive Words'
+  'Capital Letters',
+  'Small Letters',
+  'Words',
+  'Numbers',
+  'Cursive Capital Letters',
+  'Cursive Small Letters',
+  'Cursive Words'
 ];
 
 class _LessonScreenState extends State<LessonScreen> {
@@ -42,76 +43,98 @@ class _LessonScreenState extends State<LessonScreen> {
               top: MediaQuery.of(context).size.height * 0.12,
               left: 0,
               right: 0,
-              child: Column(
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
+                children: [
                   Text(
                     'Learn',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 24,
+                      fontSize: 45,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     'Read and Write',
                     style: TextStyle(
-                        color: Colors.white70,
+                        color: Colors.white,
                         fontSize: 18,
-                        fontWeight: FontWeight.w300),
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.3,
+              top: MediaQuery.of(context).size.height * 0.33,
               left: 0,
               right: 0,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30)),
                 ),
                 height: MediaQuery.of(context).size.height * 0.7,
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: lessonNames.length,
-                        itemBuilder: (context, index) => InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => CharacterSelectionScreen(
-                                  lessonTitle: lessonNames[index],
-                                  lesson: lessonData[index],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20, top: 10, bottom: 15),
+                        child: Text(
+                          'Choose your lesson',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: lessonNames.length,
+                          itemBuilder: (context, index) => InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      CharacterSelectionScreen(
+                                    lessonTitle: lessonNames[index],
+                                    lesson: lessonData[index],
+                                  ),
                                 ),
+                              );
+                            },
+                            child: Card(
+                              margin: const EdgeInsets.symmetric(
+                                vertical: 8.0,
+                                horizontal: 16.0,
                               ),
-                            );
-                          },
-                          child: Card(
-                            margin: const EdgeInsets.symmetric(
-                              vertical: 8.0,
-                              horizontal: 16.0,
-                            ), // Adding margin for better spacing
-                            elevation: 4, // Adds a bit of shadow effect
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: ListTile(
-                              title: Text(
-                                lessonNames[index],
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w500),
+                              elevation: 4,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(lessonsBg[index]),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  color: Colors.blue.shade200,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                height: 125,
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             )
