@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart'
+    show DeviceOrientation, SystemChrome, rootBundle;
 import 'package:flutter_svg/flutter_svg.dart';
 
 class DrawingScreen extends StatefulWidget {
@@ -41,6 +42,18 @@ class _DrawingScreenState extends State<DrawingScreen> {
     super.didChangeDependencies();
     print('didChangeDependencies called');
 
+    if (widget.character.length > 1) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    } else {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadGuidePoints().then((data) {
         // setState(() {
@@ -57,6 +70,16 @@ class _DrawingScreenState extends State<DrawingScreen> {
         isLoading = false;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    // Reset the orientation to the default system orientation (or another specific one)
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
   }
 
   Future<Map<String, dynamic>> loadGuidePoints() async {

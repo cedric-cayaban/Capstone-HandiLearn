@@ -323,8 +323,62 @@ List<List<Lesson>> lessonData = [
   // WORDS
   [
     Lesson(
-      character: '',
-      svgPath: 'assets/images/words/.svg',
+      character: 'at',
+      svgPath: 'assets/images/words/word_at.svg',
+      type: 'word',
+      isCapital: true,
+    ),
+    Lesson(
+      character: 'on',
+      svgPath: 'assets/images/words/word_on.svg',
+      type: 'word',
+      isCapital: true,
+    ),
+    Lesson(
+      character: 'in',
+      svgPath: 'assets/images/words/word_in.svg',
+      type: 'word',
+      isCapital: true,
+    ),
+    Lesson(
+      character: 'cat',
+      svgPath: 'assets/images/words/word_cat.svg',
+      type: 'word',
+      isCapital: true,
+    ),
+    Lesson(
+      character: 'dog',
+      svgPath: 'assets/images/words/word_dog.svg',
+      type: 'word',
+      isCapital: true,
+    ),
+    Lesson(
+      character: 'pig',
+      svgPath: 'assets/images/words/word_pig.svg',
+      type: 'word',
+      isCapital: true,
+    ),
+    Lesson(
+      character: 'bike',
+      svgPath: 'assets/images/words/word_bike.svg',
+      type: 'word',
+      isCapital: true,
+    ),
+    Lesson(
+      character: 'kite',
+      svgPath: 'assets/images/words/word_kite.svg',
+      type: 'word',
+      isCapital: true,
+    ),
+    Lesson(
+      character: 'apple',
+      svgPath: 'assets/images/words/word_apple.svg',
+      type: 'word',
+      isCapital: true,
+    ),
+    Lesson(
+      character: 'orange',
+      svgPath: 'assets/images/words/word_orange.svg',
       type: 'word',
       isCapital: true,
     ),
