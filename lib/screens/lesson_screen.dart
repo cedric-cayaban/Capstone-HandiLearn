@@ -131,25 +131,47 @@ class _LessonScreenState extends State<LessonScreen> {
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.only(top: 20, left: 10),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: [
-                                      Text(
-                                        'Lesson ${index + 1}:',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w500),
+                                      Expanded(
+                                        // Wrap the entire column to ensure it doesn't overflow
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Flexible(
+                                              // Allows text to wrap if it overflows
+                                              child: Text(
+                                                'Lesson ${index + 1}:',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 17,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                softWrap: true,
+                                                overflow: TextOverflow.visible,
+                                              ),
+                                            ),
+                                            const Gap(10),
+                                            Flexible(
+                                              // Allows the lesson name to wrap if it's too long
+                                              child: Text(
+                                                lessonNames[index],
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 30,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                softWrap: true,
+                                                overflow: TextOverflow.visible,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      const Gap(10),
-                                      Text(
-                                        lessonNames[index],
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 30,
-                                            fontWeight: FontWeight.w500),
-                                      )
+                                      Image.asset(lessonsImg[index]),
                                     ],
                                   ),
                                 ),

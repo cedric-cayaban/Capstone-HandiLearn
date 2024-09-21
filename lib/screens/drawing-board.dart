@@ -24,25 +24,21 @@ class DrawingScreen extends StatefulWidget {
 
 class _DrawingScreenState extends State<DrawingScreen> {
   List<Offset?> drawnPoints = [];
+  List<Offset?> resampledPoints = [];
   bool isMatch = false;
   bool checkPressed = false;
   bool isLoading = true;
 
   Map<String, dynamic> guidePoints = {};
   final GlobalKey _drawingAreaKey = GlobalKey(); // Key for the drawing area
-//BABALIKAN
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   print('initState called');
-  // }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     print('didChangeDependencies called');
 
-    if (widget.character.length > 1) {
+    // Set orientation based on the number of characters
+    if (widget.character.length > 1 || widget.type == 'word') {
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.landscapeLeft,
         DeviceOrientation.landscapeRight,
@@ -53,6 +49,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
         DeviceOrientation.portraitDown,
       ]);
     }
+
     //BABALIKAN
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   loadGuidePoints().then((data) {
@@ -97,8 +94,8 @@ class _DrawingScreenState extends State<DrawingScreen> {
     List<Offset?> offsets = [];
     for (var point in pointsList) {
       if (point != null) {
-        double x =
-            point['dx'] * (canvasSize.width / 300); // Width is always 300
+        double x = point['dx'] *
+            (canvasSize.width / 300); // Width is based on canvas size
         double y = widget.isCapital
             ? point['dy'] * (canvasSize.height / 300) // Capital: height 300
             : point['dy'] * (canvasSize.height / 250); // Small: height 250
@@ -172,7 +169,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
     return resampledPoints;
   }
 
-  //BABALIKAN
   List<Offset?> getGuidePoints(
       String letterType, String characterKey, Size canvasSize) {
     if (guidePoints.isEmpty) {
@@ -198,12 +194,10 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // if (isLoading) {
-    //   return Center(child: CircularProgressIndicator());
-    // }
-
     final double canvasHeight = widget.isCapital ? 300.0 : 250.0;
-    final double canvasWidth = 300.0;
+    // Set width to 800 if type is 'word', otherwise 300
+    final double canvasWidth =
+        widget.type == 'word' ? 800.0 : 300.0; // Updated to 800
 
     String characterKey = widget.character;
     Size canvasSize = Size(canvasWidth, canvasHeight);
@@ -235,9 +229,10 @@ class _DrawingScreenState extends State<DrawingScreen> {
                 onPanEnd: (details) {
                   setState(() {
                     drawnPoints.add(null);
-                    drawnPoints = resamplePoints(drawnPoints, 5.0);
+                    resampledPoints = resamplePoints(
+                        drawnPoints, 5.0); // Store resampled points
                     print(
-                        'Drawn points after pan end for: ${widget.character}: \n $drawnPoints \n');
+                        'Resampled Drawn points after pan end for ${widget.character}: \n $resampledPoints \n\n');
                   });
                 },
                 child: Center(
@@ -246,7 +241,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                     child: Container(
                       key: _drawingAreaKey,
                       height: canvasHeight,
-                      width: canvasWidth,
+                      width: canvasWidth, // Width adjusted based on 'word'
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                       ),
@@ -266,12 +261,16 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
                 setState(() {
                   checkPressed = true;
-                  Size canvasSize = Size(canvasWidth, canvasHeight);
                   // BABALIKAN ANDITO THRESHOLD
                   // List<Offset?> guidePointsForLetter =
                   //     getGuidePoints(widget.type, characterKey, canvasSize);
-                  // isMatch =
-                  //     drawingChecker(drawnPoints, guidePointsForLetter, 30);
+
+                  // Checking the match using the current canvas size
+                  isMatch = drawingChecker(
+                      resampledPoints,
+                      getGuidePoints(widget.type, characterKey, canvasSize),
+                      30); // Threshold
+
                   if (isMatch) {
                     print('Drawing matches!');
                   } else {
