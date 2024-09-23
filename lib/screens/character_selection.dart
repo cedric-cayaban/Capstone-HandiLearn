@@ -6,14 +6,13 @@ class CharacterSelectionScreen extends StatefulWidget {
   CharacterSelectionScreen({
     super.key,
     required this.lesson,
-    required this.lessonTitle,
+
     // required this.index,
     // required this.character,
     // required this.svgPath,
     // required this.type,
     // required this.isCapital,
   });
-  String lessonTitle;
   List<Lesson> lesson;
 
   // int index;
@@ -32,9 +31,6 @@ class _LetterSelectionsScreenState extends State<CharacterSelectionScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.lessonTitle),
-        ),
         body: Column(
           children: [
             Expanded(

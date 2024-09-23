@@ -107,30 +107,31 @@ class _DrawingScreenState extends State<DrawingScreen> {
     return offsets;
   }
 
+  List<List<Offset>> splitIntoStrokes(List<Offset?> points) {
+    List<List<Offset>> strokes = [];
+    List<Offset> currentStroke = [];
+
+    for (var point in points) {
+      if (point == null) {
+        if (currentStroke.isNotEmpty) {
+          strokes.add(currentStroke);
+          currentStroke = [];
+        }
+      } else {
+        currentStroke.add(point);
+      }
+    }
+
+    if (currentStroke.isNotEmpty) {
+      strokes.add(currentStroke);
+    }
+
+    return strokes;
+  }
+
   bool drawingChecker(
       List<Offset?> userPoints, List<Offset?> guidePoints, double threshold) {
     // Function to split points into strokes based on null values
-    List<List<Offset>> splitIntoStrokes(List<Offset?> points) {
-      List<List<Offset>> strokes = [];
-      List<Offset> currentStroke = [];
-
-      for (var point in points) {
-        if (point == null) {
-          if (currentStroke.isNotEmpty) {
-            strokes.add(currentStroke);
-            currentStroke = [];
-          }
-        } else {
-          currentStroke.add(point);
-        }
-      }
-
-      if (currentStroke.isNotEmpty) {
-        strokes.add(currentStroke);
-      }
-
-      return strokes;
-    }
 
     List<List<Offset>> userStrokes = splitIntoStrokes(userPoints);
     List<List<Offset>> guideStrokes = splitIntoStrokes(guidePoints);
@@ -140,6 +141,9 @@ class _DrawingScreenState extends State<DrawingScreen> {
       print(
           'Number of strokes does not match: ${userStrokes.length} vs ${guideStrokes.length}');
       return false; // If the number of strokes is different, return false
+    } else if (userStrokes.length > guideStrokes.length) {
+      print('Number of strokes exceed the correct amount');
+      return false; // If the number of strokes is different, return false
     }
 
     for (int i = 0; i < guideStrokes.length; i++) {
@@ -148,17 +152,25 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
       // Check points in the stroke
       for (int j = 0; j < guideStroke.length; j++) {
-        // Check if userStroke has enough points
         if (j < userStroke.length) {
+          // Compare user stroke and guide stroke points
           if ((userStroke[j] - guideStroke[j]).distance > threshold) {
             print(
                 'Point mismatch in stroke $i at index $j: ${userStroke[j]} vs ${guideStroke[j]}');
             return false; // If any point in the stroke doesn't match, return false
           }
         } else {
-          // If user stroke is shorter than guide stroke, count as mismatch
-          print('User stroke $i is shorter than guide stroke $i');
-          return false;
+          // If user stroke is shorter, allow some flexibility with the last point
+          // Check the distance between the last user point and the remaining guide points
+          final lastUserPoint = userStroke.last;
+          for (int k = j; k < guideStroke.length; k++) {
+            if ((lastUserPoint - guideStroke[k]).distance > threshold) {
+              print('User stroke $i is too short and far from guide stroke $k');
+              return false; // Mismatch if last point is too far from remaining guide points
+            }
+          }
+          // If we reach here, it means the last point is close enough, allow the match
+          break;
         }
       }
 
@@ -282,8 +294,8 @@ class _DrawingScreenState extends State<DrawingScreen> {
                       height: canvasHeight,
                       width: canvasWidth, // Width adjusted based on 'word'
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                      ),
+                          //border: Border.all(color: Colors.grey),
+                          ),
                       child: loadSvg(widget.svgPath),
                     ),
                   ),

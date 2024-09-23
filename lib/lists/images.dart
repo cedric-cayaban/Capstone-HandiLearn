@@ -1,3 +1,4 @@
+//LESSON SCREEN
 List<String> lessonsBg = [
   'assets/images/components/lesson1-bg.png',
   'assets/images/components/lesson2-bg.png',
@@ -8,6 +9,7 @@ List<String> lessonsBg = [
   'assets/images/components/lesson7-bg.png',
 ];
 
+//LESSON SCREEN
 List<String> lessonsImg = [
   'assets/images/components/lesson1-img.png',
   'assets/images/components/lesson2-img.png',

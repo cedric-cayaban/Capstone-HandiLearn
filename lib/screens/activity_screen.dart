@@ -2,27 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:test_drawing/lists/images.dart';
 import 'package:test_drawing/lists/lessons.dart';
-import 'package:test_drawing/screens/activity_screen.dart';
+import 'package:test_drawing/objects/lesson.dart';
 import 'package:test_drawing/screens/character_selection.dart';
 
-class LessonScreen extends StatefulWidget {
-  const LessonScreen({super.key});
+class ActivityScreen extends StatefulWidget {
+  ActivityScreen(
+      {super.key,
+      required this.lesson,
+      required this.lessonTitle,
+      required this.lessonNumber});
 
+  String lessonTitle;
+  List<Lesson> lesson;
+  int lessonNumber;
   @override
-  State<LessonScreen> createState() => _LessonScreenState();
+  State<ActivityScreen> createState() => _ActivityScreenState();
 }
 
-List<String> lessonNames = [
-  'Capital Letters',
-  'Small Letters',
-  'Words',
-  'Numbers',
-  'Cursive Capital Letters',
-  'Cursive Small Letters',
-  'Cursive Words'
+List<String> activityNames = [
+  'Pronounce',
+  'Write',
+  'Mini Game',
 ];
 
-class _LessonScreenState extends State<LessonScreen> {
+class _ActivityScreenState extends State<ActivityScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -36,7 +39,7 @@ class _LessonScreenState extends State<LessonScreen> {
                 height: MediaQuery.of(context).size.height * 0.37,
                 width: MediaQuery.of(context).size.width,
                 child: Image.asset(
-                  'assets/images/components/lesson_visual.png',
+                  'assets/images/components/activity_visual.png',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -109,16 +112,16 @@ class _LessonScreenState extends State<LessonScreen> {
                       ),
                       Expanded(
                         child: ListView.builder(
-                          itemCount: lessonNames.length,
+                          itemCount: activityNames.length,
                           itemBuilder: (context, index) => InkWell(
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                    builder: (context) => ActivityScreen(
-                                          lesson: lessonData[index],
-                                          lessonTitle: lessonNames[index],
-                                          lessonNumber: index,
-                                        )),
+                                  builder: (context) =>
+                                      CharacterSelectionScreen(
+                                    lesson: lessonData[index],
+                                  ),
+                                ),
                               );
                             },
                             child: Card(
@@ -171,7 +174,7 @@ class _LessonScreenState extends State<LessonScreen> {
                                             Flexible(
                                               // Allows the lesson name to wrap if it's too long
                                               child: Text(
-                                                lessonNames[index],
+                                                activityNames[index],
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize:
