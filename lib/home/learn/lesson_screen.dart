@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import 'package:test_drawing/data/lessons.dart';
-import 'package:test_drawing/screens/learn/activity_screen.dart';
-import 'package:test_drawing/screens/learn/character_selection.dart';
+import 'package:test_drawing/home/learn/activity_screen.dart';
+import 'package:test_drawing/home/learn/character_selection.dart';
 
 class LessonScreen extends StatefulWidget {
   const LessonScreen({super.key});

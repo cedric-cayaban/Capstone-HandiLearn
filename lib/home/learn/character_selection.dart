@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_drawing/objects/lesson.dart';
-import 'package:test_drawing/screens/learn/drawing-board.dart';
+import 'package:test_drawing/home/learn/drawing-board.dart';
 
 class CharacterSelectionScreen extends StatefulWidget {
   CharacterSelectionScreen(
