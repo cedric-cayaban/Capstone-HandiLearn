@@ -1,31 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:test_drawing/lists/images.dart';
-import 'package:test_drawing/lists/lessons.dart';
-import 'package:test_drawing/objects/lesson.dart';
-import 'package:test_drawing/screens/character_selection.dart';
 
-class ActivityScreen extends StatefulWidget {
-  ActivityScreen(
-      {super.key,
-      required this.lesson,
-      required this.lessonTitle,
-      required this.lessonNumber});
+import 'package:test_drawing/data/lessons.dart';
+import 'package:test_drawing/screens/learn/activity_screen.dart';
+import 'package:test_drawing/screens/learn/character_selection.dart';
 
-  String lessonTitle;
-  List<Lesson> lesson;
-  int lessonNumber;
+class LessonScreen extends StatefulWidget {
+  const LessonScreen({super.key});
+
   @override
-  State<ActivityScreen> createState() => _ActivityScreenState();
+  State<LessonScreen> createState() => _LessonScreenState();
 }
 
-List<String> activityNames = [
-  'Pronounce',
-  'Write',
-  'Mini Game',
+List<String> lessonNames = [
+  'Capital Letters',
+  'Small Letters',
+  'Words',
+  'Numbers',
+  'Cursive Capital',
+  'Cursive Small',
+  'Cursive Words'
 ];
 
-class _ActivityScreenState extends State<ActivityScreen> {
+class _LessonScreenState extends State<LessonScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,7 +36,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 height: MediaQuery.of(context).size.height * 0.37,
                 width: MediaQuery.of(context).size.width,
                 child: Image.asset(
-                  'assets/images/components/activity_visual.png',
+                  'assets/images/components/lesson-visual.png',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -100,7 +97,11 @@ class _ActivityScreenState extends State<ActivityScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Padding(
-                        padding: EdgeInsets.only(left: 20, top: 10, bottom: 15),
+                        padding: EdgeInsets.only(
+                          left: 20,
+                          top: 10,
+                          bottom: 15,
+                        ),
                         child: Text(
                           'Choose your lesson',
                           style: TextStyle(
@@ -112,16 +113,16 @@ class _ActivityScreenState extends State<ActivityScreen> {
                       ),
                       Expanded(
                         child: ListView.builder(
-                          itemCount: activityNames.length,
+                          itemCount: lessonNames.length,
                           itemBuilder: (context, index) => InkWell(
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      CharacterSelectionScreen(
-                                    lesson: lessonData[index],
-                                  ),
-                                ),
+                                    builder: (context) => ActivityScreen(
+                                          lesson: lessonData[index],
+                                          lessonTitle: lessonNames[index],
+                                          lessonNumber: index,
+                                        )),
                               );
                             },
                             child: Card(
@@ -136,7 +137,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage(lessonsBg[index]),
+                                    image: AssetImage(
+                                      'assets/images/components/lesson${index + 1}-bg.png',
+                                    ),
                                     fit: BoxFit.cover,
                                   ),
                                   borderRadius: const BorderRadius.all(
@@ -174,11 +177,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                             Flexible(
                                               // Allows the lesson name to wrap if it's too long
                                               child: Text(
-                                                activityNames[index],
+                                                lessonNames[index],
                                                 style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize:
-                                                        index >= 4 ? 27 : 30,
+                                                    fontSize: 30,
                                                     fontWeight: FontWeight.w500,
                                                     height: 1),
                                                 softWrap: true,
@@ -188,7 +190,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                           ],
                                         ),
                                       ),
-                                      Image.asset(lessonsImg[index]),
+                                      Image.asset(
+                                        'assets/images/components/lesson${index + 1}-img.png',
+                                      ),
                                     ],
                                   ),
                                 ),

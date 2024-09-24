@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_drawing/screens/lesson_screen.dart';
+import 'package:test_drawing/screens/learn/lesson_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
