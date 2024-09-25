@@ -17,8 +17,8 @@ List<String> lessonNames = [
   'Small Letters',
   'Words',
   'Numbers',
-  'Cursive Capital',
-  'Cursive Small',
+  'Capital Cursives',
+  'Small Cursives',
   'Cursive Words'
 ];
 

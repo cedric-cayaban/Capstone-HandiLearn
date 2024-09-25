@@ -4,20 +4,14 @@ import 'package:test_drawing/home/learn/drawing-board.dart';
 
 class CharacterSelectionScreen extends StatefulWidget {
   CharacterSelectionScreen(
-      {super.key, required this.lesson, required this.activity
-      // required this.index,
-      // required this.character,
-      // required this.svgPath,
-      // required this.type,
-      // required this.isCapital,
+      {super.key, required this.lesson, required this.activity,
+      required this.lessonNumber,
+      
       });
   List<Lesson> lesson;
   String activity;
-  // int index;
-  // String character;
-  // String svgPath;
-  // String type;
-  // bool isCapital;
+  int lessonNumber;
+  
 
   @override
   State<CharacterSelectionScreen> createState() =>
@@ -38,7 +32,7 @@ class _LetterSelectionsScreenState extends State<CharacterSelectionScreen> {
                 height: MediaQuery.of(context).size.height * 0.37,
                 width: MediaQuery.of(context).size.width,
                 child: Image.asset(
-                  'assets/images/components/selection-visual1.png',
+                  'assets/images/components/selection-visual${widget.lessonNumber + 1}.png',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -127,7 +121,7 @@ class _LetterSelectionsScreenState extends State<CharacterSelectionScreen> {
               ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.25,
+              top: MediaQuery.of(context).size.height * 0.275,
               left: 0,
               right: 0,
               child: Column(

@@ -135,6 +135,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                       CharacterSelectionScreen(
                                     lesson: widget.lesson,
                                     activity: activityNames[index],
+                                    lessonNumber: widget.lessonNumber,
                                   ),
                                 ),
                               );
