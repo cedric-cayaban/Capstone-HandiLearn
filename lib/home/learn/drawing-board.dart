@@ -320,7 +320,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                   isMatch = drawingChecker(
                       resampledPoints,
                       getGuidePoints(widget.type, characterKey, canvasSize),
-                      30); // Threshold
+                      50); // Threshold
 
                   if (isMatch) {
                     print('Drawing matches!');
@@ -370,6 +370,7 @@ class DrawingBoard extends CustomPainter {
         canvas.drawLine(points[i]!, points[i + 1]!, paint);
       }
     }
+    
   }
 
   @override

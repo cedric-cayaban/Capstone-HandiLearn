@@ -41,9 +41,9 @@ class _LetterSelectionsScreenState extends State<CharacterSelectionScreen> {
               top: 20,
               left: 10,
               child: IconButton(
-                icon: const Icon(
+                icon:  Icon(
                   Icons.arrow_back,
-                  color: Colors.black,
+                  color: widget.lessonNumber == 3 || widget.lessonNumber == 6 ? Colors.white : Colors.black,
                 ),
                 onPressed: () {
                   Navigator.pop(context);
