@@ -94,14 +94,27 @@ class _DrawingScreenState extends State<DrawingScreen> {
     List<Offset?> offsets = [];
     for (var point in pointsList) {
       if (point != null) {
-        double x = point['dx'] *
-            (canvasSize.width / 300); // Width is based on canvas size
-        double y = widget.isCapital
-            ? point['dy'] * (canvasSize.height / 300) // Capital: height 300
-            : point['dy'] * (canvasSize.height / 250); // Small: height 250
+        // Check if type is 'word', and if so, assume the width is fixed at 800
+        double widthScale = (widget.type == 'word')
+            ? (canvasSize.width / 800)
+            : (canvasSize.width / 300); // Default for non-'word' types
+
+        double x = point['dx'] * widthScale;
+
+        // Adjust the height scale based on whether it's a capital letter or a word
+        double heightScale;
+        if (widget.type == 'word') {
+          heightScale = canvasSize.height / 300; // Fixed height for 'word'
+        } else {
+          heightScale = widget.isCapital
+              ? canvasSize.height / 300 // Capital: height 300
+              : canvasSize.height / 250; // Small: height 250
+        }
+        double y = point['dy'] * heightScale;
+
         offsets.add(Offset(x, y));
       } else {
-        offsets.add(null);
+        offsets.add(null); // Handle null points for stroke separation
       }
     }
     return offsets;
@@ -370,7 +383,6 @@ class DrawingBoard extends CustomPainter {
         canvas.drawLine(points[i]!, points[i + 1]!, paint);
       }
     }
-    
   }
 
   @override
