@@ -116,17 +116,19 @@ class _LessonScreenState extends State<LessonScreen> {
                           //ANDITO YUNG LESSONS LENGTH
                           itemCount: lessonNames.length,
                           itemBuilder: (context, index) => InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => ActivityScreen(
-                                    lesson: lessonData[index],
-                                    lessonTitle: lessonNames[index],
-                                    lessonNumber: index,
-                                  ),
-                                ),
-                              );
-                            },
+                            onTap: index > 3
+                                ? null
+                                : () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => ActivityScreen(
+                                          lesson: lessonData[index],
+                                          lessonTitle: lessonNames[index],
+                                          lessonNumber: index,
+                                        ),
+                                      ),
+                                    );
+                                  },
                             child: Card(
                               margin: const EdgeInsets.symmetric(
                                 vertical: 8.0,
@@ -137,7 +139,8 @@ class _LessonScreenState extends State<LessonScreen> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Opacity(
-                                opacity: 1,
+                                opacity: index > 3
+                                ? 0.5 : 1,
                                 child: Container(
                                   decoration: BoxDecoration(
                                     image: DecorationImage(

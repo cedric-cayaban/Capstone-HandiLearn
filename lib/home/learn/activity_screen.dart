@@ -128,7 +128,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                         child: ListView.builder(
                           itemCount: activityNames.length - 1,
                           itemBuilder: (context, index) => InkWell(
-                            onTap: (widget.lesson[index].type == 'word' &&
+                            onTap: (widget.lessonNumber > 3 && index == 1) ||
+                                    (widget.lesson[index].type == 'word' &&
                                         index == 1) ||
                                     (widget.lesson[index].type == 'number' &&
                                         index == 0)
@@ -155,7 +156,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Opacity(
-                                opacity: (widget.lesson[index].type == 'word' &&
+                                opacity: (widget.lessonNumber > 3 &&
+                                            index == 1) ||
+                                        (widget.lesson[index].type == 'word' &&
                                             index == 1) ||
                                         (widget.lesson[index].type ==
                                                 'number' &&
