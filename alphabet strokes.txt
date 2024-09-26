@@ -1,2 +1,78 @@
+STANDARD
+A - 3 stroke
+a - 1 stroke, re-implement
+	
+B - 2 stroke
+b - 2 stroke
+
+C - 1 stroke
+c - 1 stroke
+
+D - 2 stroke
+d - 2 stroke
+
+E - 4 stroke
+e - 1 stroke
+
+F - 3 stroke
+f - 2 stroke
+
+G - 1 stroke
+g - 1 stroke
+
+H - 3 stroke
+h - 1 stroke
+
+I - 1 stroke
+i - 2 stroke
+
+J - 1 stroke
+j - 1 stroke
+
+K - 3 stroke
+k - 3 stroke
+
+L - 1 stroke
+l - 1 stroke
+
+M - 2 stroke
+m - 1 stroke
+
+N - 2 stroke
+n - 1 stroke
+
+O - 1 stroke
+o - 1 stroke
+		
 P - 2 stroke
 p - 2 stroke
+
+Q - 2 stroke
+q - 1 stroke
+
+R - 2 stroke
+r - 1 stroke
+
+S - 1 stroke
+s - 1 stroke
+
+T - 2 stroke
+t - 2 stroke
+
+U - 1 stroke
+u - 1 stroke
+
+V - 1 stroke
+v - 1 stroke
+
+W - 1 stroke
+w - 1 stroke
+
+X - 2 stroke
+x - 2 stroke
+
+Y - 2 stroke
+y - 2 stroke
+
+Z - 1 stroke
+z - 1 stroke
