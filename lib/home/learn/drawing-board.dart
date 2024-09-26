@@ -307,8 +307,8 @@ class _DrawingScreenState extends State<DrawingScreen> {
                       height: canvasHeight,
                       width: canvasWidth, // Width adjusted based on 'word'
                       decoration: BoxDecoration(
-                          //border: Border.all(color: Colors.grey),
-                          ),
+                        border: Border.all(color: Colors.grey),
+                      ),
                       child: loadSvg(widget.svgPath),
                     ),
                   ),
@@ -376,7 +376,7 @@ class DrawingBoard extends CustomPainter {
     Paint paint = Paint()
       ..color = Colors.blue
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 27.0;
+      ..strokeWidth = 20.0;
 
     for (int i = 0; i < points.length - 1; i++) {
       if (points[i] != null && points[i + 1] != null) {
