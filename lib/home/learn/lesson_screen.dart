@@ -113,7 +113,8 @@ class _LessonScreenState extends State<LessonScreen> {
                       ),
                       Expanded(
                         child: ListView.builder(
-                          itemCount: lessonNames.length,
+                          //ANDITO YUNG LESSONS LENGTH
+                          itemCount: lessonNames.length - 3,
                           itemBuilder: (context, index) => InkWell(
                             onTap: () {
                               Navigator.of(context).push(
