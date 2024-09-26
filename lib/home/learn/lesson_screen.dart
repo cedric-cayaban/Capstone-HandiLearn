@@ -114,18 +114,21 @@ class _LessonScreenState extends State<LessonScreen> {
                       Expanded(
                         child: ListView.builder(
                           //ANDITO YUNG LESSONS LENGTH
-                          itemCount: lessonNames.length - 3,
+                          itemCount: lessonNames.length,
                           itemBuilder: (context, index) => InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => ActivityScreen(
+                            onTap: index >= 4
+                                ? null
+                                : () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => ActivityScreen(
                                           lesson: lessonData[index],
                                           lessonTitle: lessonNames[index],
                                           lessonNumber: index,
-                                        )),
-                              );
-                            },
+                                        ),
+                                      ),
+                                    );
+                                  },
                             child: Card(
                               margin: const EdgeInsets.symmetric(
                                 vertical: 8.0,
@@ -133,68 +136,74 @@ class _LessonScreenState extends State<LessonScreen> {
                               ),
                               elevation: 4,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(20),
                               ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                      'assets/images/components/lesson${index + 1}-bg.png',
+                              child: Opacity(
+                                opacity: index >= 4 ? 0.5 : 1,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                        'assets/images/components/lesson${index + 1}-bg.png',
+                                      ),
+                                      fit: BoxFit.cover,
                                     ),
-                                    fit: BoxFit.cover,
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(20),
+                                    ),
                                   ),
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                ),
-                                height: 125,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 20, left: 20, right: 20),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Expanded(
-                                        // Wrap the entire column to ensure it doesn't overflow
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Flexible(
-                                              // Allows text to wrap if it overflows
-                                              child: Text(
-                                                'Lesson ${index + 1}:',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                                softWrap: true,
-                                                overflow: TextOverflow.visible,
-                                              ),
-                                            ),
-                                            const Gap(15),
-                                            Flexible(
-                                              // Allows the lesson name to wrap if it's too long
-                                              child: Text(
-                                                lessonNames[index],
-                                                style: TextStyle(
+                                  height: 125,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 20, left: 20, right: 20),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Expanded(
+                                          // Wrap the entire column to ensure it doesn't overflow
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Flexible(
+                                                // Allows text to wrap if it overflows
+                                                child: Text(
+                                                  'Lesson ${index + 1}:',
+                                                  style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 30,
+                                                    fontSize: 17,
                                                     fontWeight: FontWeight.w500,
-                                                    height: 1),
-                                                softWrap: true,
-                                                overflow: TextOverflow.visible,
+                                                  ),
+                                                  softWrap: true,
+                                                  overflow:
+                                                      TextOverflow.visible,
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                              const Gap(15),
+                                              Flexible(
+                                                // Allows the lesson name to wrap if it's too long
+                                                child: Text(
+                                                  lessonNames[index],
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 30,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      height: 1),
+                                                  softWrap: true,
+                                                  overflow:
+                                                      TextOverflow.visible,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Image.asset(
-                                        'assets/images/components/lesson${index + 1}-img.png',
-                                      ),
-                                    ],
+                                        Image.asset(
+                                          'assets/images/components/lesson${index + 1}-img.png',
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
