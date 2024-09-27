@@ -70,7 +70,8 @@ flutter:
     - assets/images/cursive_letters/capital/
     - assets/images/cursive_letters/small/
     - assets/images/numbers/
-    - assets/images/words/
+    - assets/images/words/standard/
+    - assets/images/words/cursive/
     - assets/images/components/
     - assets/guide_points.json
     - assets/onboarding/
