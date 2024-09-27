@@ -124,6 +124,9 @@ class _LessonScreenState extends State<LessonScreen> {
                             onTap: index > 3
                                 ? null
                                 : () {
+                                    LastActivity = index.toString();
+                                    print("Dito last activity $LastActivity");
+                                    setState(() {});
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => ActivityScreen(
