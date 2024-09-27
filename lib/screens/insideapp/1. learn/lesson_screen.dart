@@ -121,17 +121,19 @@ class _LessonScreenState extends State<LessonScreen> {
                           //ANDITO YUNG LESSONS LENGTH
                           itemCount: lessonNames.length,
                           itemBuilder: (context, index) => InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => ActivityScreen(
-                                    lesson: lessonData[index],
-                                    lessonTitle: lessonNames[index],
-                                    lessonNumber: index,
-                                  ),
-                                ),
-                              );
-                            },
+                            onTap: index > 3
+                                ? null
+                                : () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => ActivityScreen(
+                                          lesson: lessonData[index],
+                                          lessonTitle: lessonNames[index],
+                                          lessonNumber: index,
+                                        ),
+                                      ),
+                                    );
+                                  },
                             child: Card(
                               margin: const EdgeInsets.symmetric(
                                 vertical: 8.0,
