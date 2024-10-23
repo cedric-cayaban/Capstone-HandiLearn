@@ -410,7 +410,7 @@ List<List<Lesson>> lessonData = [
       isCapital: true,
     ),
     Lesson(
-      character: 'pig',
+      character: 'pig', // ORIGINALLY pig FOR HANDLING
       imgPath: 'assets/images/words/standard/word_pig.png',
       svgPath: 'assets/images/words/standard/word_pig.svg',
       type: 'word',
@@ -671,7 +671,7 @@ List<List<Lesson>> lessonData = [
     ),
     Lesson(
       character: 'V',
-      imgPath: 'assets/images/cursive_letters/capital/cursive_caps_v.svg',
+      imgPath: 'assets/images/cursive_letters/capital/cursive_caps_v.png',
       svgPath: 'assets/images/cursive_letters/capital/cursive_caps_v.svg',
       type: 'cursive',
       isCapital: true,
@@ -953,7 +953,7 @@ List<List<Lesson>> lessonData = [
     Lesson(
       character: 'apple',
       imgPath: 'assets/images/words/cursive/cursive_word_apple.png',
-      svgPath: 'assets/images/words/cursive/cursive_word_.svg',
+      svgPath: 'assets/images/words/cursive/cursive_word_apple.svg',
       type: 'cursive word',
       isCapital: true,
     ),
