@@ -5,7 +5,9 @@ import 'package:gap/gap.dart';
 
 import 'package:test_drawing/data/lessons.dart';
 import 'package:test_drawing/data/userAccount.dart';
+import 'package:test_drawing/objects/lesson.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/activity_screen.dart';
+import 'package:test_drawing/screens/insideapp/1.%20learn/character_selection.dart';
 
 import '../home.dart';
 
@@ -79,8 +81,7 @@ class _LessonScreenState extends State<LessonScreen> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => Home()));
+                  Navigator.pop(context);
                 },
               ),
             ),
@@ -121,22 +122,17 @@ class _LessonScreenState extends State<LessonScreen> {
                           //ANDITO YUNG LESSONS LENGTH
                           itemCount: lessonNames.length,
                           itemBuilder: (context, index) => InkWell(
-                            onTap: index > 3
-                                ? null
-                                : () {
-                                    LastActivity = index.toString();
-                                    print("Dito last activity $LastActivity");
-                                    setState(() {});
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => ActivityScreen(
-                                          lesson: lessonData[index],
-                                          lessonTitle: lessonNames[index],
-                                          lessonNumber: index,
-                                        ),
-                                      ),
-                                    );
-                                  },
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => ActivityScreen(
+                                    lesson: lessonData[index],
+                                    lessonTitle: lessonNames[index],
+                                    lessonNumber: index,
+                                  ),
+                                ),
+                              );
+                            },
                             child: Card(
                               margin: const EdgeInsets.symmetric(
                                 vertical: 8.0,
@@ -147,7 +143,7 @@ class _LessonScreenState extends State<LessonScreen> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Opacity(
-                                opacity: index > 3 ? 0.5 : 1,
+                                opacity: 1,
                                 child: Container(
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
@@ -233,3 +229,5 @@ class _LessonScreenState extends State<LessonScreen> {
     );
   }
 }
+
+

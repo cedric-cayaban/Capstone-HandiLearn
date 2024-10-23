@@ -3,14 +3,14 @@ import 'package:test_drawing/objects/lesson.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/drawing-board.dart';
 
 class CharacterSelectionScreen extends StatefulWidget {
-  CharacterSelectionScreen(
+  const CharacterSelectionScreen(
       {super.key, required this.lesson, required this.activity,
       required this.lessonNumber,
       
       });
-  List<Lesson> lesson;
-  String activity;
-  int lessonNumber;
+  final List<Lesson> lesson;
+  final String activity;
+  final int lessonNumber;
   
 
   @override
