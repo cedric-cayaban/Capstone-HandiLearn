@@ -68,7 +68,6 @@ class _SelectedItemState extends State<SelectedItem> {
     print('natatawag');
 
     _speech.listen(
-      
       onResult: (result) {
         // Check if the result is final to avoid repeating actions
         if (result.finalResult) {

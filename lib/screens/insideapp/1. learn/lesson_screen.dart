@@ -42,7 +42,7 @@ class _LessonScreenState extends State<LessonScreen> {
                 height: MediaQuery.of(context).size.height * 0.37,
                 width: MediaQuery.of(context).size.width,
                 child: Image.asset(
-                  'assets/images/components/lesson-visual.png',
+                  'assets/insideApp/learnWriting/components/lesson-visual.png',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -148,7 +148,7 @@ class _LessonScreenState extends State<LessonScreen> {
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       image: AssetImage(
-                                        'assets/images/components/lesson${index + 1}-bg.png',
+                                        'assets/insideApp/learnWriting/components/lesson${index + 1}-bg.png',
                                       ),
                                       fit: BoxFit.cover,
                                     ),
@@ -204,7 +204,7 @@ class _LessonScreenState extends State<LessonScreen> {
                                           ),
                                         ),
                                         Image.asset(
-                                          'assets/images/components/lesson${index + 1}-img.png',
+                                          'assets/insideApp/learnWriting/components/lesson${index + 1}-img.png',
                                         ),
                                       ],
                                     ),
@@ -229,5 +229,3 @@ class _LessonScreenState extends State<LessonScreen> {
     );
   }
 }
-
-

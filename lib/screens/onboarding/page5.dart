@@ -24,7 +24,7 @@ class Page5 extends StatelessWidget {
                       CrossAxisAlignment.start, // Aligns the text to the left
                   children: [
                     Text(
-                      'Welcome to',
+                      'Scan',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -32,15 +32,15 @@ class Page5 extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'HandiLearn',
+                      'Objects',
                       style: TextStyle(
                         fontSize: 44,
                         color: Colors.black,
                       ),
                     ),
                     Text(
-                      '''personalizes the learning experience for your child, 
-making education fun and engaging.''',
+                      '''A fun, interactive way to expand vocabulary 
+and knowledge.''',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey,

@@ -4,8 +4,6 @@ import 'package:gap/gap.dart';
 import 'package:test_drawing/data/lessons.dart';
 import 'package:test_drawing/objects/lesson.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/character_selection.dart';
-import 'package:test_drawing/screens/insideapp/1.%20learn/reading/character_selection.dart';
-import 'package:test_drawing/screens/insideapp/1.%20learn/reading/selectedItem.dart';
 
 class ActivityScreen extends StatefulWidget {
   const ActivityScreen(
@@ -41,7 +39,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 height: MediaQuery.of(context).size.height * 0.37,
                 width: MediaQuery.of(context).size.width,
                 child: Image.asset(
-                  'assets/images/components/activity-visual${widget.lessonNumber + 1}.png',
+                  'assets/insideApp/learnWriting/components/activity-visual${widget.lessonNumber + 1}.png',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -155,7 +153,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     image: AssetImage(
-                                        'assets/images/components/activity${index + 1}-bg.png'),
+                                        'assets/insideApp/learnWriting/components/activity${index + 1}-bg.png'),
                                     fit: BoxFit.cover,
                                   ),
                                   borderRadius: const BorderRadius.all(
@@ -208,7 +206,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                         ),
                                       ),
                                       Image.asset(
-                                          'assets/images/components/activity${index + 1}-img.png'),
+                                          'assets/insideApp/learnWriting/components/activity${index + 1}-img.png'),
                                     ],
                                   ),
                                 ),

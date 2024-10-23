@@ -52,20 +52,20 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
     //BABALIKAN
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      loadGuidePoints().then((data) {
-        // setState(() {
-        //   guidePoints = data;
-        //   isLoading = false; // Set loading to false when data is ready
-        // });
-        guidePoints = data;
-        isLoading = false;
-      }).catchError((error) {
-        print('Error loading guide points: $error');
-        // setState(() {
-        //   isLoading = false; // Even on error, stop showing loading indicator
-        // });
-        isLoading = false;
-      });
+      // loadGuidePoints().then((data) {
+      //   // setState(() {
+      //   //   guidePoints = data;
+      //   //   isLoading = false; // Set loading to false when data is ready
+      //   // });
+      //   guidePoints = data;
+      //   isLoading = false;
+      // }).catchError((error) {
+      //   print('Error loading guide points: $error');
+      //   // setState(() {
+      //   //   isLoading = false; // Even on error, stop showing loading indicator
+      //   // });
+      //   isLoading = false;
+      // });
     });
   }
 

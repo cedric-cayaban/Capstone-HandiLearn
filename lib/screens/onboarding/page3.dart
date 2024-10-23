@@ -24,7 +24,7 @@ class Page3 extends StatelessWidget {
                       CrossAxisAlignment.start, // Aligns the text to the left
                   children: [
                     Text(
-                      'Welcome to',
+                      'Teach Childrens',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -32,15 +32,16 @@ class Page3 extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'HandiLearn',
+                      'Writing',
                       style: TextStyle(
                         fontSize: 44,
                         color: Colors.black,
                       ),
                     ),
                     Text(
-                      '''personalizes the learning experience for your child, 
-making education fun and engaging.''',
+                      '''Lessons include tracing patterns for letters, numbers, 
+and words. Handwriting recognition provides instant 
+feedback and a 3-star rating system.''',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
