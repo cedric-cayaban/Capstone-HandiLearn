@@ -33,7 +33,7 @@ class _ReadingCharacterSelection extends State<ReadingCharacterSelection> {
                 height: MediaQuery.of(context).size.height * 0.37,
                 width: MediaQuery.of(context).size.width,
                 child: Image.asset(
-                  'assets/images/components/selection-visual${widget.lessonNumber + 1}.png',
+                  'assets/insideApp/learnWriting/components/selection-visual${widget.lessonNumber + 1}.png',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -128,7 +128,8 @@ class _ReadingCharacterSelection extends State<ReadingCharacterSelection> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset('assets/images/components/selection-img.png')
+                  Image.asset(
+                      'assets/insideApp/learnWriting/components/selection-img.png')
                 ],
               ),
             ),
