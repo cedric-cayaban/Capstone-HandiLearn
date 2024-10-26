@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import 'package:test_drawing/data/lessons.dart';
+import 'package:test_drawing/data/userAccount.dart';
 import 'package:test_drawing/objects/lesson.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/character_selection.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/reading/character_selection.dart';
@@ -27,6 +30,45 @@ List<String> activityNames = [
 ];
 
 class _ActivityScreenState extends State<ActivityScreen> {
+  String characterDone = "";
+
+  void getcharacterDone(String activity, String lesson) async {
+    // print(id);
+    // print(lessonid);
+    try {
+      User user = FirebaseAuth.instance.currentUser!;
+      String _uid = user.uid;
+      final DocumentSnapshot profileDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_uid)
+          .collection('profiles')
+          .doc(id)
+          .collection("LessonsFinished")
+          .doc(lessonid)
+          .get();
+
+      characterDone = profileDoc.get('${lesson}_${activity}');
+
+      print(characterDone);
+      // print('Sa baba neto yung sagot');
+      // print(profileDoc.get('${lesson}_${activity}'));
+      // return profileDoc.get('${lesson}_${activity}');
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => ReadingCharacterSelection(
+            lesson: widget.lesson,
+            activity: activity,
+            lessonNumber: widget.lessonNumber,
+            lessonTitle: widget.lessonTitle,
+            characterDone: characterDone,
+          ),
+        ),
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -136,16 +178,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                 ? null
                                 : () {
                                     if (activityNames[index] == "Pronounce") {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ReadingCharacterSelection(
-                                            lesson: widget.lesson,
-                                            activity: activityNames[index],
-                                            lessonNumber: widget.lessonNumber,
-                                          ),
-                                        ),
-                                      );
+                                      getcharacterDone(activityNames[index],
+                                          widget.lessonTitle);
                                     } else {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(

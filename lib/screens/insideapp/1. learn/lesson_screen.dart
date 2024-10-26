@@ -104,7 +104,7 @@ class _LessonScreenState extends State<LessonScreen> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => Home(),),);
                 },
               ),
             ),

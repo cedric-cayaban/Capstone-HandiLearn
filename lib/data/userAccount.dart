@@ -31,5 +31,5 @@ class ProfileData {
 }
 
 String id = "";
-
+String lessonid = "";
 String LastActivity = "";

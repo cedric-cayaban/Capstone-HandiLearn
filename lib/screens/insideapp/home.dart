@@ -132,7 +132,7 @@ class _HomeState extends State<Home> {
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       image: AssetImage(
-                                        'assets/images/components/lesson${int.parse(LastActivity) + 1}-bg.png',
+                                        'assets/insideApp/learnWriting/components/lesson${int.parse(LastActivity) + 1}-bg.png',
                                       ),
                                       fit: BoxFit.cover,
                                     ),
@@ -188,7 +188,7 @@ class _HomeState extends State<Home> {
                                           ),
                                         ),
                                         Image.asset(
-                                          'assets/images/components/lesson${int.parse(LastActivity) + 1}-img.png',
+                                          'assets/insideApp/learnWriting/components/lesson${int.parse(LastActivity) + 1}-img.png',
                                         ),
                                       ],
                                     ),

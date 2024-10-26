@@ -201,7 +201,10 @@ class _ChooseProfileState extends State<ChooseProfile> {
                                       var profileId =
                                           items[index]['profile id'];
                                       id = profileId;
+                                      lessonid = items[index]['lesson id'];
                                       print(profileId);
+                                      // String profileAge = items[index]['age'];
+
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (_) => EnterPin(),
