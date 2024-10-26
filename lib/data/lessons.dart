@@ -1,3 +1,4 @@
+import 'package:test_drawing/data/hints.dart';
 import 'package:test_drawing/objects/lesson.dart';
 
 List<List<Lesson>> lessonData = [
@@ -9,6 +10,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_a.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_A,
     ),
     Lesson(
       character: 'B',
@@ -16,6 +18,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_b.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_B,
     ),
     Lesson(
       character: 'C',
@@ -23,6 +26,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_c.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_C,
     ),
     Lesson(
       character: 'D',
@@ -30,6 +34,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_d.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_D,
     ),
     Lesson(
       character: 'E',
@@ -37,6 +42,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_e.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_E,
     ),
     Lesson(
       character: 'F',
@@ -44,6 +50,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_f.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_F,
     ),
     Lesson(
       character: 'G',
@@ -51,6 +58,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_g.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_G,
     ),
     Lesson(
       character: 'H',
@@ -58,6 +66,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_h.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_H,
     ),
     Lesson(
       character: 'I',
@@ -65,6 +74,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_i.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_I,
     ),
     Lesson(
       character: 'J',
@@ -72,6 +82,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_j.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_J,
     ),
     Lesson(
       character: 'K',
@@ -79,6 +90,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_k.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_K,
     ),
     Lesson(
       character: 'L',
@@ -86,6 +98,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_l.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_L,
     ),
     Lesson(
       character: 'M',
@@ -93,6 +106,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_m.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_M,
     ),
     Lesson(
       character: 'N',
@@ -100,6 +114,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_n.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_N,
     ),
     Lesson(
       character: 'O',
@@ -107,6 +122,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_o.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_O,
     ),
     Lesson(
       character: 'P',
@@ -114,6 +130,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_p.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_P,
     ),
     Lesson(
       character: 'Q',
@@ -121,6 +138,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_q.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_Q,
     ),
     Lesson(
       character: 'R',
@@ -128,6 +146,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_r.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_R,
     ),
     Lesson(
       character: 'S',
@@ -135,6 +154,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_s.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_S,
     ),
     Lesson(
       character: 'T',
@@ -142,6 +162,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_t.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_T,
     ),
     Lesson(
       character: 'U',
@@ -149,6 +170,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_u.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_U,
     ),
     Lesson(
       character: 'V',
@@ -156,6 +178,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_v.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_V,
     ),
     Lesson(
       character: 'W',
@@ -163,6 +186,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_w.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_W,
     ),
     Lesson(
       character: 'X',
@@ -170,6 +194,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_x.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_X,
     ),
     Lesson(
       character: 'Y',
@@ -177,6 +202,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_y.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_Y,
     ),
     Lesson(
       character: 'Z',
@@ -184,6 +210,7 @@ List<List<Lesson>> lessonData = [
       svgPath: 'assets/insideApp/learnWriting/standard_letters/capital/caps_z.svg',
       type: 'standard',
       isCapital: true,
+      hints: hints_Z,
     ),
   ],
   // SMALL LETTERS

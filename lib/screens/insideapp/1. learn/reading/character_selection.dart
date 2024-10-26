@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_drawing/objects/lesson.dart';
-import 'package:test_drawing/screens/insideapp/1.%20learn/drawing-board.dart';
+import 'package:test_drawing/screens/insideapp/1.%20learn/writing/drawing-board.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/reading/selectedItem.dart';
 
 class ReadingCharacterSelection extends StatefulWidget {

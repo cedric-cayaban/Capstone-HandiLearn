@@ -48,6 +48,7 @@ dependencies:
   provider: ^6.1.2
   speech_to_text: ^6.6.2
   quickalert: ^1.1.0
+  image: ^4.3.0
 
 dev_dependencies:
   flutter_lints: ^3.0.0
@@ -66,6 +67,8 @@ flutter:
   assets:
     # - assets/images/words/cursive/
     - assets/guide_points.json
+    - assets/models/word/cursive/
+    - assets/models/word/standard/
     - assets/onboarding/
     - assets/insideApp/
     - assets/insideApp/learnReading/audio/
@@ -83,9 +86,12 @@ flutter:
     - assets/insideApp/learnWriting/components/
     - assets/insideApp/learnWriting/cursive_letters/capital/
     - assets/insideApp/learnWriting/cursive_letters/small/
+    - assets/insideApp/learnWriting/cursive_letters/hints/
     - assets/insideApp/learnWriting/numbers/
+    - assets/insideApp/learnWriting/numbers/hints/
     - assets/insideApp/learnWriting/standard_letters/capital/
     - assets/insideApp/learnWriting/standard_letters/small/
+    - assets/insideApp/learnWriting/standard_letters/hints/
     - assets/insideApp/learnWriting/words/cursive/
     - assets/insideApp/learnWriting/words/standard/
   #   - images/a_dot_burr.jpeg
