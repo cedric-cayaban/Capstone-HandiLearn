@@ -1,0 +1,10 @@
+0 at
+1 on
+2 in
+3 cat
+4 dog
+5 pig
+6 bike
+7 kite
+8 apple
+9 orange
