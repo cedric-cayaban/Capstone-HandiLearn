@@ -33,3 +33,5 @@ class ProfileData {
 String id = "";
 String lessonid = "";
 String LastActivity = "";
+
+int age = 0;

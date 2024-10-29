@@ -8,6 +8,7 @@ import 'package:test_drawing/screens/insideapp/1.%20learn/lesson_screen.dart';
 
 import 'package:test_drawing/screens/insideapp/3.%20scanning/camera_screen.dart';
 import 'package:test_drawing/screens/insideapp/2.%20short%20stories/selections.dart';
+import 'package:test_drawing/screens/insideapp/3.%20scanning/instruction.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/chooseGame.dart';
 import 'package:test_drawing/screens/useraccount/choose_profile.dart';
 
@@ -43,6 +44,14 @@ class _HomeState extends State<Home> {
     // print(profileDoc.get('age'));
     name = profileDoc.get('name');
     print(name);
+
+    final DocumentSnapshot ageDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_uid)
+        .collection('profiles')
+        .doc(id)
+        .get();
+    age = int.parse(profileDoc.get('age'));
     setState(() {});
   }
 
@@ -244,7 +253,7 @@ class _HomeState extends State<Home> {
                                   onTap: () {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
-                                        builder: (_) => CameraScreen(),
+                                        builder: (_) => Instruction(),
                                       ),
                                     );
                                   },

@@ -62,7 +62,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
             activity: activity,
             lessonNumber: widget.lessonNumber,
             lessonTitle: widget.lessonTitle,
-            characterDone: characterDone,
+            // characterDone: characterDone,
           ),
         ),
       );

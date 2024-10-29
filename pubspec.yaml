@@ -96,6 +96,7 @@ flutter:
     - assets/insideApp/learnWriting/standard_letters/hints/
     - assets/insideApp/learnWriting/words/cursive/
     - assets/insideApp/learnWriting/words/standard/
+    - assets/insideApp/scanning/objects/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
