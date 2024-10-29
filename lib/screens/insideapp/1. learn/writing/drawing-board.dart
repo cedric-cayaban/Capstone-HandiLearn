@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'
     show ByteData, DeviceOrientation, SystemChrome, Uint8List, rootBundle;
@@ -11,6 +12,7 @@ import 'package:test_drawing/objects/lesson.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/character_selection.dart';
 import 'package:tflite_v2/tflite_v2.dart';
 import 'dart:ui' as ui;
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class DrawingScreen extends StatefulWidget {
   DrawingScreen({
@@ -184,6 +186,21 @@ class _DrawingScreenState extends State<DrawingScreen> {
         ),
       ),
     );
+  }
+
+  stt.SpeechToText _speech = stt.SpeechToText();
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool isFinished = false;
+
+  void sayTheSound() async {
+    try {
+      await _audioPlayer.play(
+        AssetSource(
+            'insideApp/learnReading/audio/${widget.lesson.character}.mp3'),
+      );
+    } catch (e) {
+      print(e);
+    }
   }
 
   void loadHints() {
@@ -800,7 +817,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  //SOUND
+                                  sayTheSound();
                                 },
                                 child: Column(
                                   children: [
@@ -959,4 +976,3 @@ class DrawingBoard extends CustomPainter {
     return true;
   }
 }
-

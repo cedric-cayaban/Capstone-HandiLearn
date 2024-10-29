@@ -1,18 +1,26 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:test_drawing/data/userAccount.dart';
 
 class SelectedItem extends StatefulWidget {
   SelectedItem({
     super.key,
     required this.imgPath,
     required this.character,
+    required this.characterIndex,
+    required this.characterDone,
+    required this.lessonField,
   });
 
   final String imgPath;
   final String character;
+  final int characterIndex;
+  final int characterDone;
+  final String lessonField;
 
   @override
   State<SelectedItem> createState() => _SelectedItemState();
@@ -64,17 +72,41 @@ class _SelectedItemState extends State<SelectedItem> {
     if (!mounted) return;
   }
 
+  void updateLesson() async {
+    try {
+      User user = FirebaseAuth.instance.currentUser!;
+      String _uid = user.uid;
+
+      // Assuming 'id' and 'lessonid' are defined elsewhere in your class
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_uid)
+          .collection('profiles')
+          .doc(id)
+          .collection("LessonsFinished")
+          .doc(lessonid)
+          .update({"${widget.lessonField}": "${widget.characterDone + 1}"});
+
+      // If you need to do something after the update, do it here
+    } catch (e) {
+      print('Error updating lesson: $e'); // Handle error appropriately
+    }
+  }
+
   void _startListening() {
     print('natatawag');
 
     _speech.listen(
-      onResult: (result) {
+      onResult: (result) async {
         // Check if the result is final to avoid repeating actions
         if (result.finalResult) {
           print(result.recognizedWords.toLowerCase());
 
           if (result.recognizedWords.toLowerCase() ==
               widget.character.toLowerCase()) {
+            if (widget.characterIndex < widget.characterDone) {
+              updateLesson();
+            }
             _showSuccessDialog();
             print(result.recognizedWords.toLowerCase());
             isFinished = true;

@@ -27,202 +27,155 @@ class _OnBoardingState extends State<OnBoarding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          PageView(
-            controller: _controller,
-            onPageChanged: (index) {
-              setState(() {
-                onLastPage = (index == 6);
-                onFirstPage = (index != 0);
-              });
-            },
-            children: const [
-              Page1(),
-              Page2(),
-              Page3(),
-              Page4(),
-              Page5(),
-              Page6(),
-              Page7(),
-            ],
-          ),
-          onLastPage
-              ? Positioned(
-                  bottom: 40,
-                  right: 20,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => LoginScreen(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      'Finish',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(Colors.orange),
-                    ),
-                  ),
-                )
-              : Positioned(
-                  bottom: 40,
-                  right: 20,
-                  child: IconButton(
-                    onPressed: () {
-                      _controller.nextPage(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeIn,
-                      );
-                    },
-                    icon: Icon(Icons.navigate_next_rounded),
-                    color: Colors.white,
-                    style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(Colors.orange),
-                        iconSize: WidgetStatePropertyAll(40)),
-                  ),
-                ),
-          Positioned(
-            bottom: 50,
-            left: 20,
-            child: SmoothPageIndicator(
-              controller: _controller,
-              count: 7,
-              effect: ExpandingDotsEffect(
-                // spacing: 8.0,
-                // radius: 4.0,
-                dotWidth: 10.0,
-                dotHeight: 10.0,
-                // paintStyle: PaintingStyle.stroke,
-                // strokeWidth: 1.5,
-                dotColor: Color(0xFFd9d9d9),
-                activeDotColor: Color(0xFFFF9800),
+      body: Container(
+        decoration: BoxDecoration(
+          color: Color(0xFFe4eeff),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              bottom: 0,
+              child: Image.asset(
+                'assets/onboarding/moving car.gif',
+                height: 340,
+                width: MediaQuery.sizeOf(context).width,
+                fit: BoxFit.fill,
               ),
             ),
-          ),
-          Positioned(
-              right: 10,
-              top: 30,
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => LoginScreen(),
+            Positioned(
+              top: 0,
+              child: Image.asset(
+                'assets/onboarding/bg.png',
+                height: MediaQuery.of(context).size.height * .80,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.fill,
+              ),
+            ),
+            Positioned(
+              top: 0,
+              child: Image.asset(
+                'assets/onboarding/clouds.gif',
+                height: 340,
+                width: MediaQuery.sizeOf(context).width,
+                fit: BoxFit.fill,
+              ),
+            ),
+            // Positioned(
+            //   top: 70,
+            //   right: 70,
+            //   child: Image.asset(
+            //     'assets/onboarding/logo.png',
+            //     height: 195,
+            //     width: 230,
+            //     fit: BoxFit.fill,
+            //   ),
+            // ),
+            Positioned(
+              bottom: MediaQuery.of(context).size.height * 0.25,
+              left: MediaQuery.of(context).size.width * 0.30,
+              child: Image.asset(
+                'assets/onboarding/dancing abc.gif',
+                height: 60,
+                width: MediaQuery.of(context).size.width * 0.30,
+                fit: BoxFit.fill,
+              ),
+            ),
+            PageView(
+              controller: _controller,
+              onPageChanged: (index) {
+                setState(() {
+                  onLastPage = (index == 6);
+                  onFirstPage = (index != 0);
+                });
+              },
+              children: const [
+                Page1(),
+                Page2(),
+                Page3(),
+                Page4(),
+                Page5(),
+                Page6(),
+                Page7(),
+              ],
+            ),
+            onLastPage
+                ? Positioned(
+                    bottom: 20,
+                    right: 20,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => LoginScreen(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Finish',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(Colors.orange),
+                      ),
                     ),
-                  );
-                },
-                child: Text(
-                  'Skip',
-                  style: TextStyle(color: Colors.grey),
+                  )
+                : Positioned(
+                    bottom: 20,
+                    right: 20,
+                    child: IconButton(
+                      onPressed: () {
+                        _controller.nextPage(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeIn,
+                        );
+                      },
+                      icon: Icon(Icons.navigate_next_rounded),
+                      color: Colors.white,
+                      style: ButtonStyle(
+                          backgroundColor:
+                              WidgetStatePropertyAll(Colors.orange),
+                          iconSize: WidgetStatePropertyAll(40)),
+                    ),
+                  ),
+            Positioned(
+              bottom: 35,
+              left: 20,
+              child: SmoothPageIndicator(
+                controller: _controller,
+                count: 7,
+                effect: ExpandingDotsEffect(
+                  // spacing: 8.0,
+                  // radius: 4.0,
+                  dotWidth: 10.0,
+                  dotHeight: 10.0,
+                  // paintStyle: PaintingStyle.stroke,
+                  // strokeWidth: 1.5,
+                  dotColor: Color(0xFFd9d9d9),
+                  activeDotColor: Color(0xFFFF9800),
                 ),
-              )),
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 25, right: 25),
-          //   child: Column(
-          //     mainAxisAlignment: MainAxisAlignment.end,
-          //     children: [
-          //       SizedBox(
-          //         height: 30,
-          //       ),
-          //       Row(
-          //         mainAxisAlignment: MainAxisAlignment.end,
-          //         children: [
-          //           TextButton(
-          //             onPressed: () {
-          //               Navigator.of(context).push(
-          //                 MaterialPageRoute(
-          //                   builder: (_) => LoginScreen(),
-          //                 ),
-          //               );
-          //             },
-          //             child: const Text(
-          //               'Skip',
-          //               style: TextStyle(
-          //                   color: Colors.black, fontWeight: FontWeight.w900),
-          //             ),
-          //           )
-          //         ],
-          //       ),
-          //       // const Gap(470),
-          //       // SmoothPageIndicator(
-          //       //   controller: _controller,
-          //       //   count: 5,
-          //       //   effect: WormEffect(
-          //       //     // spacing: 8.0,
-          //       //     // radius: 4.0,
-          //       //     dotWidth: 10.0,
-          //       //     dotHeight: 10.0,
-          //       //     // paintStyle: PaintingStyle.stroke,
-          //       //     // strokeWidth: 1.5,
-          //       //     dotColor: Color(0xFFd9d9d9),
-          //       //     activeDotColor: Color(0xFF018aff),
-          //       //   ),
-          //       // ),
-          //       const Gap(60),
-          //       onLastPage
-          //           ? ElevatedButton(
-          //               style: ElevatedButton.styleFrom(
-          //                 backgroundColor: const Color(0xFF018aff),
-          //                 fixedSize: const Size(200, 50),
-          //                 shape: RoundedRectangleBorder(
-          //                   borderRadius: BorderRadius.circular(10),
-          //                 ),
-          //               ),
-          //               onPressed: () {
-          //                 Navigator.of(context).push(
-          //                   MaterialPageRoute(
-          //                     builder: (_) => LoginScreen(),
-          //                   ),
-          //                 );
-          //               },
-          //               child: const Text(
-          //                 '''Proceed to login''',
-          //                 style: TextStyle(
-          //                   fontSize: 15,
-          //                   color: Colors.white,
-          //                   // fontWeight: FontWeight.w900,
-          //                 ),
-          //               ),
-          //               // child: const Text(
-          //               //   '''Let's Start!''',
-          //               //   style: TextStyle(
-          //               //     fontSize: 18,
-          //               //     color: Colors.white,
-          //               //     // fontWeight: FontWeight.w900,
-          //               //   ),
-          //               // ),
-          //             )
-          //           : ElevatedButton(
-          //               style: ElevatedButton.styleFrom(
-          //                 backgroundColor: const Color(0xFF018aff),
-          //                 fixedSize: const Size(200, 50),
-          //                 shape: RoundedRectangleBorder(
-          //                   borderRadius: BorderRadius.circular(10),
-          //                 ),
-          //               ),
-          //               onPressed: () {
-          //                 _controller.nextPage(
-          //                   duration: const Duration(milliseconds: 500),
-          //                   curve: Curves.easeIn,
-          //                 );
-          //               },
-          //               child: Text(
-          //                 onFirstPage ? 'Next' : 'Begin',
-          //                 style: const TextStyle(
-          //                   fontSize: 15,
-          //                   color: Colors.white,
-          //                   // fontWeight: FontWeight.w900,
-          //                 ),
-          //               ),
-          //             ),
-          //       Gap(90),
-          //     ],
-          //   ),
-          // ),
-        ],
+              ),
+            ),
+            Positioned(
+                right: 10,
+                top: 30,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => LoginScreen(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'Skip',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 16,
+                    ),
+                  ),
+                )),
+          ],
+        ),
       ),
     );
   }

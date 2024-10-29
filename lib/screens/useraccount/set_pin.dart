@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -64,6 +65,8 @@ class _SetPinState extends State<SetPin> {
       await docRef.update({
         'profile id': profileId,
       });
+
+      addLessons(profileId, widget.profileData.age, docRef);
       print('success');
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
@@ -72,6 +75,69 @@ class _SetPinState extends State<SetPin> {
       );
     } catch (error) {
       print(error);
+    }
+  }
+
+  void addLessons(
+      String profileId, String age, DocumentReference addLessonId) async {
+    // int profileAge = int.parse(age);
+    // Original lesson data
+    Map<String, String> lessonData = {
+      "Capital Letters_Pronounce": "0",
+      "Capital Letters_Write": "0",
+      "Small Letters": "0",
+      "Words_Pronounce": "0",
+      "Words_Write": "0",
+      "Numbers_Pronounce": "0",
+      "Numbers_Write": "0",
+      "Capital Cursives_Pronounce": "0",
+      "Capital Cursives_Write": "0",
+      "Small Cursives": "0",
+      "Cursive Words": "0",
+    };
+
+// Map to hold the data to be added based on age
+    Map<String, String> selectedData = {};
+
+// Determine the number of items to add based on the age
+    int itemsToAdd;
+    if (age == "2") {
+      itemsToAdd = 3;
+    } else if (age == "3") {
+      itemsToAdd = 5;
+    } else if (age == "4") {
+      itemsToAdd = 7;
+    } else if (age == "5") {
+      itemsToAdd = 9;
+    } else {
+      itemsToAdd = lessonData.length; // Add all items if age > 5
+    }
+
+// Select the specified number of items from lessonData
+    selectedData = Map.fromEntries(lessonData.entries.take(itemsToAdd));
+
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        DocumentReference docRef = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .collection('profiles')
+            .doc(profileId)
+            .collection('LessonsFinished')
+            .add(selectedData);
+
+        String lessonId = docRef.id;
+
+        await addLessonId.update({
+          'lesson id': lessonId,
+        });
+        print('Success sa pagaadd ng lessondata');
+      } else {
+        print("User is not logged in.");
+      }
+    } catch (error) {
+      print("Failed to add document: $error");
     }
   }
 

@@ -49,6 +49,7 @@ dependencies:
   speech_to_text: ^6.6.2
   quickalert: ^1.1.0
   image: ^4.3.0
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_lints: ^3.0.0

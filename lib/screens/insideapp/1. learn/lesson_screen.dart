@@ -29,6 +29,29 @@ List<String> lessonNames = [
 ];
 
 class _LessonScreenState extends State<LessonScreen> {
+  int age = 0;
+
+  void getData() async {
+    print(id);
+    User user = FirebaseAuth.instance.currentUser!;
+    String _uid = user.uid;
+    final DocumentSnapshot profileDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_uid)
+        .collection('profiles')
+        .doc(id)
+        .get();
+    age = int.parse(profileDoc.get('age'));
+    print("Age is : $age");
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -81,7 +104,11 @@ class _LessonScreenState extends State<LessonScreen> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (_) => Home(),
+                    ),
+                  );
                 },
               ),
             ),
@@ -124,6 +151,7 @@ class _LessonScreenState extends State<LessonScreen> {
                           itemBuilder: (context, index) => InkWell(
                             onTap: () {
                               if (index == 0 || index == 2 || index == 3) {
+                                LastActivity = index.toString();
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => ActivityScreen(
@@ -152,73 +180,108 @@ class _LessonScreenState extends State<LessonScreen> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              child: Opacity(
-                                opacity: 1,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                        'assets/insideApp/learnWriting/components/lesson${index + 1}-bg.png',
-                                      ),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(20),
-                                    ),
+                              child: Container(
+                                height: 125,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(20),
                                   ),
-                                  height: 125,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 20, left: 20, right: 20),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Expanded(
-                                          // Wrap the entire column to ensure it doesn't overflow
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Flexible(
-                                                // Allows text to wrap if it overflows
-                                                child: Text(
-                                                  'Lesson ${index + 1}:',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 17,
-                                                    fontWeight: FontWeight.w500,
+                                ),
+                                child: Stack(
+                                  children: [
+                                    // Lesson background image
+                                    Opacity(
+                                      opacity:
+                                          index > age - 1 && age != 6 ? 0.5 : 1,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                              'assets/insideApp/learnWriting/components/lesson${index + 1}-bg.png',
+                                            ),
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(20),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    // Other contents like text and lesson image
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 20, left: 20, right: 20),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Flexible(
+                                                  child: Text(
+                                                    'Lesson ${index + 1}:',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                    softWrap: true,
+                                                    overflow:
+                                                        TextOverflow.visible,
                                                   ),
-                                                  softWrap: true,
-                                                  overflow:
-                                                      TextOverflow.visible,
                                                 ),
-                                              ),
-                                              const Gap(15),
-                                              Flexible(
-                                                // Allows the lesson name to wrap if it's too long
-                                                child: Text(
-                                                  lessonNames[index],
-                                                  style: TextStyle(
+                                                const Gap(15),
+                                                Flexible(
+                                                  child: Text(
+                                                    lessonNames[index],
+                                                    style: const TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 30,
                                                       fontWeight:
                                                           FontWeight.w500,
-                                                      height: 1),
-                                                  softWrap: true,
-                                                  overflow:
-                                                      TextOverflow.visible,
+                                                      height: 1,
+                                                    ),
+                                                    softWrap: true,
+                                                    overflow:
+                                                        TextOverflow.visible,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
+                                          ),
+                                          Image.asset(
+                                            'assets/insideApp/learnWriting/components/lesson${index + 1}-img.png',
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    // Lock overlay, only if lesson is locked (index > age)
+                                    if (index > age - 1 && age != 6)
+                                      Positioned.fill(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.black.withOpacity(
+                                                0.5), // Dim the lesson image
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(20)),
+                                          ),
+                                          child: Center(
+                                            child: Image.asset(
+                                              'assets/insideApp/padlock.png', // Your locked image asset
+                                              width: double
+                                                  .infinity, // Adjust size as needed
+                                              height: double.infinity,
+                                            ),
                                           ),
                                         ),
-                                        Image.asset(
-                                          'assets/insideApp/learnWriting/components/lesson${index + 1}-img.png',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                      ),
+                                  ],
                                 ),
                               ),
                             ),

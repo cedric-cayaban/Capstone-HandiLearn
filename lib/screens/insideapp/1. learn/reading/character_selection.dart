@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:test_drawing/data/userAccount.dart';
 import 'package:test_drawing/objects/lesson.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/writing/drawing-board.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/reading/selectedItem.dart';
@@ -9,10 +12,15 @@ class ReadingCharacterSelection extends StatefulWidget {
     required this.lesson,
     required this.activity,
     required this.lessonNumber,
+    required this.lessonTitle,
+    required this.characterDone,
   });
-  List<Lesson> lesson;
-  String activity;
-  int lessonNumber;
+
+  final List<Lesson> lesson;
+  final String activity;
+  final int lessonNumber;
+  final String lessonTitle;
+  final String characterDone;
 
   @override
   State<ReadingCharacterSelection> createState() =>
@@ -21,7 +29,15 @@ class ReadingCharacterSelection extends StatefulWidget {
 
 class _ReadingCharacterSelection extends State<ReadingCharacterSelection> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    int characterDone = int.parse(widget.characterDone);
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -61,8 +77,9 @@ class _ReadingCharacterSelection extends State<ReadingCharacterSelection> {
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30)),
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
                 ),
                 height: MediaQuery.of(context).size.height * 0.7,
                 child: Padding(
@@ -78,39 +95,73 @@ class _ReadingCharacterSelection extends State<ReadingCharacterSelection> {
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio: 1, // Keep the grid cells square
-                            crossAxisSpacing:
-                                16, // Space between grid items horizontally
-                            mainAxisSpacing:
-                                16, // Space between grid items vertically
+                            childAspectRatio: 1,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
                           ),
                           itemCount: widget.lesson.length,
-                          padding: const EdgeInsets.all(
-                              16), // Padding around the grid
-                          itemBuilder: (context, index) => InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => SelectedItem(
-                                  imgPath: widget.lesson[index].imgPath,
-                                  character: widget.lesson[index].character,
+                          padding: const EdgeInsets.all(16),
+                          itemBuilder: (context, index) {
+                            bool isUnlocked = index <= characterDone;
+                            return Stack(
+                              children: [
+                                InkWell(
+                                  onTap: isUnlocked
+                                      ? () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) => SelectedItem(
+                                              imgPath:
+                                                  widget.lesson[index].imgPath,
+                                              character: widget
+                                                  .lesson[index].character,
+                                              characterIndex: index,
+                                              characterDone: characterDone,
+                                              lessonField:
+                                                  "${widget.lessonTitle}_${widget.activity}",
+                                            ),
+                                          ));
+                                        }
+                                      : null,
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Image.asset(
+                                            widget.lesson[index].imgPath,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                        if (!isUnlocked)
+                                          Positioned.fill(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black
+                                                    .withOpacity(0.3),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: Center(
+                                                child: Image.asset(
+                                                  'assets/insideApp/padlock.png',
+                                                  width: double
+                                                      .infinity, // Adjust the size of the lock icon as needed
+                                                  height: double.infinity,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ));
-                            },
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(
-                                    16.0), // Space inside the card
-                                child: Image.asset(
-                                  widget.lesson[index].imgPath,
-                                  fit: BoxFit
-                                      .contain, // Scale the image but don't cut it off
-                                ),
-                              ),
-                            ),
-                          ),
+                              ],
+                            );
+                          },
                         ),
                       ),
                       Container(
@@ -129,7 +180,8 @@ class _ReadingCharacterSelection extends State<ReadingCharacterSelection> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image.asset(
-                      'assets/insideApp/learnWriting/components/selection-img.png')
+                    'assets/insideApp/learnWriting/components/selection-img.png',
+                  ),
                 ],
               ),
             ),
