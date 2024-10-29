@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:test_drawing/data/userAccount.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';
 import 'package:test_drawing/screens/useraccount/choose_profile.dart';
@@ -203,179 +204,178 @@ class _EnterPinState extends State<EnterPin> {
               fit: BoxFit.fill,
             ),
           ),
-          child: Column(
+          child: Stack(
+            alignment: Alignment.center,
             children: [
-              SizedBox(
-                height: 250,
-              ),
-              Container(
-                height: 400,
-                width: MediaQuery.of(context).size.width * 0.80,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  // border: Border.all(color: Colors.black),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5), // Shadow color
-                      spreadRadius: 2, // Spread radius
-                      blurRadius: 7, // Blur radius
-                      offset:
-                          Offset(0, 3), // Changes the position of the shadow
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Text(
-                          'Enter profile pin',
-                          style: TextStyle(
-                              // fontSize: 32,
-                              // color: Colors.black,
-                              // fontWeight: FontWeight.w600,
-                              ),
-                        ),
-                      ),
-                      Gap(5),
-
-                      /// pin code area
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          4,
-                          (index) {
-                            return Container(
-                              margin: const EdgeInsets.all(6.0),
-                              width: isPinVisible ? 30 : 20,
-                              height: isPinVisible ? 30 : 20,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    isPinVisible ? 100.0 : 100),
-                                color: index < enteredPin.length
-                                    ? isPinVisible
-                                        ? Colors.green
-                                        : CupertinoColors.activeBlue
-                                    : CupertinoColors.activeBlue
-                                        .withOpacity(0.1),
-                              ),
-                              child: isPinVisible && index < enteredPin.length
-                                  ? Center(
-                                      child: Text(
-                                        enteredPin[index],
-                                        style: const TextStyle(
-                                          fontSize: 17,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    )
-                                  : null,
-                            );
-                          },
-                        ),
-                      ),
-
-                      /// visiblity toggle button
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isPinVisible = !isPinVisible;
-                          });
-                        },
-                        icon: Icon(
-                          isPinVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                      ),
-
-                      // SizedBox(height: isPinVisible ? 10.0 : 8.0),
-
-                      /// digits
-                      for (var i = 0; i < 3; i++)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(
-                              3,
-                              (index) => numButton(1 + 3 * i + index),
-                            ).toList(),
-                          ),
-                        ),
-
-                      /// 0 digit with back remove
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const TextButton(onPressed: null, child: SizedBox()),
-                          numButton(0),
-                          Gap(5),
-                          TextButton(
-                            onPressed: () {
-                              setState(
-                                () {
-                                  if (enteredPin.isNotEmpty) {
-                                    enteredPin = enteredPin.substring(
-                                        0, enteredPin.length - 1);
-                                  }
-                                },
-                              );
-                            },
-                            child: const Icon(
-                              Icons.backspace,
-                              color: Colors.black,
-                              size: 24,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      /// reset button
-                      Container(
-                        width: double
-                            .infinity, // Make the button fill the available width
-                        child: Material(
-                          borderRadius: BorderRadius.circular(
-                              10), // Set your desired border radius here
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(
-                                10), // Ensure the ripple effect respects the border radius
-                            onTap: () {
-                              if (enteredPin.length == 4) {
-                                addProfile(enteredPin);
-                              }
-                            },
-                            child: Container(
-                              width: double.infinity, // Expand to full width
-                              height: 45, // Fixed height
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFF10E119),
-                                    Color(0xFF18991E)
-                                  ], // Define your gradient colors
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                    10), // Set the same border radius as above
-                              ),
-                              child: const Text(
-                                'Enter',
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.38,
+                child: Container(
+                  height: 420,
+                  width: MediaQuery.of(context).size.width * 0.80,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    // border: Border.all(color: Colors.black),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5), // Shadow color
+                        spreadRadius: 2, // Spread radius
+                        blurRadius: 7, // Blur radius
+                        offset:
+                            Offset(0, 3), // Changes the position of the shadow
                       ),
                     ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Text(
+                            'Enter profile pin',
+                            style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Gap(5),
+
+                        /// pin code area
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                            4,
+                            (index) {
+                              return Container(
+                                margin: const EdgeInsets.all(6.0),
+                                width: 26,
+                                height: 26,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                      isPinVisible ? 100.0 : 100),
+                                  color: index < enteredPin.length
+                                      ? isPinVisible
+                                          ? Colors.green
+                                          : CupertinoColors.activeBlue
+                                      : CupertinoColors.activeBlue
+                                          .withOpacity(0.1),
+                                ),
+                                child: isPinVisible && index < enteredPin.length
+                                    ? Center(
+                                        child: Text(
+                                          enteredPin[index],
+                                          style: const TextStyle(
+                                            fontSize: 17,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      )
+                                    : null,
+                              );
+                            },
+                          ),
+                        ),
+
+                        /// visiblity toggle button
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isPinVisible = !isPinVisible;
+                            });
+                          },
+                          icon: Icon(
+                            isPinVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                        ),
+
+                        // SizedBox(height: isPinVisible ? 10.0 : 8.0),
+
+                        /// digits
+                        for (var i = 0; i < 3; i++)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(
+                                3,
+                                (index) => numButton(1 + 3 * i + index),
+                              ).toList(),
+                            ),
+                          ),
+
+                        /// 0 digit with back remove
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const TextButton(
+                                onPressed: null, child: SizedBox()),
+                            numButton(0),
+                            Gap(5),
+                            TextButton(
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    if (enteredPin.isNotEmpty) {
+                                      enteredPin = enteredPin.substring(
+                                          0, enteredPin.length - 1);
+                                    }
+                                  },
+                                );
+                              },
+                              child: const Icon(
+                                Icons.backspace,
+                                color: Colors.black,
+                                size: 24,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        /// reset button
+                        Container(
+                          width: double
+                              .infinity, // Make the button fill the available width
+                          child: Material(
+                            borderRadius: BorderRadius.circular(
+                                10), // Set your desired border radius here
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(
+                                  10), // Ensure the ripple effect respects the border radius
+                              onTap: () {
+                                if (enteredPin.length == 4) {
+                                  addProfile(enteredPin);
+                                }
+                              },
+                              child: Container(
+                                width: double.infinity, // Expand to full width
+                                height: 45, // Fixed height
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xFF10E119),
+                                      Color(0xFF18991E)
+                                    ], // Define your gradient colors
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                      10), // Set the same border radius as above
+                                ),
+                                child: const Text(
+                                  'Enter',
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

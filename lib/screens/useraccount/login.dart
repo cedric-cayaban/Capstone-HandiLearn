@@ -36,22 +36,33 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         body: Stack(
           children: [
+            // Fixed Background Image
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage("assets/loginRegister/bg1.png"),
-                  fit: BoxFit.fill,
+                  fit: BoxFit
+                      .cover, // Keep the image covering the entire background
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 220, left: 15, right: 15),
-              child: SingleChildScrollView(
+
+            // Foreground Content
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 110, left: 15, right: 15),
                 child: Column(
                   children: [
-                    const Gap(90),
+                    Image.asset(
+                      'assets/logo.png',
+                      height: 200,
+                      width: 230,
+                      fit: BoxFit.cover,
+                    ),
+                    const Gap(10),
                     TextField(
                       controller: _emailController,
                       decoration: const InputDecoration(
@@ -68,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const Gap(12),
                     TextField(
                       controller: _passwordController,
-                      obscureText: !_isPasswordVisible, // Control visibility
+                      obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
