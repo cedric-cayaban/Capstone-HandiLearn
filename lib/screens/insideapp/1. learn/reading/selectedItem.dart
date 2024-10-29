@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,20 +7,25 @@ import 'package:flutter/material.dart';
 
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:test_drawing/data/userAccount.dart';
+import 'package:test_drawing/objects/lesson.dart';
+import 'package:test_drawing/screens/insideapp/1.%20learn/reading/character_selection.dart';
 
 class SelectedItem extends StatefulWidget {
   SelectedItem({
     super.key,
-    required this.imgPath,
-    required this.character,
-    required this.characterIndex,
+    // required this.imgPath,
+    required this.lesson,
+    required this.forNextLesson,
+    required this.index,
     required this.characterDone,
     required this.lessonField,
   });
 
-  final String imgPath;
-  final String character;
-  final int characterIndex;
+  // final String imgPath;
+  final Lesson lesson;
+  List<Lesson> forNextLesson;
+  // final String character;
+  final int index;
   final int characterDone;
   final String lessonField;
 
@@ -33,41 +40,21 @@ class _SelectedItemState extends State<SelectedItem> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   bool isFinished = false;
 
+  Timer? _listeningTimer;
+
+  late int updatedCharacterDone = widget.characterDone;
+
+  bool _dialogShown = false; // Add this variable
+
   @override
   void initState() {
     super.initState();
     sayTheSound();
     initSpeechState();
+    // print(widget.character);
   }
 
   void initSpeechState() async {
-    // bool available = await _speech.initialize(
-    //   onError: (val) => print('onError: $val'),
-    //   onStatus: (val) => print('onStatus: $val'),
-    // );
-    // if (!mounted) return;
-
-    // if (!available) {
-    //   print("Speech recognition is not available on this device.");
-    //   showDialog(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       return AlertDialog(
-    //         title: Text('Speech Recognition Unavailable'),
-    //         content:
-    //             Text('Speech recognition is not available on this device.'),
-    //         actions: [
-    //           TextButton(
-    //             child: Text('OK'),
-    //             onPressed: () {
-    //               Navigator.of(context).pop();
-    //             },
-    //           ),
-    //         ],
-    //       );
-    //     },
-    //   );
-    // }
     bool available = await _speech.initialize();
     if (!mounted) return;
   }
@@ -86,35 +73,43 @@ class _SelectedItemState extends State<SelectedItem> {
           .collection("LessonsFinished")
           .doc(lessonid)
           .update({"${widget.lessonField}": "${widget.characterDone + 1}"});
-
-      // If you need to do something after the update, do it here
+      updatedCharacterDone = widget.characterDone + 1;
+      setState(() {});
     } catch (e) {
       print('Error updating lesson: $e'); // Handle error appropriately
     }
   }
 
   void _startListening() {
-    print('natatawag');
-
+    print('Starting to listen');
     _speech.listen(
-      onResult: (result) async {
-        // Check if the result is final to avoid repeating actions
+      listenFor: Duration(seconds: 3),
+      onResult: (result) {
         if (result.finalResult) {
           print(result.recognizedWords.toLowerCase());
 
-          if (result.recognizedWords.toLowerCase() ==
-              widget.character.toLowerCase()) {
-            if (widget.characterIndex < widget.characterDone) {
-              updateLesson();
+          if (!_dialogShown) {
+            // Check if a dialog is already shown
+            if (widget.lesson.type == "word" &&
+                result.recognizedWords.toLowerCase() ==
+                    widget.lesson.character.toLowerCase()) {
+              if (widget.index == widget.characterDone) {
+                updateLesson();
+              }
+              _dialogShown = true; // Set flag to prevent multiple dialogs
+              _showSuccessDialog();
+            } else if (result.recognizedWords.toLowerCase() ==
+                    "letter " + widget.lesson.character.toLowerCase() &&
+                widget.lesson.type == "standard") {
+              if (widget.index == widget.characterDone) {
+                updateLesson();
+              }
+              _dialogShown = true; // Set flag here as well
+              _showSuccessDialog();
+            } else {
+              _dialogShown = true; // Set flag to prevent multiple dialogs
+              _showFailedDialog();
             }
-            _showSuccessDialog();
-            print(result.recognizedWords.toLowerCase());
-            isFinished = true;
-            setState(() {});
-          } else {
-            _showFailedDialog();
-            print('The result is not correct');
-            print(result.recognizedWords.toLowerCase());
           }
         }
       },
@@ -123,6 +118,22 @@ class _SelectedItemState extends State<SelectedItem> {
     setState(() {
       _isListening = true;
     });
+
+    // Start a timer for 2 seconds
+    _listeningTimer = Timer(Duration(seconds: 3), () {
+      print('Hindi ka nagsasalita');
+      _stopListening(); // Stop listening after 2 seconds
+    });
+  }
+
+  void _stopListening() {
+    if (_isListening) {
+      _speech.stop();
+      _listeningTimer?.cancel(); // Cancel the timer if still active
+      setState(() {
+        _isListening = false;
+      });
+    }
   }
 
   void _showSuccessDialog() {
@@ -131,16 +142,14 @@ class _SelectedItemState extends State<SelectedItem> {
       builder: (BuildContext context) {
         return AlertDialog(
           content: Column(
-            mainAxisSize:
-                MainAxisSize.min, // Ensures the dialog takes minimal space
+            mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset('assets/loginRegister/verified.png'),
-              SizedBox(height: 5), // Space between image and text
+              SizedBox(height: 5),
               Text(
                 'Congratulations',
                 style: TextStyle(fontSize: 30),
               ),
-
               Text('You got it right!'),
             ],
           ),
@@ -152,6 +161,18 @@ class _SelectedItemState extends State<SelectedItem> {
                   borderRadius: BorderRadius.circular(10),
                   onTap: () async {
                     Navigator.pop(context);
+                    _dialogShown = false; // Reset flag when dialog is dismissed
+
+                    var nextLesson = widget.forNextLesson[widget.index + 1];
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => SelectedItem(
+                        lessonField: widget.lessonField,
+                        characterDone: updatedCharacterDone,
+                        lesson: nextLesson,
+                        index: widget.index + 1,
+                        forNextLesson: widget.forNextLesson,
+                      ),
+                    ));
                   },
                   child: Container(
                     height: 45,
@@ -184,16 +205,14 @@ class _SelectedItemState extends State<SelectedItem> {
       builder: (BuildContext context) {
         return AlertDialog(
           content: Column(
-            mainAxisSize:
-                MainAxisSize.min, // Ensures the dialog takes minimal space
+            mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset('assets/loginRegister/notverified.png'),
-              SizedBox(height: 5), // Space between image and text
+              SizedBox(height: 5),
               Text(
                 'Try Again',
                 style: TextStyle(fontSize: 30),
               ),
-
               Text("You're almost there!"),
             ],
           ),
@@ -205,6 +224,7 @@ class _SelectedItemState extends State<SelectedItem> {
                   borderRadius: BorderRadius.circular(10),
                   onTap: () async {
                     Navigator.pop(context);
+                    _dialogShown = false; // Reset flag when dialog is dismissed
                   },
                   child: Container(
                     height: 45,
@@ -234,7 +254,8 @@ class _SelectedItemState extends State<SelectedItem> {
   void sayTheSound() async {
     try {
       await _audioPlayer.play(
-        AssetSource('insideApp/learnReading/audio/${widget.character}.mp3'),
+        AssetSource(
+            'insideApp/learnReading/audio/${widget.lesson.character}.mp3'),
       );
     } catch (e) {
       print(e);
@@ -248,6 +269,24 @@ class _SelectedItemState extends State<SelectedItem> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: Text("Selected Item"),
+        leading: IconButton(
+          onPressed: () {
+            // updateLesson();
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (context) => ReadingCharacterSelection(
+            //       lesson: widget.lesson,
+            //       activity: activity,
+            //       lessonNumber: widget.lessonNumber,
+            //       lessonTitle: widget.lessonTitle,
+            //       // characterDone: characterDone,
+            //     ),
+            //   ),
+            // );
+            Navigator.of(context).pop();
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
       ),
       extendBodyBehindAppBar: true,
       body: Container(
@@ -261,92 +300,6 @@ class _SelectedItemState extends State<SelectedItem> {
         ),
         child: Stack(
           children: [
-            // widget.character == "A"
-            //     ? SizedBox()
-            //     : Positioned(
-            //         bottom: 30,
-            //         left: 25,
-            //         child: Container(
-            //           width: 115,
-            //           height: 38,
-            //           child: Material(
-            //             borderRadius: BorderRadius.circular(
-            //                 10), // Set your desired border radius here
-            //             child: InkWell(
-            //               borderRadius: BorderRadius.circular(
-            //                   10), // Ensure the ripple effect respects the border radius
-            //               onTap: null,
-            //               child: Container(
-            //                 width: double.infinity, // Expand to full width
-            //                 height: 45, // Fixed height
-            //                 alignment: Alignment.center,
-            //                 decoration: BoxDecoration(
-            //                   gradient: isFinished
-            //                       ? LinearGradient(
-            //                           colors: [
-            //                             Color(0xFF10E119),
-            //                             Color(0xFF18991E)
-            //                           ], // Define your gradient colors
-            //                           begin: Alignment.topCenter,
-            //                           end: Alignment.bottomCenter,
-            //                         )
-            //                       : LinearGradient(colors: [Colors.grey]),
-            //                   borderRadius: BorderRadius.circular(
-            //                       10), // Set the same border radius as above
-            //                 ),
-            //                 child: const Text(
-            //                   'Previous',
-            //                   style:
-            //                       TextStyle(fontSize: 16, color: Colors.white),
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            // Positioned(
-            //   bottom: 30,
-            //   right: 25,
-            //   child: Container(
-            //     width: 115,
-            //     height: 38,
-            //     child: Material(
-            //       borderRadius: BorderRadius.circular(
-            //           10), // Set your desired border radius here
-            //       child: InkWell(
-            //         borderRadius: BorderRadius.circular(
-            //             10), // Ensure the ripple effect respects the border radius
-            //         onTap: null,
-            //         child: Container(
-            //           width: double.infinity, // Expand to full width
-            //           height: 45, // Fixed height
-            //           alignment: Alignment.center,
-            //           decoration: BoxDecoration(
-            //             gradient: isFinished
-            //                 ? LinearGradient(
-            //                     colors: [
-            //                       Color(0xFF10E119),
-            //                       Color(0xFF18991E)
-            //                     ], // Define your gradient colors
-            //                     begin: Alignment.topCenter,
-            //                     end: Alignment.bottomCenter,
-            //                   )
-            //                 : LinearGradient(colors: [
-            //                     Colors.grey,
-            //                     Colors.grey,
-            //                   ]),
-            //             borderRadius: BorderRadius.circular(
-            //                 10), // Set the same border radius as above
-            //           ),
-            //           child: const Text(
-            //             'Next',
-            //             style: TextStyle(fontSize: 16, color: Colors.white),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
             Positioned(
               top: MediaQuery.of(context).size.height * 0.35,
               right: 90,
@@ -354,7 +307,7 @@ class _SelectedItemState extends State<SelectedItem> {
                 height: 200, // Change this value to whatever height you need
                 width: 200, // Change this value to whatever width you need
                 child: Image.asset(
-                  widget.imgPath, // Using widget.imgPath directly
+                  widget.lesson.imgPath, // Using widget.imgPath directly
                   fit: BoxFit
                       .fill, // Optional: to control how the image fits in the box
                 ),
@@ -390,10 +343,13 @@ class _SelectedItemState extends State<SelectedItem> {
                   border: Border.all(color: Colors.black),
                 ),
                 child: IconButton(
-                  onPressed: _startListening,
+                  onPressed: _isListening ? _stopListening : _startListening,
                   icon: Icon(
                     Icons.mic_none,
                     size: 50,
+                    color: _isListening
+                        ? Colors.green
+                        : Colors.red, // Change color based on state
                   ),
                 ),
               ),

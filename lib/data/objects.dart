@@ -129,3 +129,5 @@ var objectData = [
         'Scissors are tools for cutting paper or making crafts. They have two blades that move together.',
   },
 ];
+
+int pickedNum = 0;

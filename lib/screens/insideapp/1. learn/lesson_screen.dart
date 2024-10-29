@@ -29,27 +29,27 @@ List<String> lessonNames = [
 ];
 
 class _LessonScreenState extends State<LessonScreen> {
-  int age = 0;
+  // int age = 0;
 
-  void getData() async {
-    print(id);
-    User user = FirebaseAuth.instance.currentUser!;
-    String _uid = user.uid;
-    final DocumentSnapshot profileDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(_uid)
-        .collection('profiles')
-        .doc(id)
-        .get();
-    age = int.parse(profileDoc.get('age'));
-    print("Age is : $age");
-    setState(() {});
-  }
+  // void getData() async {
+  //   print(id);
+  //   User user = FirebaseAuth.instance.currentUser!;
+  //   String _uid = user.uid;
+  //   final DocumentSnapshot profileDoc = await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(_uid)
+  //       .collection('profiles')
+  //       .doc(id)
+  //       .get();
+  //   age = int.parse(profileDoc.get('age'));
+  //   print("Age is : $age");
+  //   setState(() {});
+  // }
 
   @override
   void initState() {
     super.initState();
-    getData();
+    // getData();
   }
 
   @override

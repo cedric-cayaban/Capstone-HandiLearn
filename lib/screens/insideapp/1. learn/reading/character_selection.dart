@@ -13,14 +13,14 @@ class ReadingCharacterSelection extends StatefulWidget {
     required this.activity,
     required this.lessonNumber,
     required this.lessonTitle,
-    required this.characterDone,
+    // required this.characterDone,
   });
 
   final List<Lesson> lesson;
   final String activity;
   final int lessonNumber;
   final String lessonTitle;
-  final String characterDone;
+  // final String characterDone;
 
   @override
   State<ReadingCharacterSelection> createState() =>
@@ -28,15 +28,40 @@ class ReadingCharacterSelection extends StatefulWidget {
 }
 
 class _ReadingCharacterSelection extends State<ReadingCharacterSelection> {
+  late int ucharacterDone = 0;
+
+  void getcharacterDone(String activity, String lesson) async {
+    try {
+      User user = FirebaseAuth.instance.currentUser!;
+      String _uid = user.uid;
+      final DocumentSnapshot profileDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_uid)
+          .collection('profiles')
+          .doc(id)
+          .collection("LessonsFinished")
+          .doc(lessonid)
+          .get();
+
+      ucharacterDone = int.parse(profileDoc.get('${lesson}_${activity}'));
+
+      print(ucharacterDone);
+      setState(() {});
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getcharacterDone(widget.activity, widget.lessonTitle);
   }
 
   @override
   Widget build(BuildContext context) {
-    int characterDone = int.parse(widget.characterDone);
+    // int characterDone = int.parse(ucharacterDone);
 
     return SafeArea(
       child: Scaffold(
@@ -102,7 +127,7 @@ class _ReadingCharacterSelection extends State<ReadingCharacterSelection> {
                           itemCount: widget.lesson.length,
                           padding: const EdgeInsets.all(16),
                           itemBuilder: (context, index) {
-                            bool isUnlocked = index <= characterDone;
+                            bool isUnlocked = index <= ucharacterDone;
                             return Stack(
                               children: [
                                 InkWell(
@@ -111,12 +136,10 @@ class _ReadingCharacterSelection extends State<ReadingCharacterSelection> {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                             builder: (context) => SelectedItem(
-                                              imgPath:
-                                                  widget.lesson[index].imgPath,
-                                              character: widget
-                                                  .lesson[index].character,
-                                              characterIndex: index,
-                                              characterDone: characterDone,
+                                              lesson: widget.lesson[index],
+                                              forNextLesson: widget.lesson,
+                                              index: index,
+                                              characterDone: ucharacterDone,
                                               lessonField:
                                                   "${widget.lessonTitle}_${widget.activity}",
                                             ),
