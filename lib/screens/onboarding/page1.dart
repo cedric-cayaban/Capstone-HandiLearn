@@ -6,16 +6,16 @@ class Page1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage(
               'assets/onboarding/page1.png'), // Path to your background image
           fit: BoxFit.fill, // Ensures the image covers the entire background
         ),
       ),
-      child: SafeArea(
+      child: const SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
+          padding: EdgeInsets.symmetric(horizontal: 15),
           child: Stack(
             children: [
               Positioned(
