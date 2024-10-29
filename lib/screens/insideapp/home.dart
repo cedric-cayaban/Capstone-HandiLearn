@@ -70,7 +70,7 @@ class _HomeState extends State<Home> {
               onPressed: () {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (_) => ChooseProfile(),
+                    builder: (_) => const ChooseProfile(),
                   ),
                 );
               },
@@ -80,7 +80,7 @@ class _HomeState extends State<Home> {
         body: Container(
           height: double.infinity,
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/loginRegister/bg4.png"),
               fit: BoxFit.fill,
@@ -89,15 +89,15 @@ class _HomeState extends State<Home> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Gap(100),
+              const Gap(100),
               Text(
                 'Welcome, ${name}',
-                style: TextStyle(fontSize: 24),
+                style: const TextStyle(fontSize: 24),
               ),
-              Gap(100),
+              const Gap(100),
               Container(
                 width: 300,
-                height: 150,
+                height: 160,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
@@ -106,8 +106,8 @@ class _HomeState extends State<Home> {
                       color: Colors.grey.withOpacity(0.5), // Shadow color
                       spreadRadius: 2, // Spread radius
                       blurRadius: 7, // Blur radius
-                      offset:
-                          Offset(0, 3), // Changes the position of the shadow
+                      offset: const Offset(
+                          0, 3), // Changes the position of the shadow
                     ),
                   ],
                 ),
@@ -116,96 +116,85 @@ class _HomeState extends State<Home> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Continue...',
+                      const Text(
+                        'Progress',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
-                      Gap(5),
-                      LastActivity != ""
-                          ? InkWell(
-                              onTap: () {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (_) => LessonScreen(),
-                                  ),
-                                );
-                              },
-                              child: Card(
-                                elevation: 4,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                      const Gap(5),
+                      InkWell(
+                        onTap: () {},
+                        child: Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Container(
+                            height: 80,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(
+                                  'assets/insideApp/learnWriting/components/lesson${int.parse(LastActivity) + 1}-bg.png',
                                 ),
-                                child: Container(
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                        'assets/insideApp/learnWriting/components/lesson${int.parse(LastActivity) + 1}-bg.png',
-                                      ),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 10, left: 10, right: 10),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10, left: 10, right: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Expanded(
+                                    // Wrap the entire column to ensure it doesn't overflow
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Expanded(
-                                          // Wrap the entire column to ensure it doesn't overflow
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Flexible(
-                                                // Allows text to wrap if it overflows
-                                                child: Text(
-                                                  'Lesson ${int.parse(LastActivity) + 1}:',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                  softWrap: true,
-                                                  overflow:
-                                                      TextOverflow.visible,
-                                                ),
-                                              ),
-                                              const Gap(15),
-                                              Flexible(
-                                                // Allows the lesson name to wrap if it's too long
-                                                child: Text(
-                                                  lessonNames[
-                                                      int.parse(LastActivity)],
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      height: 1),
-                                                  softWrap: true,
-                                                  overflow:
-                                                      TextOverflow.visible,
-                                                ),
-                                              ),
-                                            ],
+                                        Flexible(
+                                          // Allows text to wrap if it overflows
+                                          child: Text(
+                                            'Lesson ${int.parse(LastActivity) + 1}:',
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            softWrap: true,
+                                            overflow: TextOverflow.visible,
                                           ),
                                         ),
-                                        Image.asset(
-                                          'assets/insideApp/learnWriting/components/lesson${int.parse(LastActivity) + 1}-img.png',
+                                        const Gap(15),
+                                        Flexible(
+                                          // Allows the lesson name to wrap if it's too long
+                                          child: Text(
+                                            lessonNames[
+                                                int.parse(LastActivity)],
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                height: 1),
+                                            softWrap: true,
+                                            overflow: TextOverflow.visible,
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ),
+                                  Image.asset(
+                                    'assets/insideApp/learnWriting/components/lesson${int.parse(LastActivity) + 1}-img.png',
+                                  ),
+                                ],
                               ),
-                            )
-                          : Center(child: CircularProgressIndicator())
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -214,11 +203,11 @@ class _HomeState extends State<Home> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Activities'),
+                  const Text('Activities'),
                   Container(
-                    height: 300,
+                    height: 340,
                     width: 300,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
                     ),
                     child: Column(
@@ -232,16 +221,22 @@ class _HomeState extends State<Home> {
                               onTap: () {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                    builder: (_) => LessonScreen(),
+                                    builder: (_) => const LessonScreen(),
                                   ),
                                 );
                               },
-                              child: Column(
+                              child: const Column(
                                 children: [
-                                  CircleAvatar(
-                                    backgroundImage: AssetImage(
-                                        'assets/insideApp/learn.png'),
-                                    radius: 50,
+                                  PhysicalModel(
+                                    color: Colors.transparent,
+                                    elevation:
+                                        8.0, // Adjust elevation as needed
+                                    shape: BoxShape.circle,
+                                    child: CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                          'assets/insideApp/learn.png'),
+                                      radius: 60,
+                                    ),
                                   ),
                                   Text('Learn')
                                 ],
@@ -253,17 +248,23 @@ class _HomeState extends State<Home> {
                                   onTap: () {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
-                                        builder: (_) => Instruction(),
+                                        builder: (_) => const Instruction(),
                                       ),
                                     );
                                   },
-                                  child: CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage('assets/insideApp/scan.png'),
-                                    radius: 50,
+                                  child: const PhysicalModel(
+                                    color: Colors.transparent,
+                                    elevation:
+                                        8.0, // Adjust elevation as needed
+                                    shape: BoxShape.circle,
+                                    child: CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                          'assets/insideApp/scan.png'),
+                                      radius: 60,
+                                    ),
                                   ),
                                 ),
-                                Text('Scan')
+                                const Text('Scan')
                               ],
                             ),
                           ],
@@ -281,13 +282,19 @@ class _HomeState extends State<Home> {
                                       ),
                                     );
                                   },
-                                  child: CircleAvatar(
-                                    backgroundImage: AssetImage(
-                                        'assets/insideApp/stories.png'),
-                                    radius: 50,
+                                  child: const PhysicalModel(
+                                    color: Colors.transparent,
+                                    elevation:
+                                        8.0, // Adjust elevation as needed
+                                    shape: BoxShape.circle,
+                                    child: CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                          'assets/insideApp/stories.png'),
+                                      radius: 60,
+                                    ),
                                   ),
                                 ),
-                                Text('Short Stories')
+                                const Text('Short Stories')
                               ],
                             ),
                             Column(
@@ -300,13 +307,19 @@ class _HomeState extends State<Home> {
                                       ),
                                     );
                                   },
-                                  child: CircleAvatar(
-                                    backgroundImage: AssetImage(
-                                        'assets/insideApp/games.png'),
-                                    radius: 50,
+                                  child: const PhysicalModel(
+                                    color: Colors.transparent,
+                                    elevation:
+                                        8.0, // Adjust elevation as needed
+                                    shape: BoxShape.circle,
+                                    child: CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                          'assets/insideApp/games.png'),
+                                      radius: 60,
+                                    ),
                                   ),
                                 ),
-                                Text('Mini Games')
+                                const Text('Mini Games')
                               ],
                             ),
                           ],
