@@ -15,6 +15,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isPasswordVisible = false; // For show password feature
 
   void signIn() async {
     try {
@@ -67,16 +68,28 @@ class _LoginScreenState extends State<LoginScreen> {
                     const Gap(12),
                     TextField(
                       controller: _passwordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
+                      obscureText: !_isPasswordVisible, // Control visibility
+                      decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
-                        border: OutlineInputBorder(
+                        border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(16),
                           ),
                         ),
                         hintText: 'Password',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                        ),
                       ),
                     ),
                     Row(
@@ -102,30 +115,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                     Container(
-                      width: double
-                          .infinity, // Make the button fill the available width
+                      width: double.infinity,
                       child: Material(
-                        borderRadius: BorderRadius.circular(
-                            10), // Set your desired border radius here
+                        borderRadius: BorderRadius.circular(10),
                         child: InkWell(
-                          borderRadius: BorderRadius.circular(
-                              10), // Ensure the ripple effect respects the border radius
+                          borderRadius: BorderRadius.circular(10),
                           onTap: signIn,
                           child: Container(
-                            width: double.infinity, // Expand to full width
-                            height: 45, // Fixed height
+                            width: double.infinity,
+                            height: 45,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                colors: [
-                                  Color(0xFF10E119),
-                                  Color(0xFF18991E)
-                                ], // Define your gradient colors
+                                colors: [Color(0xFF10E119), Color(0xFF18991E)],
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                               ),
-                              borderRadius: BorderRadius.circular(
-                                  10), // Set the same border radius as above
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Text(
                               'Login',
@@ -137,11 +143,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     GestureDetector(
-                      // onTap: widget.showRegisterPage,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          const Text(
                             'Don\'t have an account?',
                             style: TextStyle(fontSize: 16),
                           ),
@@ -150,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (_) => RegisterScreen()));
                             },
-                            child: Text(
+                            child: const Text(
                               'Sign up',
                               style: TextStyle(
                                 fontSize: 16,

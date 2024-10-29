@@ -127,30 +127,38 @@ class _ReadingCharacterSelection extends State<ReadingCharacterSelection> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Image.asset(
-                                        widget.lesson[index].imgPath,
-                                        fit: BoxFit.contain,
-                                      ),
+                                    child: Stack(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Image.asset(
+                                            widget.lesson[index].imgPath,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                        if (!isUnlocked)
+                                          Positioned.fill(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black
+                                                    .withOpacity(0.3),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: Center(
+                                                child: Image.asset(
+                                                  'assets/insideApp/padlock.png',
+                                                  width: double
+                                                      .infinity, // Adjust the size of the lock icon as needed
+                                                  height: double.infinity,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
                                     ),
                                   ),
                                 ),
-                                if (!isUnlocked)
-                                  Positioned.fill(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          bottom: 20, right: 20),
-                                      child: Container(
-                                        color: Colors.black.withOpacity(0.5),
-                                        child: const Icon(
-                                          Icons.lock,
-                                          color: Colors.white,
-                                          size: 40,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
                               ],
                             );
                           },

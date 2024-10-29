@@ -73,26 +73,25 @@ class _SelectedItemState extends State<SelectedItem> {
   }
 
   void updateLesson() async {
-  try {
-    User user = FirebaseAuth.instance.currentUser!;
-    String _uid = user.uid;
+    try {
+      User user = FirebaseAuth.instance.currentUser!;
+      String _uid = user.uid;
 
-    // Assuming 'id' and 'lessonid' are defined elsewhere in your class
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(_uid)
-        .collection('profiles')
-        .doc(id)
-        .collection("LessonsFinished")
-        .doc(lessonid)
-        .update({"${widget.lessonField}": "${widget.characterDone + 1}"});
-    
-    // If you need to do something after the update, do it here
-  } catch (e) {
-    print('Error updating lesson: $e'); // Handle error appropriately
+      // Assuming 'id' and 'lessonid' are defined elsewhere in your class
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_uid)
+          .collection('profiles')
+          .doc(id)
+          .collection("LessonsFinished")
+          .doc(lessonid)
+          .update({"${widget.lessonField}": "${widget.characterDone + 1}"});
+
+      // If you need to do something after the update, do it here
+    } catch (e) {
+      print('Error updating lesson: $e'); // Handle error appropriately
+    }
   }
-}
-
 
   void _startListening() {
     print('natatawag');
@@ -105,7 +104,9 @@ class _SelectedItemState extends State<SelectedItem> {
 
           if (result.recognizedWords.toLowerCase() ==
               widget.character.toLowerCase()) {
-            if (widget.characterIndex < widget.characterDone) {}
+            if (widget.characterIndex < widget.characterDone) {
+              updateLesson();
+            }
             _showSuccessDialog();
             print(result.recognizedWords.toLowerCase());
             isFinished = true;

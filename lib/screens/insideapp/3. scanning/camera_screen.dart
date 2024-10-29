@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:test_drawing/screens/insideapp/3.%20scanning/image_description.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';
 import 'package:tflite_v2/tflite_v2.dart';
@@ -11,8 +12,6 @@ import '../../../main.dart';
 
 class CameraScreen extends StatefulWidget {
   CameraScreen({super.key});
-
-  
 
   @override
   State<CameraScreen> createState() => _nameState();
@@ -108,29 +107,46 @@ class _nameState extends State<CameraScreen> {
     return v;
   }
 
+  void displayInstruction() {}
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (_) => Home(
-                    ),
-                  ),
-                );
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 30,
-              ),
-              //replace with our own icon data.
-            )),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                CupertinoPageRoute(
+                  builder: (_) => Home(),
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              size: 30,
+              color: Colors.white,
+            ),
+            //replace with our own icon data.
+          ),
+          actions: [
+            // IconButton(
+            //   onPressed: () {},
+            //   icon: Icon(Icons.read_more),
+            // ),
+            // IconButton(
+            //   onPressed: () {},
+            //   icon: Icon(Icons.branding_watermark_outlined),
+            // ),
+            Image.asset('assets/insideApp/scanning/instruction.png'),
+            Gap(15),
+            Image.asset('assets/insideApp/scanning/tips.png'),
+            Gap(10),
+          ],
+        ),
         extendBodyBehindAppBar: true,
         body: Stack(
           children: [
@@ -140,13 +156,21 @@ class _nameState extends State<CameraScreen> {
               child: CameraPreview(_controller),
             ),
             Align(
+              alignment: Alignment.center,
+              child: Image.asset(
+                'assets/insideApp/scanning/scanner.png',
+                height: double.infinity * .8,
+                width: double.infinity * .8,
+              ),
+            ),
+            Align(
               alignment: Alignment.bottomCenter,
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.18,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                  color: Colors.black,
-                ),
+                // decoration: const BoxDecoration(
+                //   borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                //   color: Colors.black,
+                // ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -174,10 +198,7 @@ class _nameState extends State<CameraScreen> {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => ObjectDescription(
-                                    file,
-                                    flabel,
-                                    confidence,
-                                    pickedImageFile),
+                                    file, flabel, confidence, pickedImageFile),
                               ),
                             );
                           }
@@ -186,13 +207,13 @@ class _nameState extends State<CameraScreen> {
                           return;
                         }
                       },
-                      iconSize: 50,
+                      iconSize: 80,
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
                       icon: const Icon(
-                        Icons.circle,
+                        Icons.camera_outlined,
                         color: Colors.white,
-                        size: 70,
+                        size: 100,
                       ),
                     )),
                   ],
