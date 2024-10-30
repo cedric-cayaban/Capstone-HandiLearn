@@ -8,58 +8,18 @@ class Page1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Stack(
-        children: [
-          // Positioned(
-          //   bottom: 0,
-          //   child: Image.asset(
-          //     'assets/onboarding/moving car.gif',
-          //     height: 340,
-          //     width: MediaQuery.sizeOf(context).width,
-          //     fit: BoxFit.fill,
-          //   ),
-          // ),
-          // Positioned(
-          //   top: 0,
-          //   child: Image.asset(
-          //     'assets/onboarding/bg.png',
-          //     height: MediaQuery.of(context).size.height * .80,
-          //     width: MediaQuery.of(context).size.width,
-          //     fit: BoxFit.fill,
-          //   ),
-          // ),
-          // Positioned(
-          //   top: 0,
-          //   child: Image.asset(
-          //     'assets/onboarding/clouds.gif',
-          //     height: 340,
-          //     width: MediaQuery.sizeOf(context).width,
-          //     fit: BoxFit.fill,
-          //   ),
-          // ),
-          Positioned(
-            top: 70,
-            right: 70,
-            child: Image.asset(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 100.0),
+        child: Column(
+          children: [
+            Image.asset(
               'assets/onboarding/logo.png',
-              height: 195,
-              width: 230,
+              height: 165,
+              width: 200,
               fit: BoxFit.fill,
             ),
-          ),
-          // Positioned(
-          //   bottom: MediaQuery.of(context).size.height * 0.25,
-          //   left: MediaQuery.of(context).size.width * 0.30,
-          //   child: Image.asset(
-          //     'assets/onboarding/dancing abc.gif',
-          //     height: 60,
-          //     width: MediaQuery.of(context).size.width * 0.30,
-          //     fit: BoxFit.fill,
-          //   ),
-          // ),
-          Positioned(
-            bottom: MediaQuery.of(context).size.width * 0.65,
-            child: Padding(
+            const Gap(40),
+            Padding(
               padding: const EdgeInsets.all(15.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -75,6 +35,7 @@ class Page1 extends StatelessWidget {
                       height: 1.0,
                     ),
                   ),
+                  const Gap(10),
                   Text(
                     'HandiLearn',
                     style: GoogleFonts.lora(
@@ -83,11 +44,9 @@ class Page1 extends StatelessWidget {
                       height: 1.0,
                     ),
                   ),
-                  Gap(10),
+                  const Gap(20),
                   Text(
-                    '''personalizes the learning experience for 
-your child, making education fun 
-and engaging.''',
+                    '''personalizes the learning experience for your child, making education fun and engaging.''',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.normal,
@@ -97,8 +56,8 @@ and engaging.''',
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:test_drawing/data/lessons.dart';
 import 'package:test_drawing/data/userAccount.dart';
@@ -74,12 +75,12 @@ class _LessonScreenState extends State<LessonScreen> {
               top: MediaQuery.of(context).size.height * 0.12,
               left: 0,
               right: 0,
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     'Learn',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       color: Colors.white,
                       fontSize: 45,
                       fontWeight: FontWeight.bold,
@@ -87,10 +88,10 @@ class _LessonScreenState extends State<LessonScreen> {
                   ),
                   Text(
                     'Read and Write',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                         color: Colors.white,
                         fontSize: 18,
-                        fontWeight: FontWeight.w500),
+                        fontWeight: FontWeight.w400),
                   ),
                 ],
               ),
@@ -240,9 +241,15 @@ class _LessonScreenState extends State<LessonScreen> {
                                                 Flexible(
                                                   child: Text(
                                                     lessonNames[index],
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 30,
+                                                      fontSize: (index == 0 ||
+                                                              index == 1 ||
+                                                              index == 4 ||
+                                                              index == 5 ||
+                                                              index == 6)
+                                                          ? 25
+                                                          : 30,
                                                       fontWeight:
                                                           FontWeight.w500,
                                                       height: 1,
@@ -256,6 +263,8 @@ class _LessonScreenState extends State<LessonScreen> {
                                             ),
                                           ),
                                           Image.asset(
+                                            height: 80,
+                                            width: 80,
                                             'assets/insideApp/learnWriting/components/lesson${index + 1}-img.png',
                                           ),
                                         ],

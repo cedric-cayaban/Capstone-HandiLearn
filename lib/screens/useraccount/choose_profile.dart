@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:test_drawing/data/userAccount.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';
 import 'package:test_drawing/screens/useraccount/create_profile.dart';
@@ -59,24 +60,24 @@ class _ChooseProfileState extends State<ChooseProfile> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'User selection',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
         ),
-        leading: SizedBox(),
+        leading: const SizedBox(),
         actions: [
           IconButton(
             onPressed: () {
               FirebaseAuth.instance.signOut();
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (_) => LoginScreen()),
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
               );
             },
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
           ),
         ],
       ),
@@ -100,11 +101,11 @@ class _ChooseProfileState extends State<ChooseProfile> {
       //   ),
       // ),
       body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/loginRegister/bg4.png"),
+            image: AssetImage("assets/loginRegister/bgPin.png"),
             fit: BoxFit.fill,
           ),
         ),
@@ -113,7 +114,6 @@ class _ChooseProfileState extends State<ChooseProfile> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              // Second container with GridView at the top
               Container(
                 height: MediaQuery.of(context).size.height * 0.60,
                 width: double.infinity,
@@ -126,119 +126,138 @@ class _ChooseProfileState extends State<ChooseProfile> {
                       color: Colors.grey.withOpacity(0.5), // Shadow color
                       spreadRadius: 2, // Spread radius
                       blurRadius: 7, // Blur radius
-                      offset:
-                          Offset(0, 3), // Changes the position of the shadow
+                      offset: const Offset(
+                          0, 3), // Changes the position of the shadow
                     ),
                   ],
                 ),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: isLoaded
-                          ? GridView.builder(
-                              padding:
-                                  EdgeInsets.all(8.0), // Add padding if needed
-                              itemCount: items.length +
-                                  1, // Add one extra item for the "Create Profile" button
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount:
-                                    2, // Number of columns in the grid
-                                crossAxisSpacing:
-                                    5, // Horizontal space between items
-                                mainAxisSpacing:
-                                    5, // Vertical space between items
-                                childAspectRatio:
-                                    1, // Aspect ratio of each item
-                              ),
-                              itemBuilder: (context, index) {
-                                // If the index is the last item, show the "Create Profile" button
-                                if (index == items.length) {
-                                  return InkWell(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (_) => CreateProfile(),
-                                        ),
-                                      );
-                                    },
-                                    child: Card(
-                                      elevation: 5,
-                                      margin: EdgeInsets.symmetric(
-                                          vertical: 8, horizontal: 16),
-                                      shape: CircleBorder(),
-                                      child: Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.add_circle_outline,
-                                              size: 60,
-                                              color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      right: 8.0, left: 8, top: 20, bottom: 8),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Who's using the app?",
+                        style: GoogleFonts.poppins(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      Expanded(
+                        child: isLoaded
+                            ? GridView.builder(
+                                padding: const EdgeInsets.all(
+                                    8.0), // Add padding if needed
+                                itemCount: items.length +
+                                    1, // Add one extra item for the "Create Profile" button
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount:
+                                      2, // Number of columns in the grid
+                                  crossAxisSpacing:
+                                      5, // Horizontal space between items
+                                  mainAxisSpacing:
+                                      5, // Vertical space between items
+                                  childAspectRatio:
+                                      1 / 1.1, // Aspect ratio of each item
+                                ),
+                                itemBuilder: (context, index) {
+                                  // If the index is the last item, show the "Create Profile" button
+                                  if (index == items.length) {
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 28.0),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (_) =>
+                                                  const CreateProfile(),
                                             ),
-                                            SizedBox(height: 8),
-                                            Text(
-                                              'Add profile',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
-                                                color: Colors.blue,
-                                              ),
+                                          );
+                                        },
+                                        child: const Card(
+                                          elevation: 5,
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 8, horizontal: 16),
+                                          shape: CircleBorder(),
+                                          child: Center(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.add_circle_outline,
+                                                  size: 60,
+                                                  color: Colors.blue,
+                                                ),
+                                                SizedBox(height: 8),
+                                                Text(
+                                                  'Add profile',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                    color: Colors.blue,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                } else {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      selectedIndex = index;
-                                      name =
-                                          items[index]['name'] ?? 'not given';
-                                      print(name);
-                                      var profileId =
-                                          items[index]['profile id'];
-                                      id = profileId;
-                                      lessonid = items[index]['lesson id'];
-                                      print(profileId);
-                                      // String profileAge = items[index]['age'];
+                                    );
+                                  } else {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        selectedIndex = index;
+                                        name =
+                                            items[index]['name'] ?? 'not given';
+                                        print(name);
+                                        var profileId =
+                                            items[index]['profile id'];
+                                        id = profileId;
+                                        lessonid = items[index]['lesson id'];
+                                        print(profileId);
+                                        // String profileAge = items[index]['age'];
 
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (_) => EnterPin(),
-                                        ),
-                                      );
-                                    },
-                                    child: Card(
-                                      elevation: 5,
-                                      margin: EdgeInsets.symmetric(
-                                          vertical: 8, horizontal: 16),
-                                      shape: CircleBorder(),
-                                      child: GridTile(
-                                        footer: Text(
-                                          items[index]['name'] ?? 'not given',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        child: items[index]['avatar'] != null
-                                            ? Image.asset(
-                                                'assets/loginRegister/avatars/${items[index]['avatar']}.png',
-                                              )
-                                            : CircularProgressIndicator(),
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (_) => const EnterPin(),
+                                          ),
+                                        );
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Card(
+                                            elevation: 5,
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 8, horizontal: 16),
+                                            shape: const CircleBorder(),
+                                            child: GridTile(
+                                              child: items[index]['avatar'] !=
+                                                      null
+                                                  ? Image.asset(
+                                                      'assets/loginRegister/avatars/${items[index]['avatar']}.png',
+                                                    )
+                                                  : const CircularProgressIndicator(),
+                                            ),
+                                          ),
+                                          Text(
+                                            items[index]['name'] ?? 'not given',
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  );
-                                }
-                              },
-                            )
-                          : Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                    ),
-                  ],
+                                    );
+                                  }
+                                },
+                              )
+                            : const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

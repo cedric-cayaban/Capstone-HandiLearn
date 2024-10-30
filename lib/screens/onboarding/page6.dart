@@ -8,58 +8,19 @@ class Page6 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Stack(
-        children: [
-          // Positioned(
-          //   bottom: 0,
-          //   child: Image.asset(
-          //     'assets/onboarding/moving car.gif',
-          //     height: 340,
-          //     width: MediaQuery.sizeOf(context).width,
-          //     fit: BoxFit.fill,
-          //   ),
-          // ),
-          // Positioned(
-          //   top: 0,
-          //   child: Image.asset(
-          //     'assets/onboarding/bg.png',
-          //     height: MediaQuery.of(context).size.height * .80,
-          //     width: MediaQuery.of(context).size.width,
-          //     fit: BoxFit.fill,
-          //   ),
-          // ),
-          // Positioned(
-          //   top: 0,
-          //   child: Image.asset(
-          //     'assets/onboarding/clouds.gif',
-          //     height: 340,
-          //     width: MediaQuery.sizeOf(context).width,
-          //     fit: BoxFit.fill,
-          //   ),
-          // ),
-          Positioned(
-            top: 70,
-            right: 40,
-            child: Image.asset(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 100.0),
+        child: Column(
+          children: [
+            Image.asset(
               'assets/onboarding/page6.png',
-              height: MediaQuery.of(context).size.height * .35,
-              width: MediaQuery.of(context).size.width * .80,
+              height: 165,
+              width: 200,
               fit: BoxFit.fill,
             ),
-          ),
-          // Positioned(
-          //   bottom: MediaQuery.of(context).size.height * 0.25,
-          //   left: MediaQuery.of(context).size.width * 0.30,
-          //   child: Image.asset(
-          //     'assets/onboarding/dancing abc.gif',
-          //     height: 60,
-          //     width: MediaQuery.of(context).size.width * 0.30,
-          //     fit: BoxFit.fill,
-          //   ),
-          // ),
-          Positioned(
-            bottom: MediaQuery.of(context).size.width * 0.65,
-            child: Padding(
+            const Gap(40),
+
+            Padding(
               padding: const EdgeInsets.all(15.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -75,6 +36,8 @@ class Page6 extends StatelessWidget {
                       height: 1.0,
                     ),
                   ),
+            const Gap(10),
+
                   Text(
                     'Games',
                     style: GoogleFonts.lora(
@@ -83,10 +46,9 @@ class Page6 extends StatelessWidget {
                       height: 1.0,
                     ),
                   ),
-                  Gap(10),
+                  Gap(20),
                   Text(
-                    '''Review and reinforce learning in an 
-engaging and interactive way''',
+                    '''Review and reinforce learning in an engaging and interactive way''',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.normal,
@@ -96,8 +58,8 @@ engaging and interactive way''',
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

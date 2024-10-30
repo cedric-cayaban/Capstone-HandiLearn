@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:test_drawing/screens/useraccount/choose_profile.dart';
 import 'package:test_drawing/screens/useraccount/set_pin.dart';
 
@@ -91,11 +92,14 @@ class _CreateProfileState extends State<CreateProfile> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset:
+            false, // Prevents automatic resizing when keyboard appears
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'Create Profile',
             style: TextStyle(
               fontSize: 16,
@@ -103,237 +107,253 @@ class _CreateProfileState extends State<CreateProfile> {
             ),
           ),
           leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (_) => ChooseProfile(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.arrow_back_ios)),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) => ChooseProfile(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+          ),
           actions: [
             IconButton(
               onPressed: null,
-              icon: Icon(
+              icon: const Icon(
                 Icons.person,
               ),
             ),
           ],
         ),
-        extendBodyBehindAppBar: true,
-        body: Container(
-          height: double.infinity,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/loginRegister/bg4.png"),
-              fit: BoxFit.fill,
+        body: Stack(
+          children: [
+            // Background Image
+            Positioned.fill(
+              child: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/loginRegister/bg4.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(21.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Gap(42),
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                        // Border width
-                        ),
-                  ),
-                  child: CircleAvatar(
-                    radius: 35,
-                    backgroundImage: selectedAvatar != -1
-                        ? AssetImage(
-                            'assets/loginRegister/avatars/${selectedAvatar + 1}.png')
-                        : AssetImage(
-                            'assets/loginRegister/avatars/1.png'), // Use image assets
-                  ),
-                ),
-                Gap(5),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  width: 150,
-                  height: 30,
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    name.isEmpty ? "Christopherson" : nameController.text,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Gap(60),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.60,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    // border: Border.all(color: Colors.black),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5), // Shadow color
-                        spreadRadius: 2, // Spread radius
-                        blurRadius: 7, // Blur radius
-                        offset:
-                            Offset(0, 3), // Changes the position of the shadow
+
+            // Scrollable Foreground Content
+            LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(), // Avoids extra bounce
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(top: 90.0, left: 21, right: 21),
+                      child: Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(),
+                            ),
+                            child: CircleAvatar(
+                              radius: 35,
+                              backgroundImage: selectedAvatar != -1
+                                  ? AssetImage(
+                                      'assets/loginRegister/avatars/${selectedAvatar + 1}.png')
+                                  : const AssetImage(
+                                      'assets/loginRegister/avatars/1.png'),
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            width: 150,
+                            height: 33,
+                            alignment: Alignment.center,
+                            child: Text(
+                              name.isEmpty ? "" : nameController.text,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 90),
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.55,
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.all(15.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 7,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("What is your child's name"),
+                                TextField(
+                                  controller: nameController,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(16),
+                                      ),
+                                    ),
+                                    hintText: 'Name',
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                const Text("What is your child's age"),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: List.generate(5, (index) {
+                                    int displayNumber = index + 2;
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          selectedIndex = index;
+                                        });
+                                      },
+                                      child: CircleAvatar(
+                                        backgroundColor: selectedIndex == index
+                                            ? Colors.blue
+                                            : Colors.white,
+                                        child: Text('$displayNumber'),
+                                      ),
+                                    );
+                                  }),
+                                ),
+                                const SizedBox(height: 10),
+                                const Text("Select an avatar"),
+                                const SizedBox(height: 10),
+                                Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: List.generate(3, (index) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              selectedAvatar = index;
+                                            });
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                color: selectedAvatar == index
+                                                    ? Colors.blue
+                                                    : Colors.transparent,
+                                                width: 2,
+                                              ),
+                                            ),
+                                            child: CircleAvatar(
+                                              radius: 35,
+                                              backgroundImage: AssetImage(
+                                                  'assets/loginRegister/avatars/${index + 1}.png'),
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: List.generate(3, (index) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              selectedAvatar = index + 3;
+                                            });
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                color:
+                                                    selectedAvatar == index + 3
+                                                        ? Colors.blue
+                                                        : Colors.transparent,
+                                                width: 2,
+                                              ),
+                                            ),
+                                            child: CircleAvatar(
+                                              radius: 35,
+                                              backgroundImage: AssetImage(
+                                                  'assets/loginRegister/avatars/${index + 4}.png'),
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+                                Container(
+                                  width: double.infinity,
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(10),
+                                      onTap: saveProfile,
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 45,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          gradient: const LinearGradient(
+                                            colors: [
+                                              Color(0xFF10E119),
+                                              Color(0xFF18991E)
+                                            ],
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Text(
+                                          'Save',
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 17,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("What is your child's name"),
-                        TextField(
-                          controller: nameController, // Set the controller
-                          decoration: const InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(16),
-                              ),
-                            ),
-                            hintText: 'Christopherson',
-                          ),
-                        ),
-                        Text("What is your child's age"),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: List.generate(5, (index) {
-                            int displayNumber = index + 2; // Start from 2
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedIndex = index;
-                                  print(selectedIndex);
-                                });
-                              },
-                              child: CircleAvatar(
-                                backgroundColor: selectedIndex == index
-                                    ? Colors.blue
-                                    : Colors.white,
-                                child: Text(
-                                    '$displayNumber'), // Display the number
-                              ),
-                            );
-                          }),
-                        ),
-                        Text("Select an avatar"),
-                        Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: List.generate(3, (index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedAvatar = index;
-                                    });
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: selectedAvatar == index
-                                            ? Colors.blue
-                                            : Colors.transparent,
-                                        width: 2, // Border width
-                                      ),
-                                    ),
-                                    child: CircleAvatar(
-                                      radius: 35,
-                                      backgroundImage: AssetImage(
-                                          'assets/loginRegister/avatars/${index + 1}.png'), // Use image assets
-                                    ),
-                                  ),
-                                );
-                              }),
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: List.generate(3, (index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedAvatar = index +
-                                          3; // Adjust index for the second row
-                                    });
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: selectedAvatar == index + 3
-                                            ? Colors.blue
-                                            : Colors.transparent,
-                                        width: 2, // Border width
-                                      ),
-                                    ),
-                                    child: CircleAvatar(
-                                      radius: 35,
-                                      backgroundImage: AssetImage(
-                                          'assets/loginRegister/avatars/${index + 4}.png'), // Use image assets
-                                    ),
-                                  ),
-                                );
-                              }),
-                            ),
-                          ],
-                        ),
-                        Gap(10),
-                        Container(
-                          width: double
-                              .infinity, // Make the button fill the available width
-                          child: Material(
-                            borderRadius: BorderRadius.circular(
-                                10), // Set your desired border radius here
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(
-                                  10), // Ensure the ripple effect respects the border radius
-                              onTap: saveProfile,
-                              child: Container(
-                                width: double.infinity, // Expand to full width
-                                height: 45, // Fixed height
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Color(0xFF10E119),
-                                      Color(0xFF18991E)
-                                    ], // Define your gradient colors
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                  ),
-                                  borderRadius: BorderRadius.circular(
-                                      10), // Set the same border radius as above
-                                ),
-                                child: const Text(
-                                  'Save',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
                   ),
-                ),
-              ],
+                );
+              },
             ),
-          ),
+          ],
         ),
       ),
     );
