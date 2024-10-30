@@ -67,7 +67,7 @@ class _LetterSelectionsScreenState extends State<CharacterSelectionScreen> {
                   if (widget.lessonNumber == 0 ||
                       widget.lessonNumber == 2 ||
                       widget.lessonNumber == 3) {
-                    Navigator.of(context).push(
+                    Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => ActivityScreen(
                             lesson: widget.lesson,

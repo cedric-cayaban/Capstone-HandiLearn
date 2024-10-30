@@ -162,7 +162,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                         onTap: () {
                           var nextLesson =
                               widget.forNextLesson[widget.index + 1];
-                          Navigator.of(context).push(MaterialPageRoute(
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => DrawingScreen(
                               lessonNumber: widget.lessonNumber,
                               index: widget.index + 1,
@@ -698,7 +698,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                               DeviceOrientation.portraitUp,
                               DeviceOrientation.portraitDown,
                             ]);
-                            Navigator.of(context).push(MaterialPageRoute(
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(
                                 builder: (context) => CharacterSelectionScreen(
                                     lesson: widget.forNextLesson,
                                     activity: 'Writing',
@@ -803,7 +803,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             color: Colors.black,
                           ),
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(
                                 builder: (context) => CharacterSelectionScreen(
                                     lesson: widget.forNextLesson,
                                     activity: 'Writing',

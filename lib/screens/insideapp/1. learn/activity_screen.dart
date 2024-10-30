@@ -55,7 +55,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
       // print('Sa baba neto yung sagot');
       // print(profileDoc.get('${lesson}_${activity}'));
       // return profileDoc.get('${lesson}_${activity}');
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => ReadingCharacterSelection(
             lesson: widget.lesson,
@@ -137,7 +137,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                       : Colors.black87,
                 ),
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (context) => LessonScreen(),
                   ));
                 },
@@ -185,7 +185,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                       getcharacterDone(activityNames[index],
                                           widget.lessonTitle);
                                     } else {
-                                      Navigator.of(context).push(
+                                      Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               CharacterSelectionScreen(
