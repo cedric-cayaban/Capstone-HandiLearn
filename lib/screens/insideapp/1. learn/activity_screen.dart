@@ -51,7 +51,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
       // print(characterDone);
 
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => ReadingCharacterSelection(
             lesson: widget.lesson,
@@ -133,6 +133,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                       : Colors.black87,
                 ),
                 onPressed: () {
+                  // Navigator.of(context).pop();
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (context) => LessonScreen(),
                   ));
@@ -177,6 +178,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                         index == 0)
                                 ? null
                                 : () {
+                                    print(widget.lessonTitle);
                                     if (activityNames[index] == "Pronounce") {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
@@ -196,7 +198,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                               CharacterSelectionScreen(
                                             lesson: widget.lesson,
                                             activity: activityNames[index],
-                                            lessonTitle: lessonNames[index],
+                                            lessonTitle: widget.lessonTitle,
                                             lessonNumber: widget.lessonNumber,
                                           ),
                                         ),

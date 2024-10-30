@@ -50,7 +50,6 @@ class _SelectedItemState extends State<SelectedItem> {
     super.initState();
     sayTheSound();
     initSpeechState();
-    // print(widget.character);
   }
 
   void initSpeechState() async {

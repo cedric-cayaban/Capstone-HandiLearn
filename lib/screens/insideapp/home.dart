@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:test_drawing/provider/user_provider.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/lesson_screen.dart';
 
 import 'package:test_drawing/screens/insideapp/3.%20scanning/camera_screen.dart';
@@ -22,42 +23,44 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String name = "";
+  // String name = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getData();
-    print(LastActivity);
+    // // getData();
+    // print(LastActivity);
   }
 
-  void getData() async {
-    print(id);
-    User user = FirebaseAuth.instance.currentUser!;
-    String _uid = user.uid;
-    final DocumentSnapshot profileDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(_uid)
-        .collection('profiles')
-        .doc(id)
-        .get();
-    // print(profileDoc.get('age'));
-    name = profileDoc.get('name');
-    print(name);
+  // void getData() async {
+  //   print(id);
+  //   User user = FirebaseAuth.instance.currentUser!;
+  //   String _uid = user.uid;
+  //   final DocumentSnapshot profileDoc = await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(_uid)
+  //       .collection('profiles')
+  //       .doc(id)
+  //       .get();
+  //   // print(profileDoc.get('age'));
+  //   name = profileDoc.get('name');
+  //   print(name);
 
-    final DocumentSnapshot ageDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(_uid)
-        .collection('profiles')
-        .doc(id)
-        .get();
-    age = int.parse(profileDoc.get('age'));
-    setState(() {});
-  }
+  //   final DocumentSnapshot ageDoc = await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(_uid)
+  //       .collection('profiles')
+  //       .doc(id)
+  //       .get();
+  //   age = int.parse(profileDoc.get('age'));
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitDown,
       DeviceOrientation.portraitUp,
@@ -97,7 +100,7 @@ class _HomeState extends State<Home> {
                 child: Column(
                   children: [
                     Text(
-                      'Welcome, $name',
+                      'Welcome, ${userProvider.name}',
                       style: const TextStyle(fontSize: 24),
                     ),
                     Image.asset(

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:test_drawing/auth/main_page.dart';
 import 'package:test_drawing/firebase_options.dart';
 import 'package:test_drawing/provider/lesson_provider.dart';
+import 'package:test_drawing/provider/user_provider.dart';
 
 late List<CameraDescription> cameras;
 
@@ -18,6 +19,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LessonProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: HandiLearn(),
     ),
