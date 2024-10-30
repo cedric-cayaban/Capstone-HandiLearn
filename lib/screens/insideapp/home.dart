@@ -205,8 +205,8 @@ class _HomeState extends State<Home> {
                 children: [
                   const Text('Activities'),
                   Container(
-                    height: 340,
-                    width: 300,
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     decoration: const BoxDecoration(
                       color: Colors.white,
                     ),
@@ -238,6 +238,7 @@ class _HomeState extends State<Home> {
                                       radius: 60,
                                     ),
                                   ),
+                                  Gap(10),
                                   Text('Learn')
                                 ],
                               ),
@@ -264,6 +265,7 @@ class _HomeState extends State<Home> {
                                     ),
                                   ),
                                 ),
+                                const Gap(10),
                                 const Text('Scan')
                               ],
                             ),
@@ -294,6 +296,7 @@ class _HomeState extends State<Home> {
                                     ),
                                   ),
                                 ),
+                                const Gap(10),
                                 const Text('Short Stories')
                               ],
                             ),
@@ -319,6 +322,7 @@ class _HomeState extends State<Home> {
                                     ),
                                   ),
                                 ),
+                                const Gap(10),
                                 const Text('Mini Games')
                               ],
                             ),

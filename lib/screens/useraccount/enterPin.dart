@@ -211,7 +211,7 @@ class _EnterPinState extends State<EnterPin> {
                 top: MediaQuery.of(context).size.height * 0.38,
                 child: Container(
                   height: 420,
-                  width: MediaQuery.of(context).size.width * 0.80,
+                  width: MediaQuery.of(context).size.width * 0.90,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
