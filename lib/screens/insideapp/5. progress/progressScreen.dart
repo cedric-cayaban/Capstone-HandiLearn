@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:test_drawing/screens/insideapp/5.%20progress/categoryProgress.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';
 
 class ProgressScreen extends StatefulWidget {
@@ -106,6 +107,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                             endIndent: 0,
                             indent: 0,
                           ),
+                          const Gap(15),
                           LinearPercentIndicator(
                             percent: 0.45,
                             animation: true,
@@ -127,8 +129,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   ),
                 ),
               ),
+              // CATEGORY PROGRESS
               Positioned(
-                top: MediaQuery.of(context).size.height * 0.46,
+                top: MediaQuery.of(context).size.height * 0.5,
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.50,
                   width: MediaQuery.of(context).size.width,
@@ -137,31 +140,50 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     mainAxisSpacing: 20,
                     crossAxisSpacing: 20,
                     padding: const EdgeInsets.all(20),
-                    children: List.generate(4, (index) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularPercentIndicator(
-                            animation: true,
-                            animationDuration: 900,
-                            radius: 70,
-                            lineWidth: 10,
-                            percent: 0.25, // Placeholder progress
-                            center: const Text(
-                              '25%', // Placeholder text
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                    children: List.generate(
+                      4,
+                      (index) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => CategoryProgress(),
+                                  ),
+                                );
+                              },
+                              child: CircularPercentIndicator(
+                                percent: 0.25,
+                                animation: true,
+                                animationDuration: 900,
+                                radius:
+                                    MediaQuery.of(context).size.height * 0.09,
+                                lineWidth: 13,
+                                center: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius:
+                                      MediaQuery.of(context).size.height * 0.07,
+                                  child: Text(
+                                    '25%',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                progressColor: Colors.red,
+                                backgroundColor: Colors.grey.shade300,
+                                circularStrokeCap: CircularStrokeCap.round,
                               ),
                             ),
-                            progressColor: Colors.red,
-                            backgroundColor: Colors.grey.shade300,
-                            circularStrokeCap: CircularStrokeCap.round,
-                          ),
-                          const SizedBox(height: 8),
-                        ],
-                      );
-                    }),
+                            const SizedBox(height: 8),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
               )
