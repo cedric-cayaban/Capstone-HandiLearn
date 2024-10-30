@@ -85,15 +85,15 @@ class _SetPinState extends State<SetPin> {
     Map<String, String> lessonData = {
       "Capital Letters_Pronounce": "0",
       "Capital Letters_Write": "0",
-      "Small Letters": "0",
+      "Small Letters_Write": "0",
       "Words_Pronounce": "0",
       "Words_Write": "0",
       "Numbers_Pronounce": "0",
       "Numbers_Write": "0",
       "Capital Cursives_Pronounce": "0",
       "Capital Cursives_Write": "0",
-      "Small Cursives": "0",
-      "Cursive Words": "0",
+      "Small Cursives_Write": "0",
+      "Cursive Words_Write": "0",
     };
 
 // Map to hold the data to be added based on age

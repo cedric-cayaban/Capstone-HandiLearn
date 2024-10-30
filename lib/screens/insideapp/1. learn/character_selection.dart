@@ -40,6 +40,15 @@ List<String> lessonTitles = [
 
 class _LetterSelectionsScreenState extends State<CharacterSelectionScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    late String lessonField = "${widget.lessonTitle}_${widget.activity}";
+    final lessonProvider = Provider.of<LessonProvider>(context, listen: false);
+    lessonProvider.fetchCharacterDone(lessonField);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final lessonProvider = Provider.of<LessonProvider>(context);
 

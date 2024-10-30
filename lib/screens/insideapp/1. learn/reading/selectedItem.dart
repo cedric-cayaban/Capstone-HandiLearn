@@ -59,6 +59,7 @@ class _SelectedItemState extends State<SelectedItem> {
   }
 
   void updateLesson(LessonProvider provider) async {
+    print("updateLesson");
     await provider.updateLesson(widget.lessonField, widget.characterDone);
     provider.updateDialogStatus(false); // Reset dialog status
   }
@@ -72,6 +73,9 @@ class _SelectedItemState extends State<SelectedItem> {
       listenFor: Duration(seconds: 3),
       onResult: (result) {
         if (result.finalResult) {
+          print(result.recognizedWords.toLowerCase());
+          print(widget.lesson.type);
+          print(widget.lesson.character.toLowerCase());
           if (!_dialogShown) {
             if (widget.lesson.type == "standard" &&
                 result.recognizedWords.toLowerCase() ==
@@ -85,7 +89,7 @@ class _SelectedItemState extends State<SelectedItem> {
             } else if (result.recognizedWords.toLowerCase() ==
                     widget.lesson.character.toLowerCase() &&
                 widget.lesson.type == "word") {
-              if (widget.index == widget.characterDone) {
+              if (widget.index == lessonProvider.ucharacterDone) {
                 updateLesson(lessonProvider);
               }
               _dialogShown = true; // Set flag here as well
@@ -256,18 +260,6 @@ class _SelectedItemState extends State<SelectedItem> {
         title: Text("Selected Item"),
         leading: IconButton(
           onPressed: () {
-            // updateLesson();
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //     builder: (context) => ReadingCharacterSelection(
-            //       lesson: widget.lesson,
-            //       activity: activity,
-            //       lessonNumber: widget.lessonNumber,
-            //       lessonTitle: widget.lessonTitle,
-            //       // characterDone: characterDone,
-            //     ),
-            //   ),
-            // );
             Navigator.of(context).pop();
           },
           icon: Icon(Icons.arrow_back),

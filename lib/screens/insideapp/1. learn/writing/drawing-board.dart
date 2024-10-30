@@ -705,7 +705,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                         IconButton(
                           icon: const Icon(
                             Icons.arrow_back,
-                            color: Colors.blue,
+                            color: Colors.black,
                           ),
                           onPressed: () async {
                             await SystemChrome.setPreferredOrientations([
@@ -713,6 +713,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                               DeviceOrientation.portraitDown,
                             ]);
                             Navigator.of(context).pop();
+                            // Navigator.of(context).pop();
                             // Navigator.of(context).push(MaterialPageRoute(
                             //     builder: (context) => CharacterSelectionScreen(
                             //         lesson: widget.forNextLesson,
@@ -818,6 +819,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             color: Colors.black,
                           ),
                           onPressed: () {
+                            Navigator.of(context).pop();
                             // Navigator.of(context).push(MaterialPageRoute(
                             //     builder: (context) => CharacterSelectionScreen(
                             //         lesson: widget.forNextLesson,

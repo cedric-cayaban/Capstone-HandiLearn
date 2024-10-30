@@ -147,32 +147,39 @@ class _LessonScreenState extends State<LessonScreen> {
                       ),
                       Expanded(
                         child: ListView.builder(
-                          //ANDITO YUNG LESSONS LENGTH
                           itemCount: lessonNames.length,
                           itemBuilder: (context, index) => InkWell(
-                            onTap: () {
-                              if (index == 0 || index == 2 || index == 3) {
-                                LastActivity = index.toString();
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => ActivityScreen(
-                                      lesson: lessonData[index],
-                                      lessonTitle: lessonNames[index],
-                                      lessonNumber: index,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      CharacterSelectionScreen(
-                                          lesson: lessonData[index],
-                                          lessonTitle: lessonNames[index],
-                                          activity: 'Writing',
-                                          lessonNumber: index),
-                                ));
-                              }
-                            },
+                            onTap: (index <= age - 1 ||
+                                    age == 6) // Only allow click if unlocked
+                                ? () {
+                                    if (index == 0 ||
+                                        index == 2 ||
+                                        index == 3) {
+                                      LastActivity = index.toString();
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => ActivityScreen(
+                                            lesson: lessonData[index],
+                                            lessonTitle: lessonNames[index],
+                                            lessonNumber: index,
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              CharacterSelectionScreen(
+                                            lesson: lessonData[index],
+                                            lessonTitle: lessonNames[index],
+                                            activity: 'Write',
+                                            lessonNumber: index,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                : null,
                             child: Card(
                               margin: const EdgeInsets.symmetric(
                                 vertical: 8.0,
