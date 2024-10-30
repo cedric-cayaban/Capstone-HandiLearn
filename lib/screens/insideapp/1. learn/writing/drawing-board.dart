@@ -8,7 +8,9 @@ import 'package:flutter/services.dart'
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:image/image.dart' as img;
+import 'package:provider/provider.dart';
 import 'package:test_drawing/objects/lesson.dart';
+import 'package:test_drawing/provider/lesson_provider.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/character_selection.dart';
 import 'package:tflite_v2/tflite_v2.dart';
 import 'dart:ui' as ui;
@@ -24,6 +26,7 @@ class DrawingScreen extends StatefulWidget {
     required this.lesson,
     required this.forNextLesson,
     required this.lessonNumber,
+    required this.lessonField,
   });
   final Lesson lesson;
   List<Lesson> forNextLesson;
@@ -33,6 +36,7 @@ class DrawingScreen extends StatefulWidget {
   // final String character;
   final int index;
   final int lessonNumber;
+  final String lessonField;
 
   @override
   _DrawingScreenState createState() => _DrawingScreenState();
@@ -99,7 +103,13 @@ class _DrawingScreenState extends State<DrawingScreen> {
     super.dispose();
   }
 
+  void updateLesson(LessonProvider provider) async {
+    await provider.updateLesson(widget.lessonField, provider.ucharacterDone);
+    provider.updateDialogStatus(false); // Reset dialog status
+  }
+
   void loadPopUpModal(bool isMatch) {
+    final lessonProvider = Provider.of<LessonProvider>(context, listen: false);
     String checkAsset;
     if (isMatch) {
       checkAsset = 'assets/insideApp/learnWriting/components/dancing.gif';
@@ -160,6 +170,9 @@ class _DrawingScreenState extends State<DrawingScreen> {
                         widget.index < widget.forNextLesson.length - 1)
                       GestureDetector(
                         onTap: () {
+                          updateLesson(lessonProvider);
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
                           var nextLesson =
                               widget.forNextLesson[widget.index + 1];
                           Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -168,6 +181,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                               index: widget.index + 1,
                               lesson: nextLesson,
                               forNextLesson: widget.forNextLesson,
+                              lessonField: widget.lessonField,
                             ),
                           ));
                         },
@@ -698,11 +712,13 @@ class _DrawingScreenState extends State<DrawingScreen> {
                               DeviceOrientation.portraitUp,
                               DeviceOrientation.portraitDown,
                             ]);
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                builder: (context) => CharacterSelectionScreen(
-                                    lesson: widget.forNextLesson,
-                                    activity: 'Writing',
-                                    lessonNumber: widget.lessonNumber)));
+                            Navigator.of(context).pop();
+                            // Navigator.of(context).pop();
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) => CharacterSelectionScreen(
+                            //         lesson: widget.forNextLesson,
+                            //         activity: 'Writing',
+                            //         lessonNumber: widget.lessonNumber)));
                           },
                         ),
                         Padding(
@@ -803,11 +819,12 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             color: Colors.black,
                           ),
                           onPressed: () {
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                builder: (context) => CharacterSelectionScreen(
-                                    lesson: widget.forNextLesson,
-                                    activity: 'Writing',
-                                    lessonNumber: widget.lessonNumber)));
+                            Navigator.of(context).pop();
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) => CharacterSelectionScreen(
+                            //         lesson: widget.forNextLesson,
+                            //         activity: 'Writing',
+                            //         lessonNumber: widget.lessonNumber)));
                           },
                         ),
                         Padding(

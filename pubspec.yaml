@@ -80,6 +80,9 @@ flutter:
     - assets/insideApp/games/
     - assets/insideApp/games/1/
     - assets/insideApp/games/2/
+    - assets/insideApp/games/sliding puzzle/
+    - assets/insideApp/games/sliding puzzle/2by2/
+    - assets/insideApp/games/sliding puzzle/3by3/
     - assets/insideApp/shortStories/story1/audio/
     - assets/insideApp/shortStories/story1/images/
     - assets/loginRegister/

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/game1.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/game2.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/sliding%20puzzle/level_selection.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';
 
 class Games extends StatelessWidget {
@@ -68,6 +69,18 @@ class Games extends StatelessWidget {
                   );
                 },
                 child: Image.asset('assets/insideApp/games/memory_game.png'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          LevelSelectionPage(), // Replace with your intended screen
+                    ),
+                  );
+                },
+                child: Text('Puzzle'),
               ),
             ],
           ),
