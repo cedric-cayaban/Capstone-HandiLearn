@@ -3,10 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import 'package:test_drawing/data/lessons.dart';
 import 'package:test_drawing/data/userAccount.dart';
 import 'package:test_drawing/objects/lesson.dart';
+import 'package:test_drawing/provider/user_provider.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/activity_screen.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/character_selection.dart';
 
@@ -30,31 +32,15 @@ List<String> lessonNames = [
 ];
 
 class _LessonScreenState extends State<LessonScreen> {
-  // int age = 0;
-
-  // void getData() async {
-  //   print(id);
-  //   User user = FirebaseAuth.instance.currentUser!;
-  //   String _uid = user.uid;
-  //   final DocumentSnapshot profileDoc = await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(_uid)
-  //       .collection('profiles')
-  //       .doc(id)
-  //       .get();
-  //   age = int.parse(profileDoc.get('age'));
-  //   print("Age is : $age");
-  //   setState(() {});
-  // }
-
   @override
   void initState() {
     super.initState();
-    // getData();
   }
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -149,9 +135,11 @@ class _LessonScreenState extends State<LessonScreen> {
                         child: ListView.builder(
                           itemCount: lessonNames.length,
                           itemBuilder: (context, index) => InkWell(
-                            onTap: (index <= age - 1 ||
-                                    age == 6) // Only allow click if unlocked
+                            onTap: (index <= userProvider.age - 1 ||
+                                    userProvider.age ==
+                                        6) // Only allow click if unlocked
                                 ? () {
+                                    print(lessonNames[index]);
                                     if (index == 0 ||
                                         index == 2 ||
                                         index == 3) {
@@ -200,8 +188,10 @@ class _LessonScreenState extends State<LessonScreen> {
                                   children: [
                                     // Lesson background image
                                     Opacity(
-                                      opacity:
-                                          index > age - 1 && age != 6 ? 0.5 : 1,
+                                      opacity: index > userProvider.age - 1 &&
+                                              userProvider.age != 6
+                                          ? 0.5
+                                          : 1,
                                       child: Container(
                                         decoration: BoxDecoration(
                                           image: DecorationImage(
@@ -278,7 +268,8 @@ class _LessonScreenState extends State<LessonScreen> {
                                       ),
                                     ),
                                     // Lock overlay, only if lesson is locked (index > age)
-                                    if (index > age - 1 && age != 6)
+                                    if (index > userProvider.age - 1 &&
+                                        userProvider.age != 6)
                                       Positioned.fill(
                                         child: Container(
                                           decoration: BoxDecoration(

@@ -105,12 +105,17 @@ class _DrawingScreenState extends State<DrawingScreen> {
   }
 
   void updateLesson(LessonProvider provider) async {
+    print(widget.lessonField);
     await provider.updateLesson(widget.lessonField, provider.ucharacterDone);
     provider.updateDialogStatus(false); // Reset dialog status
   }
 
   void loadPopUpModal(bool isMatch) {
     final lessonProvider = Provider.of<LessonProvider>(context, listen: false);
+    if (widget.index == lessonProvider.ucharacterDone) {
+      updateLesson(lessonProvider);
+    }
+
     String checkAsset;
     if (isMatch) {
       checkAsset = 'assets/insideApp/learnWriting/components/dancing.gif';
@@ -171,8 +176,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                         widget.index < widget.forNextLesson.length - 1)
                       GestureDetector(
                         onTap: () {
-                          updateLesson(lessonProvider);
-                          Navigator.of(context).pop();
+                          // updateLesson(lessonProvider);
                           Navigator.of(context).pop();
                           var nextLesson =
                               widget.forNextLesson[widget.index + 1];
@@ -204,7 +208,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
     );
   }
 
-  stt.SpeechToText _speech = stt.SpeechToText();
   final AudioPlayer _audioPlayer = AudioPlayer();
   bool isFinished = false;
 

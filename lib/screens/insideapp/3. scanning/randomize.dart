@@ -12,12 +12,12 @@ class Randomize extends StatefulWidget {
 }
 
 class _RandomizeState extends State<Randomize> {
-  int _randomNumber = 2;
+  int _randomNumber = 0;
 
   void randomTheObjects() {
-    // setState(() {
-    //   _randomNumber = Random().nextInt(10);
-    // });
+    setState(() {
+      _randomNumber = Random().nextInt(10);
+    });
     print(_randomNumber);
     showDialog(
       context: context,
@@ -38,7 +38,7 @@ class _RandomizeState extends State<Randomize> {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(10),
                   onTap: () async {
-                    pickedNum = 2;
+                    pickedNum = _randomNumber;
                     Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (_) => CameraScreen()));
                   },

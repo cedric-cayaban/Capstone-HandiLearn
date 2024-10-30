@@ -91,7 +91,7 @@ class _LetterSelectionsScreenState extends State<CharacterSelectionScreen> {
                       ),
                     );
                   } else {
-                    Navigator.of(context).push(
+                    Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => const LessonScreen(),
                       ),

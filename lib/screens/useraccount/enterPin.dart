@@ -4,7 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:test_drawing/data/userAccount.dart';
+import 'package:test_drawing/provider/lesson_provider.dart';
+import 'package:test_drawing/provider/user_provider.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';
 import 'package:test_drawing/screens/useraccount/choose_profile.dart';
 import 'package:test_drawing/screens/useraccount/create_profile.dart';
@@ -46,27 +49,30 @@ class _EnterPinState extends State<EnterPin> {
     );
   }
 
-  void getData() async {
-    print(id);
-    User user = FirebaseAuth.instance.currentUser!;
-    String _uid = user.uid;
-    final DocumentSnapshot profileDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(_uid)
-        .collection('profiles')
-        .doc(id)
-        .get();
-    print(profileDoc.get('pin'));
-    profilePin = profileDoc.get('pin');
-    // name = profileDoc.get('name');
-    // print(name);
-    setState(() {});
-  }
+  // void getData() async {
+  //   print(id);
+  //   User user = FirebaseAuth.instance.currentUser!;
+  //   String _uid = user.uid;
+  //   final DocumentSnapshot profileDoc = await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(_uid)
+  //       .collection('profiles')
+  //       .doc(id)
+  //       .get();
+  //   print(profileDoc.get('pin'));
+  //   profilePin = profileDoc.get('pin');
+  //   // name = profileDoc.get('name');
+  //   // print(name);
+  //   setState(() {});
+  // }
 
   void addProfile(String pin) async {
     print(pin);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    await userProvider.fetchUserData();
 
-    if (pin == profilePin) {
+    if (pin == userProvider.pin) {
+      await userProvider.fetchUserData();
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (_) => Home(),
@@ -174,7 +180,7 @@ class _EnterPinState extends State<EnterPin> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getData();
+    // getData();
   }
 
   @override
