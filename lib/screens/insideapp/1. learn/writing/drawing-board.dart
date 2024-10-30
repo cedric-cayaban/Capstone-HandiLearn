@@ -5,6 +5,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'
     show ByteData, DeviceOrientation, SystemChrome, Uint8List, rootBundle;
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:image/image.dart' as img;
@@ -175,7 +176,8 @@ class _DrawingScreenState extends State<DrawingScreen> {
                           Navigator.of(context).pop();
                           var nextLesson =
                               widget.forNextLesson[widget.index + 1];
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
                             builder: (context) => DrawingScreen(
                               lessonNumber: widget.lessonNumber,
                               index: widget.index + 1,
@@ -689,6 +691,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     List<Offset?> guidePointsForLetter =
         getGuidePoints(widget.lesson.type, characterKey, canvasSize);
 
+    double spacer = MediaQuery.of(context).size.height * 0.2;
     return SafeArea(
       child: Scaffold(
         appBar: null,
@@ -883,7 +886,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                     ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 200.0),
+                        padding: EdgeInsets.only(top: spacer),
                         child: Column(
                           children: [
                             GestureDetector(
@@ -924,7 +927,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                                 ),
                               ),
                             ),
-                            Gap(125),
+                            const Gap(40),
                             ElevatedButton(
                               onPressed: () async {
                                 if (guidePoints.isEmpty) {
