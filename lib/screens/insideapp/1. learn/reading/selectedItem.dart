@@ -4,16 +4,17 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:test_drawing/data/userAccount.dart';
 import 'package:test_drawing/objects/lesson.dart';
+import 'package:test_drawing/provider/lesson_provider.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/reading/character_selection.dart';
 
 class SelectedItem extends StatefulWidget {
   SelectedItem({
     super.key,
-    // required this.imgPath,
     required this.lesson,
     required this.forNextLesson,
     required this.index,
@@ -21,10 +22,8 @@ class SelectedItem extends StatefulWidget {
     required this.lessonField,
   });
 
-  // final String imgPath;
   final Lesson lesson;
   List<Lesson> forNextLesson;
-  // final String character;
   final int index;
   final int characterDone;
   final String lessonField;
@@ -59,50 +58,35 @@ class _SelectedItemState extends State<SelectedItem> {
     if (!mounted) return;
   }
 
-  void updateLesson() async {
-    try {
-      User user = FirebaseAuth.instance.currentUser!;
-      String _uid = user.uid;
-
-      // Assuming 'id' and 'lessonid' are defined elsewhere in your class
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(_uid)
-          .collection('profiles')
-          .doc(id)
-          .collection("LessonsFinished")
-          .doc(lessonid)
-          .update({"${widget.lessonField}": "${widget.characterDone + 1}"});
-      updatedCharacterDone = widget.characterDone + 1;
-      setState(() {});
-    } catch (e) {
-      print('Error updating lesson: $e'); // Handle error appropriately
-    }
+  void updateLesson(LessonProvider provider) async {
+    await provider.updateLesson(widget.lessonField, widget.characterDone);
+    provider.updateDialogStatus(false); // Reset dialog status
   }
 
   void _startListening() {
+    final lessonProvider = Provider.of<LessonProvider>(context,
+        listen: false); // Get provider instance
+
     print('Starting to listen');
     _speech.listen(
       listenFor: Duration(seconds: 3),
       onResult: (result) {
         if (result.finalResult) {
-          print(result.recognizedWords.toLowerCase());
-
           if (!_dialogShown) {
-            // Check if a dialog is already shown
-            if (widget.lesson.type == "word" &&
+            if (widget.lesson.type == "standard" &&
                 result.recognizedWords.toLowerCase() ==
-                    widget.lesson.character.toLowerCase()) {
-              if (widget.index == widget.characterDone) {
-                updateLesson();
+                    "letter " + widget.lesson.character.toLowerCase()) {
+              print(lessonProvider.ucharacterDone);
+              if (widget.index == lessonProvider.ucharacterDone) {
+                updateLesson(lessonProvider); // Pass lessonProvider instance
               }
               _dialogShown = true; // Set flag to prevent multiple dialogs
               _showSuccessDialog();
             } else if (result.recognizedWords.toLowerCase() ==
-                    "letter " + widget.lesson.character.toLowerCase() &&
-                widget.lesson.type == "standard") {
+                    widget.lesson.character.toLowerCase() &&
+                widget.lesson.type == "word") {
               if (widget.index == widget.characterDone) {
-                updateLesson();
+                updateLesson(lessonProvider);
               }
               _dialogShown = true; // Set flag here as well
               _showSuccessDialog();
@@ -121,7 +105,7 @@ class _SelectedItemState extends State<SelectedItem> {
 
     // Start a timer for 2 seconds
     _listeningTimer = Timer(Duration(seconds: 3), () {
-      print('Hindi ka nagsasalita');
+      // print('Hindi ka nagsasalita');
       _stopListening(); // Stop listening after 2 seconds
     });
   }
@@ -264,6 +248,7 @@ class _SelectedItemState extends State<SelectedItem> {
 
   @override
   Widget build(BuildContext context) {
+    // final lessonProvider = Provider.of<LessonProvider>(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

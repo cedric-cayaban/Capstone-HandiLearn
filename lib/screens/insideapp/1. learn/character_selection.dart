@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:test_drawing/objects/lesson.dart';
+import 'package:test_drawing/provider/lesson_provider.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/activity_screen.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/lesson_screen.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/writing/drawing-board.dart';
@@ -10,10 +12,12 @@ class CharacterSelectionScreen extends StatefulWidget {
     required this.lesson,
     required this.activity,
     required this.lessonNumber,
+    required this.lessonTitle,
   });
   List<Lesson> lesson;
   String activity;
   int lessonNumber;
+  String lessonTitle;
 
   @override
   State<CharacterSelectionScreen> createState() =>
@@ -37,6 +41,8 @@ List<String> lessonTitles = [
 class _LetterSelectionsScreenState extends State<CharacterSelectionScreen> {
   @override
   Widget build(BuildContext context) {
+    final lessonProvider = Provider.of<LessonProvider>(context);
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -110,42 +116,72 @@ class _LetterSelectionsScreenState extends State<CharacterSelectionScreen> {
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio: 1, // Keep the grid cells square
-                            crossAxisSpacing:
-                                16, // Space between grid items horizontally
-                            mainAxisSpacing:
-                                16, // Space between grid items vertically
+                            childAspectRatio: 1,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
                           ),
                           itemCount: widget.lesson.length,
-                          padding: const EdgeInsets.all(
-                              16), // Padding around the grid
-                          itemBuilder: (context, index) => InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => DrawingScreen(
-                                  
-                                  lessonNumber: widget.lessonNumber,
-                                  forNextLesson: widget.lesson,
-                                  lesson: widget.lesson[index],
-                                  index: index,
+                          padding: const EdgeInsets.all(16),
+                          itemBuilder: (context, index) {
+                            bool isUnlocked =
+                                index <= lessonProvider.ucharacterDone;
+                            return Stack(
+                              children: [
+                                InkWell(
+                                  onTap: isUnlocked
+                                      ? () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) => DrawingScreen(
+                                              lessonNumber: widget.lessonNumber,
+                                              forNextLesson: widget.lesson,
+                                              lesson: widget.lesson[index],
+                                              index: index,
+                                              lessonField:
+                                                  "${widget.lessonTitle}_${widget.activity}",
+                                            ),
+                                          ));
+                                        }
+                                      : null,
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Image.asset(
+                                            widget.lesson[index].imgPath,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                        if (!isUnlocked)
+                                          Positioned.fill(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black
+                                                    .withOpacity(0.3),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: Center(
+                                                child: Image.asset(
+                                                  'assets/insideApp/padlock.png',
+                                                  width: double
+                                                      .infinity, // Adjust the size of the lock icon as needed
+                                                  height: double.infinity,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ));
-                            },
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(
-                                    16.0), // Space inside the card
-                                child: Image.asset(
-                                  widget.lesson[index].imgPath,
-                                  fit: BoxFit
-                                      .contain, // Scale the image but don't cut it off
-                                ),
-                              ),
-                            ),
-                          ),
+                              ],
+                            );
+                          },
                         ),
                       ),
                       Container(

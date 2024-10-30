@@ -166,6 +166,7 @@ class _LessonScreenState extends State<LessonScreen> {
                                   builder: (context) =>
                                       CharacterSelectionScreen(
                                           lesson: lessonData[index],
+                                          lessonTitle: lessonNames[index],
                                           activity: 'Writing',
                                           lessonNumber: index),
                                 ));
