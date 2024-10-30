@@ -112,7 +112,9 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   void loadPopUpModal(bool isMatch) {
     final lessonProvider = Provider.of<LessonProvider>(context, listen: false);
-    updateLesson(lessonProvider);
+    if (widget.index == lessonProvider.ucharacterDone) {
+      updateLesson(lessonProvider);
+    }
 
     String checkAsset;
     if (isMatch) {
