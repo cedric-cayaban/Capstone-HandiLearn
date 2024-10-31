@@ -11,6 +11,7 @@ import 'package:test_drawing/screens/insideapp/3.%20scanning/camera_screen.dart'
 import 'package:test_drawing/screens/insideapp/2.%20short%20stories/selections.dart';
 import 'package:test_drawing/screens/insideapp/3.%20scanning/instruction.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/chooseGame.dart';
+import 'package:test_drawing/screens/insideapp/5.%20progress/progressScreen.dart';
 import 'package:test_drawing/screens/useraccount/choose_profile.dart';
 
 import '../../data/userAccount.dart';
@@ -140,7 +141,12 @@ class _HomeState extends State<Home> {
                         ),
                         const Gap(5),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (context) => ProgressScreen(),
+                            ));
+                          },
                           child: Card(
                             elevation: 4,
                             shape: RoundedRectangleBorder(
