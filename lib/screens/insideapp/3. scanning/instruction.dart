@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_drawing/screens/insideapp/3.%20scanning/randomize.dart';
+import 'package:test_drawing/screens/insideapp/home.dart';
 
 class Instruction extends StatefulWidget {
   const Instruction({super.key});
@@ -16,7 +17,10 @@ class _InstructionState extends State<Instruction> {
     Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text('Look at the Picture!'),
+        Text(
+          'Look at the Picture!',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         Text(
             '1.1 The game will show you a picture of something fun! It could be a toy, a book, '
             'or something outside like a tree.'),
@@ -26,7 +30,10 @@ class _InstructionState extends State<Instruction> {
     Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text('Search Around!'),
+        Text(
+          'Search Around!',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         Text(
             '2.1 Now it’s time to find that thing! Look around your room, in your house, or even outside.'),
         Text(
@@ -36,7 +43,10 @@ class _InstructionState extends State<Instruction> {
     Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text('Time to Scan!'),
+        Text(
+          'Time to Scan!',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         Text(
             '3.1 When you find the object, it’s time to use the Scan Button on the game.'),
         Text(
@@ -46,7 +56,10 @@ class _InstructionState extends State<Instruction> {
     Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text('Learn Something New!'),
+        Text(
+          'Learn Something New!',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         Text(
             '4.1 Hooray! After you scan, the game will tell you what the object is.'),
         Text(
@@ -56,7 +69,10 @@ class _InstructionState extends State<Instruction> {
     Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text('Get Your Rewards!'),
+        Text(
+          'Get Your Rewards!',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         Text(
             '5.1 Each time you find and scan something, you earn points or fun avatar!'),
         Text(
@@ -86,84 +102,170 @@ class _InstructionState extends State<Instruction> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text('INSTRUCTION'),
-          Text(
-              textAlign: TextAlign.center,
-              'Hey there, little explorer! Are you ready for a super fun game? '
-              'Let’s go on a treasure hunt to find and learn about special things around you! '
-              'Here’s how to play:'),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Container(
-              height: 400,
-              decoration: BoxDecoration(
-                color: Colors.red,
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) => Home(),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    child: PageView.builder(
-                      controller: _pageController,
-                      onPageChanged: (index) {
-                        setState(() {
-                          _currentPage = index;
-                        });
-                      },
-                      itemCount: _instructions.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: _instructions[index],
-                        );
-                      },
+            );
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            size: 30,
+            color: Colors.black,
+          ),
+          //replace with our own icon data.
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Container(
+                height: 180,
+                decoration: BoxDecoration(
+                  // gradient: LinearGradient(
+                  //   colors: [Color(0xFF68C2E7), Color(0xFFB3E6D6)],
+                  //   begin: Alignment.topCenter,
+                  //   end: Alignment.bottomCenter,
+                  // ),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 7,
+                      offset: Offset(0, 3),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  ],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _currentPage != 4
-                          ? IconButton(
-                              onPressed: _previousPage,
-                              icon: Icon(Icons.arrow_back),
-                            )
-                          : SizedBox(),
-                      _currentPage != 4
-                          ? Text(' ${_currentPage + 1}')
-                          : TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (_) => Randomize(),
-                                  ),
-                                );
-                              },
-                              child: Text("Let's Find")),
-                      _currentPage != 4
-                          ? IconButton(
-                              onPressed: _nextPage,
-                              icon: Icon(Icons.arrow_forward),
-                            )
-                          : SizedBox(),
+                      Text(
+                        textAlign: TextAlign.center,
+                        'Object Scanning Instruction',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.normal),
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Colors.black,
+                      ),
+                      Text(
+                          textAlign: TextAlign.center,
+                          'Hey there, little explorer! Are you ready for a super fun game? '
+                          'Let’s go on a treasure hunt to find and learn about special things around you! '
+                          'Here’s how to play:'),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-          ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (_) => Randomize(),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Container(
+                height: 300,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF68C2E7), Color(0xFFB3E6D6)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
                   ),
-                );
-              },
-              child: Text('Skip instruction'))
-        ],
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 7,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  // mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      child: PageView.builder(
+                        controller: _pageController,
+                        onPageChanged: (index) {
+                          setState(() {
+                            _currentPage = index;
+                          });
+                        },
+                        itemCount: _instructions.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: _instructions[index],
+                          );
+                        },
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _currentPage != 4
+                            ? IconButton(
+                                onPressed: _previousPage,
+                                icon: Icon(Icons.arrow_back),
+                              )
+                            : SizedBox(),
+                        _currentPage != 4
+                            ? Text(' ${_currentPage + 1}')
+                            : TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (_) => Randomize(),
+                                    ),
+                                  );
+                                },
+                                child: Text("Let's Find")),
+                        _currentPage != 4
+                            ? IconButton(
+                                onPressed: _nextPage,
+                                icon: Icon(Icons.arrow_forward),
+                              )
+                            : SizedBox(),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) => Randomize(),
+                      ),
+                    );
+                  },
+                  child: Text('Skip instruction'),
+                ),
+                Image.asset(
+                  "assets/insideApp/scanning/mascot.png",
+                  height: 130,
+                  width: 130,
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

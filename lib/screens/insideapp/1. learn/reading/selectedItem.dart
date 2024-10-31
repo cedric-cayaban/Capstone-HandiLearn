@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -64,8 +65,9 @@ class _SelectedItemState extends State<SelectedItem> {
   }
 
   void _startListening() {
-    final lessonProvider = Provider.of<LessonProvider>(context,
-        listen: false); // Get provider instance
+    final lessonProvider = Provider.of<LessonProvider>(context, listen: false);
+
+    // Get provider instance
 
     print('Starting to listen');
     _speech.listen(
@@ -84,6 +86,8 @@ class _SelectedItemState extends State<SelectedItem> {
                 updateLesson(lessonProvider); // Pass lessonProvider instance
               }
               _dialogShown = true; // Set flag to prevent multiple dialogs
+              Navigator.of(context).pop();
+
               _showSuccessDialog();
             } else if (result.recognizedWords.toLowerCase() ==
                     widget.lesson.character.toLowerCase() &&
@@ -92,9 +96,13 @@ class _SelectedItemState extends State<SelectedItem> {
                 updateLesson(lessonProvider);
               }
               _dialogShown = true; // Set flag here as well
+              Navigator.of(context).pop();
+
               _showSuccessDialog();
             } else {
               _dialogShown = true; // Set flag to prevent multiple dialogs
+              Navigator.of(context).pop();
+
               _showFailedDialog();
             }
           }
@@ -131,56 +139,70 @@ class _SelectedItemState extends State<SelectedItem> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset('assets/loginRegister/verified.png'),
+              Image.asset('assets/insideApp/learnReading/read.gif'),
               SizedBox(height: 5),
               Text(
-                'Congratulations',
+                'Great Job',
                 style: TextStyle(fontSize: 30),
               ),
-              Text('You got it right!'),
-            ],
-          ),
-          actions: [
-            Container(
-              child: Material(
-                borderRadius: BorderRadius.circular(10),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  onTap: () async {
-                    Navigator.pop(context);
-                    _dialogShown = false; // Reset flag when dialog is dismissed
-
-                    var nextLesson = widget.forNextLesson[widget.index + 1];
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => SelectedItem(
-                        lessonField: widget.lessonField,
-                        characterDone: updatedCharacterDone,
-                        lesson: nextLesson,
-                        index: widget.index + 1,
-                        forNextLesson: widget.forNextLesson,
-                      ),
-                    ));
-                  },
-                  child: Container(
-                    height: 45,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Color(0xFF10E119), Color(0xFF18991E)],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Text(
-                      'Okay',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                      _dialogShown = false;
+                    },
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 70,
+                          width: 70,
+                          child: Image.asset(
+                              'assets/insideApp/learnReading/try again.png'),
+                        ),
+                        Text(
+                          'Try Again',
+                          style: TextStyle(fontSize: 14),
+                        )
+                      ],
                     ),
                   ),
-                ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                      _dialogShown = false;
+
+                      var nextLesson = widget.forNextLesson[widget.index + 1];
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => SelectedItem(
+                          lessonField: widget.lessonField,
+                          characterDone: updatedCharacterDone,
+                          lesson: nextLesson,
+                          index: widget.index + 1,
+                          forNextLesson: widget.forNextLesson,
+                        ),
+                      ));
+                    },
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 70,
+                          width: 70,
+                          child: Image.asset(
+                              'assets/insideApp/learnReading/next.png'),
+                        ),
+                        Text(
+                          'Next Letter',
+                          style: TextStyle(fontSize: 14),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
@@ -194,45 +216,30 @@ class _SelectedItemState extends State<SelectedItem> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset('assets/loginRegister/notverified.png'),
+              Image.asset('assets/insideApp/learnReading/sorry.gif'),
               SizedBox(height: 5),
-              Text(
-                'Try Again',
-                style: TextStyle(fontSize: 30),
-              ),
-              Text("You're almost there!"),
-            ],
-          ),
-          actions: [
-            Container(
-              child: Material(
-                borderRadius: BorderRadius.circular(10),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  onTap: () async {
-                    Navigator.pop(context);
-                    _dialogShown = false; // Reset flag when dialog is dismissed
-                  },
-                  child: Container(
-                    height: 45,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Color(0xFF10E119), Color(0xFF18991E)],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                  _dialogShown = false;
+                },
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 70,
+                      width: 70,
+                      child:
+                          Image.asset('assets/insideApp/learnReading/next.png'),
                     ),
-                    child: const Text(
-                      'Okay',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    ),
-                  ),
+                    Text(
+                      'Try Again',
+                      style: TextStyle(fontSize: 14),
+                    )
+                  ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
@@ -249,6 +256,61 @@ class _SelectedItemState extends State<SelectedItem> {
     }
   }
 
+  void turnToSpeak() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(Icons.backspace_rounded),
+                    ),
+                  ),
+                  Positioned(
+                    child: Container(
+                      height: 300,
+                      // decoration: BoxDecoration(color: Colors.red),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _isListening
+                                    ? _stopListening()
+                                    : _startListening();
+                              });
+                            },
+                            icon: Icon(
+                              Icons.mic_none,
+                              size: 50,
+                              color: _isListening ? Colors.green : Colors.red,
+                            ),
+                          ),
+                          Text("It's your turn to say it")
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // final lessonProvider = Provider.of<LessonProvider>(context);
@@ -256,7 +318,7 @@ class _SelectedItemState extends State<SelectedItem> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: Text("Selected Item"),
+        title: Text("Selected Letter"),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -275,6 +337,7 @@ class _SelectedItemState extends State<SelectedItem> {
           ),
         ),
         child: Stack(
+          alignment: Alignment.center,
           children: [
             Positioned(
               top: MediaQuery.of(context).size.height * 0.35,
@@ -291,43 +354,27 @@ class _SelectedItemState extends State<SelectedItem> {
             ),
             Positioned(
               bottom: 160,
-              right: 80,
-              child: Container(
-                height: 70,
-                width: 70,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.black),
-                ),
-                child: IconButton(
-                  onPressed: sayTheSound,
-                  icon: Icon(
-                    Icons.repeat,
-                    size: 50,
+              // right: 80,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      // sayTheSound();
+                      turnToSpeak();
+                    },
+                    child: Image.asset(
+                        "assets/insideApp/learnReading/Speak Button.png"),
                   ),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 160,
-              left: 80,
-              child: Container(
-                height: 70,
-                width: 70,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.black),
-                ),
-                child: IconButton(
-                  onPressed: _isListening ? _stopListening : _startListening,
-                  icon: Icon(
-                    Icons.mic_none,
-                    size: 50,
-                    color: _isListening
-                        ? Colors.green
-                        : Colors.red, // Change color based on state
+                  Gap(30),
+                  GestureDetector(
+                    onTap: () {
+                      sayTheSound();
+                    },
+                    child: Image.asset(
+                        "assets/insideApp/learnReading/Repeat Button.png"),
                   ),
-                ),
+                ],
               ),
             ),
           ],
