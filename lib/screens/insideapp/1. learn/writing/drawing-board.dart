@@ -733,30 +733,31 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             //         lessonNumber: widget.lessonNumber)));
                           },
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          //SCAN BUTTON
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 30.0,
-                                  height: 35.0,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape
-                                        .circle, // Makes the container circular
+                        if (widget.lesson.type == 'word')
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            //SCAN BUTTON
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: 30.0,
+                                    height: 35.0,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape
+                                          .circle, // Makes the container circular
+                                    ),
+                                    child: Image.asset(
+                                      'assets/insideApp/learnWriting/components/scan.png',
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                  child: Image.asset(
-                                    'assets/insideApp/learnWriting/components/scan.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                const Text('Scan'),
-                              ],
+                                  const Text('Scan'),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
                       ],
                     ),
                     Expanded(
