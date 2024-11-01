@@ -1,13 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart';
+import 'package:test_drawing/provider/progress_provider.dart';
+import 'package:test_drawing/screens/insideapp/5.%20progress/categoryList.dart';
 import 'package:test_drawing/screens/insideapp/5.%20progress/categoryProgress.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';
 
 class ProgressScreen extends StatefulWidget {
-  const ProgressScreen({super.key});
+  ProgressScreen({super.key});
 
   @override
   State<ProgressScreen> createState() => _ProgressScreenState();
@@ -15,9 +20,25 @@ class ProgressScreen extends StatefulWidget {
 
 class _ProgressScreenState extends State<ProgressScreen> {
   @override
+  List<String> categoryNames = [
+    'Letters',
+    'Numbers',
+    'Cursives',
+    'Words',
+  ];
+
+  List<Color> categoryColor = [
+    Color(0xFFFFC107), // Bright Amber Yellow
+    Color(0xFF00BFAE), // Bright Blue-Green (Teal)
+    Color(0xFF2196F3), // Bright Blue
+    Color(0xFFF44336), // Bright Red
+  ];
+
+  String userId = FirebaseAuth.instance.currentUser!.uid;
   Widget build(BuildContext context) {
     double spacer = MediaQuery.of(context).size.height * 0.02;
-
+    String profileId = Provider.of<ProgressProvider>(context).profileId;
+    String lessonId = Provider.of<ProgressProvider>(context).lessonId;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -64,15 +85,15 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     Text(
                       'Progress Tracking',
                       style: GoogleFonts.poppins(
-                        fontSize: 22,
+                        fontSize: 27,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                     Text(
                       "View your child's Progress",
                       style: GoogleFonts.poppins(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -80,7 +101,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
               ),
               // TOTAL PROGRESS
               Positioned(
-                top: MediaQuery.of(context).size.height * 0.28,
+                top: MediaQuery.of(context).size.height * 0.29,
                 child: Card(
                   elevation: 4,
                   child: SizedBox(
@@ -96,7 +117,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           Text(
                             "Total Progress",
                             style: GoogleFonts.poppins(
-                              fontSize: 15,
+                              fontSize: 16,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
@@ -108,20 +129,93 @@ class _ProgressScreenState extends State<ProgressScreen> {
                             indent: 0,
                           ),
                           const Gap(15),
-                          LinearPercentIndicator(
-                            percent: 0.45,
-                            animation: true,
-                            animationDuration: 900,
-                            backgroundColor: Colors.grey.shade300,
-                            linearGradient: const LinearGradient(
-                              colors: [
-                                Color(0xFFFFFF00),
-                                Color(0xFF00FF00),
-                              ],
-                            ),
-                            leading: Text('%'),
-                            lineHeight: 17,
-                            barRadius: Radius.circular(10),
+                          StreamBuilder<DocumentSnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(userId)
+                                .collection('profiles')
+                                .doc(profileId)
+                                .collection('LessonsFinished')
+                                .doc(lessonId)
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return LinearPercentIndicator(
+                                  percent: 0,
+                                  animation: true,
+                                  animationDuration: 900,
+                                  backgroundColor: Colors.blueGrey.shade100,
+                                  linearGradient: const LinearGradient(
+                                    colors: [
+                                      Color(0xFFFFFF00),
+                                      Color(0xFF00FF00),
+                                    ],
+                                  ),
+                                  leading: Text('0%'),
+                                  lineHeight: 17,
+                                  barRadius: Radius.circular(10),
+                                ); // Loading indicator
+                              }
+
+                              if (!snapshot.hasData || !snapshot.data!.exists) {
+                                return Center(
+                                    child: Text('Document does not exist'));
+                              }
+
+                              // Variables to accumulate progress and totals for each category
+                              double totalProgressValue = 0.0;
+                              double totalExpectedValue = 0.0;
+
+                              for (int categoryIndex = 0;
+                                  categoryIndex < categoryList.length;
+                                  categoryIndex++) {
+                                double categoryProgressValue = 0.0;
+                                double categoryExpectedValue = 0.0;
+
+                                for (var progressItem
+                                    in categoryList[categoryIndex]) {
+                                  // Fetch current progress from Firestore for each Progress item
+                                  double progress = double.parse(
+                                      snapshot.data![progressItem.name] ?? '0');
+                                  categoryProgressValue += progress;
+                                  categoryExpectedValue += progressItem.total;
+                                }
+
+                                // Accumulate for total progress
+                                totalProgressValue += categoryProgressValue;
+                                totalExpectedValue += categoryExpectedValue;
+                              }
+
+                              // Calculate overall progress as the ratio of total progress value to total expected value
+                              double totalProgress = totalExpectedValue == 0
+                                  ? 0
+                                  : totalProgressValue / totalExpectedValue;
+
+                              return LinearPercentIndicator(
+                                percent: totalProgress,
+                                animation: true,
+                                animationDuration: 900,
+                                backgroundColor: Colors.grey.shade300,
+                                linearGradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFFFFFF00),
+                                    Color(0xFF00FF00),
+                                  ],
+                                ),
+                                leading: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    '${(totalProgress * 100).toStringAsFixed(0)}%',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                lineHeight: 23,
+                                barRadius: Radius.circular(20),
+                              );
+                            },
                           )
                         ],
                       ),
@@ -150,34 +244,148 @@ class _ProgressScreenState extends State<ProgressScreen> {
                               onTap: () {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                    builder: (context) => CategoryProgress(),
+                                    builder: (context) => CategoryProgress(
+                                      index: index,
+                                      categoryName: categoryNames[index],
+                                      categoryColor: categoryColor[index],
+                                    ),
                                   ),
                                 );
                               },
-                              child: CircularPercentIndicator(
-                                percent: 0.25,
-                                animation: true,
-                                animationDuration: 900,
-                                radius:
-                                    MediaQuery.of(context).size.height * 0.09,
-                                lineWidth: 13,
-                                center: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius:
-                                      MediaQuery.of(context).size.height * 0.07,
-                                  child: Text(
-                                    '25%',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                                progressColor: Colors.red,
-                                backgroundColor: Colors.grey.shade300,
-                                circularStrokeCap: CircularStrokeCap.round,
-                              ),
+                              child: StreamBuilder<DocumentSnapshot>(
+                                  stream: FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(userId)
+                                      .collection('profiles')
+                                      .doc(profileId)
+                                      .collection('LessonsFinished')
+                                      .doc(lessonId)
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return CircularPercentIndicator(
+                                        percent: 0,
+                                        animation: true,
+                                        animationDuration: 900,
+                                        radius:
+                                            MediaQuery.of(context).size.height *
+                                                0.09,
+                                        lineWidth: 13,
+                                        center: CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          radius: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.07,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              const Gap(12),
+                                              const Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 8),
+                                                child: Text(
+                                                  '0%',
+                                                  style: TextStyle(
+                                                    fontSize: 26,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(
+                                                categoryNames[index],
+                                                style: const TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.blueGrey,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        progressColor: categoryColor[index],
+                                        backgroundColor:
+                                            Colors.blueGrey.shade100,
+                                        circularStrokeCap:
+                                            CircularStrokeCap.round,
+                                      );
+                                    }
+
+                                    double totalPercent = 0.0;
+
+                                    for (var progressItem
+                                        in categoryList[index]) {
+                                      String fieldName = progressItem.name;
+                                      double total = progressItem.total;
+
+                                      // Fetch the current progress for this specific item from Firebase
+                                      String progressValueStr = snapshot
+                                              .data![fieldName]
+                                              ?.toString() ??
+                                          '0';
+                                      double currentProgress =
+                                          double.parse(progressValueStr);
+
+                                      // Calculate the individual progress percent
+                                      double itemPercent =
+                                          currentProgress / total;
+                                      totalPercent += itemPercent;
+                                    }
+
+                                    // Average percentage for category progress
+                                    double categoryProgress = totalPercent /
+                                        categoryList[index].length;
+
+                                    return CircularPercentIndicator(
+                                      percent: categoryProgress,
+                                      animation: true,
+                                      animationDuration: 900,
+                                      radius:
+                                          MediaQuery.of(context).size.height *
+                                              0.09,
+                                      lineWidth: 13,
+                                      center: CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        radius:
+                                            MediaQuery.of(context).size.height *
+                                                0.07,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const Gap(12),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8),
+                                              child: Text(
+                                                '${(categoryProgress * 100).toStringAsFixed(0)}%',
+                                                style: TextStyle(
+                                                  fontSize: 26,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              categoryNames[index],
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.blueGrey.shade900,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      progressColor: categoryColor[index],
+                                      backgroundColor: Colors.blueGrey.shade100,
+                                      circularStrokeCap:
+                                          CircularStrokeCap.round,
+                                    );
+                                  }),
                             ),
                             const SizedBox(height: 8),
                           ],

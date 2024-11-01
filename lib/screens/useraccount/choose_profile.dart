@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:test_drawing/data/userAccount.dart';
+import 'package:test_drawing/provider/progress_provider.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';
 import 'package:test_drawing/screens/useraccount/create_profile.dart';
 import 'package:test_drawing/screens/useraccount/enterPin.dart';
@@ -216,6 +218,8 @@ class _ChooseProfileState extends State<ChooseProfile> {
                                         id = profileId;
                                         lessonid = items[index]['lesson id'];
                                         print(profileId);
+                                        Provider.of<ProgressProvider>(context, listen: false).setProfileId(profileId);
+                                        Provider.of<ProgressProvider>(context, listen: false).setLessonId(lessonid);
                                         // String profileAge = items[index]['age'];
 
                                         Navigator.of(context).push(

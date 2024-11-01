@@ -18,6 +18,7 @@ class UserProvider extends ChangeNotifier {
     name = profileDoc.get('name');
     age = int.parse(profileDoc.get('age'));
     pin = profileDoc.get('pin');
+    
     notifyListeners();
   }
 }
