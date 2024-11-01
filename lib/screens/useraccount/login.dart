@@ -53,7 +53,10 @@ class _LoginScreenState extends State<LoginScreen> {
             // Foreground Content
             SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.only(top: 110, left: 15, right: 15),
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.17,
+                    left: 15,
+                    right: 15),
                 child: Column(
                   children: [
                     Image.asset(

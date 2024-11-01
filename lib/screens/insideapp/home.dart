@@ -115,7 +115,7 @@ class _HomeState extends State<Home> {
                 top: MediaQuery.of(context).size.height * 0.28,
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.77,
-                  height: MediaQuery.of(context).size.height * 0.2,
+                  height: MediaQuery.of(context).size.height * 0.19,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -137,7 +137,7 @@ class _HomeState extends State<Home> {
                         const Text(
                           'Progress',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
+                              fontWeight: FontWeight.bold, fontSize: 20),
                         ),
                         const Gap(5),
                         InkWell(
@@ -153,7 +153,7 @@ class _HomeState extends State<Home> {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Container(
-                              height: 80,
+                              height: MediaQuery.of(context).size.height * 0.1,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                   image: AssetImage(
@@ -232,7 +232,7 @@ class _HomeState extends State<Home> {
                       child: const Text(
                         'Activities',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                            fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                     ),
                     const Gap(5),
@@ -257,7 +257,7 @@ class _HomeState extends State<Home> {
                                     ),
                                   );
                                 },
-                                child: const Column(
+                                child: Column(
                                   children: [
                                     PhysicalModel(
                                       color: Colors.transparent,
@@ -267,11 +267,18 @@ class _HomeState extends State<Home> {
                                       child: CircleAvatar(
                                         backgroundImage: AssetImage(
                                             'assets/insideApp/learn.png'),
-                                        radius: 60,
+                                        radius:
+                                            MediaQuery.of(context).size.height *
+                                                0.069,
                                       ),
                                     ),
                                     Gap(10),
-                                    Text('Learn')
+                                    Text(
+                                      'Learn',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400),
+                                    )
                                   ],
                                 ),
                               ),
@@ -285,7 +292,7 @@ class _HomeState extends State<Home> {
                                         ),
                                       );
                                     },
-                                    child: const PhysicalModel(
+                                    child: PhysicalModel(
                                       color: Colors.transparent,
                                       elevation:
                                           8.0, // Adjust elevation as needed
@@ -293,12 +300,19 @@ class _HomeState extends State<Home> {
                                       child: CircleAvatar(
                                         backgroundImage: AssetImage(
                                             'assets/insideApp/scan.png'),
-                                        radius: 60,
+                                        radius:
+                                            MediaQuery.of(context).size.height *
+                                                0.069,
                                       ),
                                     ),
                                   ),
                                   const Gap(10),
-                                  const Text('Scan')
+                                  const Text(
+                                    'Scan',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400),
+                                  )
                                 ],
                               ),
                             ],
@@ -317,7 +331,7 @@ class _HomeState extends State<Home> {
                                         ),
                                       );
                                     },
-                                    child: const PhysicalModel(
+                                    child: PhysicalModel(
                                       color: Colors.transparent,
                                       elevation:
                                           8.0, // Adjust elevation as needed
@@ -325,12 +339,19 @@ class _HomeState extends State<Home> {
                                       child: CircleAvatar(
                                         backgroundImage: AssetImage(
                                             'assets/insideApp/stories.png'),
-                                        radius: 60,
+                                        radius:
+                                            MediaQuery.of(context).size.height *
+                                                0.069,
                                       ),
                                     ),
                                   ),
                                   const Gap(10),
-                                  const Text('Short Stories')
+                                  const Text(
+                                    'Short Stories',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400),
+                                  )
                                 ],
                               ),
                               Column(
@@ -343,7 +364,7 @@ class _HomeState extends State<Home> {
                                         ),
                                       );
                                     },
-                                    child: const PhysicalModel(
+                                    child: PhysicalModel(
                                       color: Colors.transparent,
                                       elevation:
                                           8.0, // Adjust elevation as needed
@@ -351,12 +372,19 @@ class _HomeState extends State<Home> {
                                       child: CircleAvatar(
                                         backgroundImage: AssetImage(
                                             'assets/insideApp/games.png'),
-                                        radius: 60,
+                                        radius:
+                                            MediaQuery.of(context).size.height *
+                                                0.069,
                                       ),
                                     ),
                                   ),
                                   const Gap(10),
-                                  const Text('Mini Games')
+                                  const Text(
+                                    'Mini Games',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400),
+                                  )
                                 ],
                               ),
                             ],
