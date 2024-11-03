@@ -77,19 +77,6 @@ class _HomeState extends State<Home> {
     //double spacer = MediaQuery.of(context).size.height * 0.1;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (_) => const ChooseProfile(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.arrow_back_ios)),
-        ),
         extendBodyBehindAppBar: true,
         body: Container(
           height: double.infinity,
@@ -104,12 +91,30 @@ class _HomeState extends State<Home> {
             alignment: Alignment.center,
             children: [
               Positioned(
+                top: 20,
+                left: 10,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) => const ChooseProfile(),
+                      ),
+                    );
+                  },
+                  child: Image.asset(
+                      height: MediaQuery.of(context).size.height * 0.045,
+                      "assets/insideApp/close.png"),
+                ),
+              ),
+              Positioned(
                 top: MediaQuery.of(context).size.height * 0.05,
                 child: Column(
                   children: [
                     Text(
                       'Welcome, ${userProvider.name}',
-                      style: const TextStyle(fontSize: 24),
+                      style: const TextStyle(
+                        fontSize: 26,
+                      ),
                     ),
                     Image.asset(
                       height: 180,
