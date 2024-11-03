@@ -115,7 +115,8 @@ class _OnBoardingState extends State<OnBoarding> {
                         style: TextStyle(color: Colors.white),
                       ),
                       style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(Colors.orange),
+                        backgroundColor:
+                            MaterialStatePropertyAll(Colors.orange),
                       ),
                     ),
                   )
@@ -133,8 +134,8 @@ class _OnBoardingState extends State<OnBoarding> {
                       color: Colors.white,
                       style: ButtonStyle(
                           backgroundColor:
-                              WidgetStatePropertyAll(Colors.orange),
-                          iconSize: WidgetStatePropertyAll(40)),
+                              MaterialStatePropertyAll(Colors.orange),
+                          iconSize: MaterialStatePropertyAll(40)),
                     ),
                   ),
             Positioned(

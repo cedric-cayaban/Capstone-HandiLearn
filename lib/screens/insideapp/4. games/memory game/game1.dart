@@ -1,31 +1,41 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/game_utils.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/info_card.dart'; // Import your game logic
+import 'package:test_drawing/screens/insideapp/4.%20games/memory%20game/game_utils.dart';
 
-class Game1 extends StatefulWidget {
-  const Game1({Key? key}) : super(key: key);
+class MemoryGame extends StatefulWidget {
+  const MemoryGame({Key? key, required this.difficulty}) : super(key: key);
+
+  final String difficulty;
 
   @override
-  _Game1State createState() => _Game1State();
+  _MemoryGameState createState() => _MemoryGameState();
 }
 
-class _Game1State extends State<Game1> {
+class _MemoryGameState extends State<MemoryGame> {
   TextStyle whiteText = TextStyle(color: Colors.white);
-  bool hideTest = false;
-  Game _game = Game();
-
+  late Game _game;
   int tries = 0;
   int score = 0;
   int flag = 0;
   bool condition = false;
-  bool canTap = true; // This flag prevents more taps until comparison is done
+  bool canTap = true;
+  late int gridSize;
 
   @override
   void initState() {
     super.initState();
-    _game.initGame(); // Initialize the game
+    _initializeGame();
+  }
+
+  void _initializeGame() {
+    gridSize = widget.difficulty == 'easy'
+        ? 2
+        : widget.difficulty == 'normal'
+            ? 3
+            : 4;
+    _game = Game(gridSize: gridSize);
+    _game.initGame();
   }
 
   @override
@@ -62,9 +72,7 @@ class _Game1State extends State<Game1> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 24.0,
-            ),
+            SizedBox(height: 24.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,8 +87,7 @@ class _Game1State extends State<Game1> {
               child: GridView.builder(
                 itemCount: _game.gameImg!.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount:
-                      4, // Adjust this based on screen size if needed
+                  crossAxisCount: gridSize,
                   crossAxisSpacing: 16.0,
                   mainAxisSpacing: 16.0,
                 ),
@@ -91,21 +98,20 @@ class _Game1State extends State<Game1> {
                         ? () async {
                             setState(() {
                               tries++;
-                              _game.gameImg![index] = _game.cards_list[index];
+                              _game.gameImg![index] = _game.cardsList[index];
                               _game.matchCheck
-                                  .add({index: _game.cards_list[index]});
+                                  .add({index: _game.cardsList[index]});
                             });
 
                             if (_game.matchCheck.length == 2) {
                               setState(() {
-                                canTap =
-                                    false; // Prevent further taps while checking
+                                canTap = false;
                               });
 
                               if (_game.matchCheck[0].values.first ==
                                   _game.matchCheck[1].values.first) {
                                 flag++;
-                                if (flag == 6) {
+                                if (flag == _game.matchPairs) {
                                   condition = true;
                                 }
                                 score += 100;
@@ -115,20 +121,19 @@ class _Game1State extends State<Game1> {
                                     Duration(milliseconds: 500));
                                 setState(() {
                                   _game.gameImg![_game.matchCheck[0].keys
-                                      .first] = _game.hiddenCardpath;
+                                      .first] = _game.hiddenCardPath;
                                   _game.gameImg![_game.matchCheck[1].keys
-                                      .first] = _game.hiddenCardpath;
+                                      .first] = _game.hiddenCardPath;
                                   _game.matchCheck.clear();
                                 });
                               }
 
                               setState(() {
-                                canTap =
-                                    true; // Re-enable tapping after the delay
+                                canTap = true;
                               });
                             }
                           }
-                        : null, // Disable taps when checking for a match
+                        : null,
                     child: Container(
                       padding: EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
@@ -164,4 +169,32 @@ class _Game1State extends State<Game1> {
       ),
     );
   }
+}
+
+Widget info_card(String title, String info) {
+  return Expanded(
+    child: Container(
+      margin: EdgeInsets.all(26.0),
+      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 26.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+      ),
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 22.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 6.0),
+          Text(
+            info,
+            style: TextStyle(fontSize: 34.0, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    ),
+  );
 }
