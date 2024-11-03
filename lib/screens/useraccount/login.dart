@@ -118,10 +118,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             'Forgot Password?',
                             style: TextStyle(
-                              color: Colors.red,
+                              //color: Colors.red,
                               fontSize: 16,
                             ),
                           ),
@@ -169,11 +169,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (_) => RegisterScreen()));
                             },
-                            child: const Text(
+                            child: Text(
                               'Sign up',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Color(0xFF41A345),
+                                color: Colors.blueAccent.shade700,
                               ),
                             ),
                           ),
