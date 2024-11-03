@@ -92,13 +92,15 @@ flutter:
     - assets/insideApp/learnReading/
     - assets/insideApp/learnWriting/components/
     - assets/insideApp/learnWriting/cursive_letters/capital/
+    - assets/insideApp/learnWriting/cursive_letters/capital/hints/
     - assets/insideApp/learnWriting/cursive_letters/small/
-    - assets/insideApp/learnWriting/cursive_letters/hints/
+    - assets/insideApp/learnWriting/cursive_letters/small/hints/
     - assets/insideApp/learnWriting/numbers/
     - assets/insideApp/learnWriting/numbers/hints/
     - assets/insideApp/learnWriting/standard_letters/capital/
+    - assets/insideApp/learnWriting/standard_letters/capital/hints/
     - assets/insideApp/learnWriting/standard_letters/small/
-    - assets/insideApp/learnWriting/standard_letters/hints/
+    - assets/insideApp/learnWriting/standard_letters/small/hints/
     - assets/insideApp/learnWriting/words/cursive/
     - assets/insideApp/learnWriting/words/standard/
     - assets/insideApp/scanning/objects/

@@ -5,13 +5,7 @@ class ProgressProvider with ChangeNotifier {
   String _lessonId = "";
   String get profileId => _profileId;
   String get lessonId => _lessonId;
-  
-  //  Map<String, List<double>> _categoryProgress = {
-  //   'standard': [],
-  //   'numbers': [],
-  //   'cursive': [],
-  //   'word': [],
-  // };
+  double _totalProgress = 0.0; // 
 
   void setProfileId(String id) {
     _profileId = id;
@@ -20,6 +14,11 @@ class ProgressProvider with ChangeNotifier {
 
   void setLessonId(String id) {
     _lessonId = id;
+    notifyListeners();
+  }
+
+   void setTotalProgress(double progress) {
+    _totalProgress = progress;
     notifyListeners();
   }
 

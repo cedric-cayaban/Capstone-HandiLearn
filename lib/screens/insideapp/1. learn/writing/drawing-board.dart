@@ -12,6 +12,7 @@ import 'package:image/image.dart' as img;
 import 'package:provider/provider.dart';
 import 'package:test_drawing/objects/lesson.dart';
 import 'package:test_drawing/provider/lesson_provider.dart';
+import 'package:test_drawing/screens/insideapp/1.%20learn/activity_screen.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/character_selection.dart';
 import 'package:tflite_v2/tflite_v2.dart';
 import 'dart:ui' as ui;
@@ -172,24 +173,34 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             'assets/insideApp/learnWriting/components/reload.png'),
                       ),
                     ),
-                    if (isMatch &&
-                        widget.index < widget.forNextLesson.length - 1)
+                    if (isMatch)
                       GestureDetector(
                         onTap: () {
-                          // updateLesson(lessonProvider);
-                          Navigator.of(context).pop();
-                          var nextLesson =
-                              widget.forNextLesson[widget.index + 1];
-                          Navigator.of(context)
-                              .pushReplacement(MaterialPageRoute(
-                            builder: (context) => DrawingScreen(
-                              lessonNumber: widget.lessonNumber,
-                              index: widget.index + 1,
-                              lesson: nextLesson,
-                              forNextLesson: widget.forNextLesson,
-                              lessonField: widget.lessonField,
-                            ),
-                          ));
+                          if (widget.index < widget.forNextLesson.length - 1) {
+                            Navigator.of(context).pop();
+                            var nextLesson =
+                                widget.forNextLesson[widget.index + 1];
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (context) => DrawingScreen(
+                                lessonNumber: widget.lessonNumber,
+                                index: widget.index + 1,
+                                lesson: nextLesson,
+                                forNextLesson: widget.forNextLesson,
+                                lessonField: widget.lessonField,
+                              ),
+                            ));
+                          } else {
+                            Navigator.of(context).pop();
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (context) => ActivityScreen(
+                                  lesson: widget.forNextLesson,
+                                  lessonTitle:
+                                      lessonTitles[widget.lessonNumber],
+                                  lessonNumber: widget.lessonNumber),
+                            ));
+                          }
                         },
                         child: SizedBox(
                           height: 70,
@@ -197,7 +208,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                           child: Image.asset(
                               'assets/insideApp/learnWriting/components/arrow-forward.png'),
                         ),
-                      )
+                      ),
                   ],
                 )
               ],
@@ -234,9 +245,11 @@ class _DrawingScreenState extends State<DrawingScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
         title: Text(
-          'How to Write ${widget.lesson.character}',
-          style: const TextStyle(
-            fontSize: 25,
+          widget.lesson.type == 'cursive'
+              ? 'How to Write Cursive ${widget.lesson.character}'
+              : 'How to Write ${widget.lesson.character}',
+          style: TextStyle(
+            fontSize: widget.lesson.type == 'cursive' ? 20 : 25,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -262,13 +275,14 @@ class _DrawingScreenState extends State<DrawingScreen> {
                     ),
                   ),
                   const Gap(20),
-                  Text(
-                    'Step ${index + 1}',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
+                  if (widget.lesson.type != 'cursive')
+                    Text(
+                      'Step ${index + 1}',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),

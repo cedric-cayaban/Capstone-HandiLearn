@@ -220,7 +220,7 @@ class _ChooseProfileState extends State<ChooseProfile> {
                                         print(profileId);
                                         Provider.of<ProgressProvider>(context, listen: false).setProfileId(profileId);
                                         Provider.of<ProgressProvider>(context, listen: false).setLessonId(lessonid);
-                                        // String profileAge = items[index]['age'];
+                                        
 
                                         Navigator.of(context).push(
                                           MaterialPageRoute(

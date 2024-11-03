@@ -7,6 +7,7 @@ class UserProvider extends ChangeNotifier {
   String name = "";
   int age = 0;
   String pin = "";
+  String avatar = '';
   Future<void> fetchUserData() async {
     User user = FirebaseAuth.instance.currentUser!;
     final DocumentSnapshot profileDoc = await FirebaseFirestore.instance
@@ -18,6 +19,7 @@ class UserProvider extends ChangeNotifier {
     name = profileDoc.get('name');
     age = int.parse(profileDoc.get('age'));
     pin = profileDoc.get('pin');
+    avatar = profileDoc.get('avatar');
     
     notifyListeners();
   }
