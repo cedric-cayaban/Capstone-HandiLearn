@@ -68,7 +68,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
             alignment: Alignment.center,
             children: [
               Positioned(
-                top: MediaQuery.of(context).size.height * 0.05,
+                top: MediaQuery.of(context).size.height * 0.02,
                 right: 0,
                 child: Image.asset(
                   height: 200,
@@ -77,7 +77,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 ),
               ),
               Positioned(
-                top: MediaQuery.of(context).size.height * 0.21,
+                top: MediaQuery.of(context).size.height * 0.19,
                 left: MediaQuery.of(context).size.width * 0.05,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,7 +101,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
               ),
               // TOTAL PROGRESS
               Positioned(
-                top: MediaQuery.of(context).size.height * 0.29,
+                top: MediaQuery.of(context).size.height * 0.26,
                 child: Card(
                   elevation: 4,
                   child: SizedBox(
@@ -153,7 +153,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                     ],
                                   ),
                                   leading: Text('0%'),
-                                  lineHeight: 17,
+                                  lineHeight:
+                                      MediaQuery.of(context).size.height *
+                                          0.017,
                                   barRadius: Radius.circular(10),
                                 ); // Loading indicator
                               }
@@ -212,7 +214,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
-                                lineHeight: 23,
+                                lineHeight:
+                                    MediaQuery.of(context).size.height * 0.017,
                                 barRadius: Radius.circular(20),
                               );
                             },
@@ -225,7 +228,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
               ),
               // CATEGORY PROGRESS
               Positioned(
-                top: MediaQuery.of(context).size.height * 0.5,
+                top: MediaQuery.of(context).size.height * 0.45,
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.50,
                   width: MediaQuery.of(context).size.width,
@@ -363,8 +366,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                               child: Text(
                                                 '${(categoryProgress * 100).toStringAsFixed(0)}%',
                                                 style: TextStyle(
-                                                  fontSize: 26,
-                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w500,
                                                   color: Colors.black,
                                                 ),
                                               ),
