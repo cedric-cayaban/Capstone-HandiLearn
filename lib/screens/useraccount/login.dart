@@ -53,7 +53,10 @@ class _LoginScreenState extends State<LoginScreen> {
             // Foreground Content
             SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.only(top: 110, left: 15, right: 15),
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.17,
+                    left: 15,
+                    right: 15),
                 child: Column(
                   children: [
                     Image.asset(
@@ -115,10 +118,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             'Forgot Password?',
                             style: TextStyle(
-                              color: Colors.red,
+                              //color: Colors.red.shade700,
                               fontSize: 16,
                             ),
                           ),
@@ -166,12 +169,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (_) => RegisterScreen()));
                             },
-                            child: const Text(
+                            child: Text(
                               'Sign up',
                               style: TextStyle(
-                                fontSize: 16,
-                                color: Color(0xFF41A345),
-                              ),
+                                  fontSize: 16,
+                                  //color: Color(0xFF41A345),
+                                  color: Colors.blueAccent.shade700),
                             ),
                           ),
                         ],

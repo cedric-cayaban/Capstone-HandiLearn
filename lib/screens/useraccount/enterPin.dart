@@ -14,7 +14,7 @@ import 'package:test_drawing/screens/useraccount/create_profile.dart';
 
 class EnterPin extends StatefulWidget {
   const EnterPin({Key? key}) : super(key: key);
-
+  
   @override
   State<EnterPin> createState() => _EnterPinState();
 }
@@ -214,7 +214,7 @@ class _EnterPinState extends State<EnterPin> {
             alignment: Alignment.center,
             children: [
               Positioned(
-                top: MediaQuery.of(context).size.height * 0.38,
+                top: MediaQuery.of(context).size.height * 0.4,
                 child: Container(
                   height: 420,
                   width: MediaQuery.of(context).size.width * 0.83,

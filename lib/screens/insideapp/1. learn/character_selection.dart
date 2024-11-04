@@ -134,61 +134,59 @@ class _LetterSelectionsScreenState extends State<CharacterSelectionScreen> {
                           itemBuilder: (context, index) {
                             bool isUnlocked =
                                 index <= lessonProvider.ucharacterDone;
-                            return Stack(
-                              children: [
-                                InkWell(
-                                  onTap: isUnlocked
-                                      ? () {
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                            builder: (context) => DrawingScreen(
-                                              lessonNumber: widget.lessonNumber,
-                                              forNextLesson: widget.lesson,
-                                              lesson: widget.lesson[index],
-                                              index: index,
-                                              lessonField:
-                                                  "${widget.lessonTitle}_${widget.activity}",
-                                            ),
-                                          ));
-                                        }
-                                      : null,
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
+                            return InkWell(
+                              onTap: isUnlocked
+                                  ? () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) => DrawingScreen(
+                                          lessonNumber: widget.lessonNumber,
+                                          forNextLesson: widget.lesson,
+                                          lesson: widget.lesson[index],
+                                          index: index,
+                                          lessonField:
+                                              "${widget.lessonTitle}_${widget.activity}",
+                                        ),
+                                      ));
+                                    }
+                                  : null,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Stack(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Center(
+                                        child: Image.asset(
+                                          widget.lesson[index].imgPath,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
                                     ),
-                                    child: Stack(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Image.asset(
-                                            widget.lesson[index].imgPath,
-                                            fit: BoxFit.contain,
+                                    if (!isUnlocked)
+                                      Positioned.fill(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Colors.black.withOpacity(0.3),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          child: Center(
+                                            child: Image.asset(
+                                              'assets/insideApp/padlock.png',
+                                              width: double
+                                                  .infinity, // Adjust the size of the lock icon as needed
+                                              height: double.infinity,
+                                            ),
                                           ),
                                         ),
-                                        if (!isUnlocked)
-                                          Positioned.fill(
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black
-                                                    .withOpacity(0.3),
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                              ),
-                                              child: Center(
-                                                child: Image.asset(
-                                                  'assets/insideApp/padlock.png',
-                                                  width: double
-                                                      .infinity, // Adjust the size of the lock icon as needed
-                                                  height: double.infinity,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                      ],
-                                    ),
-                                  ),
+                                      ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             );
                           },
                         ),
