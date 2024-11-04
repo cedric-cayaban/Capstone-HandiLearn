@@ -14,6 +14,7 @@ import 'package:test_drawing/objects/lesson.dart';
 import 'package:test_drawing/provider/lesson_provider.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/activity_screen.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/character_selection.dart';
+import 'package:test_drawing/screens/insideapp/1.%20learn/lesson_screen.dart';
 import 'package:tflite_v2/tflite_v2.dart';
 import 'dart:ui' as ui;
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -145,7 +146,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                           widget.lesson.type == 'cursive word')
                       ? 120
                       : 200,
-                  width: 400,
+                  width:  400,
                 ),
                 Text(
                   isMatch ? 'Great Job!' : 'Oops, Try Again!',
@@ -180,8 +181,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             Navigator.of(context).pop();
                             var nextLesson =
                                 widget.forNextLesson[widget.index + 1];
-                            Navigator.of(context)
-                                .pushReplacement(MaterialPageRoute(
+                            Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => DrawingScreen(
                                 lessonNumber: widget.lessonNumber,
                                 index: widget.index + 1,
@@ -738,13 +738,15 @@ class _DrawingScreenState extends State<DrawingScreen> {
                               DeviceOrientation.portraitUp,
                               DeviceOrientation.portraitDown,
                             ]);
-                            Navigator.of(context).pop();
-                            // Navigator.of(context).pop();
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: (context) => CharacterSelectionScreen(
-                            //         lesson: widget.forNextLesson,
-                            //         activity: 'Writing',
-                            //         lessonNumber: widget.lessonNumber)));
+                            //Navigator.of(context).pop();
+                            //Navigator.of(context).pop();
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                builder: (context) => CharacterSelectionScreen(
+                                    lessonTitle:
+                                        lessonNames[widget.lessonNumber],
+                                    lesson: widget.forNextLesson,
+                                    activity: 'Writing',
+                                    lessonNumber: widget.lessonNumber)));
                           },
                         ),
                         if (widget.lesson.type == 'word')
@@ -844,12 +846,13 @@ class _DrawingScreenState extends State<DrawingScreen> {
                           color: Colors.black,
                         ),
                         onPressed: () {
-                          Navigator.of(context).pop();
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (context) => CharacterSelectionScreen(
-                          //         lesson: widget.forNextLesson,
-                          //         activity: 'Writing',
-                          //         lessonNumber: widget.lessonNumber)));
+                          
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                              builder: (context) => CharacterSelectionScreen(
+                                lessonTitle: lessonNames[widget.lessonNumber],
+                                  lesson: widget.forNextLesson,
+                                  activity: 'Writing',
+                                  lessonNumber: widget.lessonNumber)));
                         },
                       ),
                     ),
@@ -992,7 +995,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                                   getGuidePoints(widget.lesson.type,
                                       characterKey, canvasSize),
                                   widget.lesson.type == 'cursive'
-                                      ? 120
+                                      ? 140
                                       : 100); // Threshold
 
                               setState(() {

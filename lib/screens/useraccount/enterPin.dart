@@ -14,7 +14,7 @@ import 'package:test_drawing/screens/useraccount/create_profile.dart';
 
 class EnterPin extends StatefulWidget {
   const EnterPin({Key? key}) : super(key: key);
-  
+
   @override
   State<EnterPin> createState() => _EnterPinState();
 }
@@ -41,8 +41,8 @@ class _EnterPinState extends State<EnterPin> {
           number.toString(),
           style: const TextStyle(
             fontSize: 24,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
+            fontWeight: FontWeight.w500,
+            color: Colors.black87,
           ),
         ),
       ),
