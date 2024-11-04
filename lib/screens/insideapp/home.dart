@@ -180,7 +180,7 @@ class _HomeState extends State<Home> {
                                         child: Text(
                                           'Learn Progress',
                                           style: TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 15,
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
@@ -301,7 +301,7 @@ class _HomeState extends State<Home> {
                       child: Text(
                         'Activities',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                            fontWeight: FontWeight.bold, fontSize: 17),
                       ),
                     ),
                     const Gap(5),

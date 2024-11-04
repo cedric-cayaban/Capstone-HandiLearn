@@ -85,14 +85,14 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     Text(
                       'Progress Tracking',
                       style: GoogleFonts.poppins(
-                        fontSize: 27,
+                        fontSize: 22,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                     Text(
                       "View your child's Progress",
                       style: GoogleFonts.poppins(
-                        fontSize: 15,
+                        fontSize: 13,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

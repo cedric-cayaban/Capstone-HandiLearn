@@ -196,7 +196,7 @@ class _ChooseProfileState extends State<ChooseProfile> {
                                                   'Add profile',
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 16,
+                                                    fontSize: 14,
                                                     color: Colors.blue,
                                                   ),
                                                 ),
@@ -218,9 +218,12 @@ class _ChooseProfileState extends State<ChooseProfile> {
                                         id = profileId;
                                         lessonid = items[index]['lesson id'];
                                         print(profileId);
-                                        Provider.of<ProgressProvider>(context, listen: false).setProfileId(profileId);
-                                        Provider.of<ProgressProvider>(context, listen: false).setLessonId(lessonid);
-                                        
+                                        Provider.of<ProgressProvider>(context,
+                                                listen: false)
+                                            .setProfileId(profileId);
+                                        Provider.of<ProgressProvider>(context,
+                                                listen: false)
+                                            .setLessonId(lessonid);
 
                                         Navigator.of(context).push(
                                           MaterialPageRoute(

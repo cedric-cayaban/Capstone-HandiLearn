@@ -143,7 +143,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                   checkAsset,
                   height: (widget.lesson.type == 'word' ||
                           widget.lesson.type == 'cursive word')
-                      ? 150
+                      ? 120
                       : 200,
                   width: 400,
                 ),
@@ -992,8 +992,8 @@ class _DrawingScreenState extends State<DrawingScreen> {
                                   getGuidePoints(widget.lesson.type,
                                       characterKey, canvasSize),
                                   widget.lesson.type == 'cursive'
-                                      ? 100
-                                      : 70); // Threshold
+                                      ? 120
+                                      : 100); // Threshold
 
                               setState(() {
                                 loadPopUpModal(isMatch);
