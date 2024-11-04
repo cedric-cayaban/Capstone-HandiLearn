@@ -111,8 +111,8 @@ class _StoryState extends State<Story> {
                   right: 20,
                   child: TextButton(
                     style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(Colors.blue),
-                        elevation: WidgetStatePropertyAll(2.0)),
+                        backgroundColor: MaterialStatePropertyAll(Colors.blue),
+                        elevation: MaterialStatePropertyAll(2.0)),
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
@@ -152,9 +152,9 @@ class _StoryState extends State<Story> {
             right: 20,
             child: IconButton(
               style: ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(Colors.blue),
-                elevation: WidgetStatePropertyAll(5.0),
-                shadowColor: WidgetStatePropertyAll(Colors.black),
+                backgroundColor: MaterialStatePropertyAll(Colors.blue),
+                elevation: MaterialStatePropertyAll(5.0),
+                shadowColor: MaterialStatePropertyAll(Colors.black),
               ),
               onPressed: () {
                 repeatSound();
@@ -169,9 +169,9 @@ class _StoryState extends State<Story> {
             left: 20,
             child: IconButton(
               style: ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(Colors.blue),
-                elevation: WidgetStatePropertyAll(5.0),
-                shadowColor: WidgetStatePropertyAll(Colors.black),
+                backgroundColor: MaterialStatePropertyAll(Colors.blue),
+                elevation: MaterialStatePropertyAll(5.0),
+                shadowColor: MaterialStatePropertyAll(Colors.black),
               ),
               onPressed: () {
                 Navigator.of(context).push(

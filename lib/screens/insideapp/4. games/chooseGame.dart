@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/game1.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/memory%20game/game1.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/game2.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/sliding%20puzzle/level_selection.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/level_selection.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';
 
 class Games extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    bool isTeacher = true;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -23,67 +22,86 @@ class Games extends StatelessWidget {
               size: 30,
             ),
           ),
-          // title: Text('Choose Game'),
           centerTitle: true,
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () {
-                  // Navigate to Screen A
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => QuestionWidget(),
-                  //   ),
-                  // );
-                },
-                child: Image.asset('assets/insideApp/games/object_odyssey.png'),
-              ),
-              SizedBox(height: 20),
-              InkWell(
-                onTap: () {
-                  // Navigate to Screen B
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          QuizScreen(), // Replace with your intended screen
-                    ),
-                  );
-                },
-                child: Image.asset('assets/insideApp/games/pictoword.png'),
-              ),
-              SizedBox(height: 20),
-              InkWell(
-                onTap: () {
-                  // Navigate to Screen B
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          Game1(), // Replace with your intended screen
-                    ),
-                  );
-                },
-                child: Image.asset('assets/insideApp/games/memory_game.png'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          LevelSelectionPage(), // Replace with your intended screen
-                    ),
-                  );
-                },
-                child: Text('Puzzle'),
-              ),
-            ],
+        body: GridView.builder(
+          padding: const EdgeInsets.all(20),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, // Number of items in each row
+            crossAxisSpacing: 20, // Spacing between columns
+            mainAxisSpacing: 20, // Spacing between rows
           ),
+          itemCount: 6, // Total number of images
+          itemBuilder: (context, index) {
+            // Define each image and its tap event
+            switch (index) {
+              case 0:
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            SelectDifficulty(game: 'object_odyssey'),
+                      ),
+                    );
+                  },
+                  child:
+                      Image.asset('assets/insideApp/games/object_odyssey.png'),
+                );
+              case 1:
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            SelectDifficulty(game: 'pictoword'),
+                      ),
+                    );
+                  },
+                  child: Image.asset('assets/insideApp/games/pictoword.png'),
+                );
+              case 2:
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            SelectDifficulty(game: 'memory_game'),
+                      ),
+                    );
+                  },
+                  child: Image.asset('assets/insideApp/games/memory_game.png'),
+                );
+              case 3:
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            SelectDifficulty(game: 'sliding_game'),
+                      ),
+                    );
+                  },
+                  child: Image.asset('assets/insideApp/games/sliding_game.png'),
+                );
+              case 4:
+                return InkWell(
+                  onTap: () {},
+                  child: Image.asset('assets/insideApp/games/memory_game.png'),
+                );
+              case 5:
+                return InkWell(
+                  onTap: () {},
+                  child: Image.asset('assets/insideApp/games/memory_game.png'),
+                );
+              default:
+                return Container();
+            }
+          },
         ),
       ),
     );
