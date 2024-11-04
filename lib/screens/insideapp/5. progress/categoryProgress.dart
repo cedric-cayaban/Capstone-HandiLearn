@@ -1,22 +1,40 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart';
+import 'package:test_drawing/provider/progress_provider.dart';
+import 'package:test_drawing/screens/insideapp/5.%20progress/categoryList.dart';
 import 'package:test_drawing/screens/insideapp/5.%20progress/progressScreen.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';
 
 class CategoryProgress extends StatefulWidget {
-  const CategoryProgress({super.key});
+  CategoryProgress({
+    required this.index,
+    required this.categoryName,
+    required this.categoryColor,
+    super.key,
+  });
+
+  final int index;
+  final String categoryName;
+  final Color categoryColor;
 
   @override
   State<CategoryProgress> createState() => _CategoryProgressState();
 }
 
 class _CategoryProgressState extends State<CategoryProgress> {
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+
   @override
   Widget build(BuildContext context) {
     double spacer = MediaQuery.of(context).size.height * 0.02;
+    String profileId = Provider.of<ProgressProvider>(context).profileId;
+    String lessonId = Provider.of<ProgressProvider>(context).lessonId;
 
     return SafeArea(
       child: Scaffold(
@@ -56,15 +74,15 @@ class _CategoryProgressState extends State<CategoryProgress> {
                 ),
               ),
               Positioned(
-                top: MediaQuery.of(context).size.height * 0.21,
+                top: MediaQuery.of(context).size.height * 0.22,
                 left: MediaQuery.of(context).size.width * 0.05,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Category Name',
+                      "${widget.categoryName} Progress",
                       style: GoogleFonts.poppins(
-                        fontSize: 22,
+                        fontSize: 25,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -78,58 +96,101 @@ class _CategoryProgressState extends State<CategoryProgress> {
                   height: MediaQuery.of(context).size.height * 0.7,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
-                    itemCount: 3,
-                    itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0, vertical: 5),
-                      child: Card(
-                        elevation: 4,
-                        child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.19,
-                          width: MediaQuery.of(context).size.width * 0.85,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0, vertical: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Gap(spacer),
-                                Text(
-                                  "Total Progress",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w400,
+                    itemCount: categoryList[widget.index].length,
+                    itemBuilder: (context, index) {
+                      final progressProvider =
+                          Provider.of<ProgressProvider>(context);
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12.0, vertical: 5),
+                        child: Card(
+                          elevation: 4,
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.19,
+                            width: MediaQuery.of(context).size.width * 0.85,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Gap(spacer),
+                                  Text(
+                                    "${categoryNames[widget.index][index]}",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 8),
-                                const Divider(
-                                  color: Colors.grey,
-                                  thickness: 1,
-                                  endIndent: 0,
-                                  indent: 0,
-                                ),
-                                const Gap(30),
-                                LinearPercentIndicator(
-                                  percent: 0.45,
-                                  animation: true,
-                                  animationDuration: 900,
-                                  backgroundColor: Colors.grey.shade300,
-                                  linearGradient: const LinearGradient(
-                                    colors: [
-                                      Color(0xFFFFFF00),
-                                      Color(0xFF00FF00),
-                                    ],
+                                  const SizedBox(height: 8),
+                                  const Divider(
+                                    color: Colors.grey,
+                                    thickness: 1,
+                                    endIndent: 0,
+                                    indent: 0,
                                   ),
-                                  leading: Text('%'),
-                                  lineHeight: 17,
-                                  barRadius: Radius.circular(10),
-                                )
-                              ],
+                                  const Gap(30),
+                                  StreamBuilder<DocumentSnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection('users')
+                                        .doc(userId)
+                                        .collection('profiles')
+                                        .doc(profileId)
+                                        .collection('LessonsFinished')
+                                        .doc(lessonId)
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return LinearPercentIndicator(
+                                          percent: 0,
+                                          animation: true,
+                                          animationDuration: 900,
+                                          backgroundColor: Colors.grey.shade300,
+                                          progressColor: widget.categoryColor,
+                                          leading: Text('0%'),
+                                          lineHeight: 17,
+                                          barRadius: Radius.circular(10),
+                                        );
+                                      }
+
+                                      if (!snapshot.hasData ||
+                                          !snapshot.data!.exists) {
+                                        return Center(
+                                            child: Text(
+                                                'Document does not exist'));
+                                      }
+
+                                      // Assuming categoryList[widget.index][index] is a valid key in the document
+                                      String progress = snapshot.data![
+                                          categoryList[widget.index][index]
+                                              .name];
+                                      double progressPercent =
+                                          double.parse(progress) /
+                                              categoryList[widget.index][index]
+                                                  .total;
+
+                                      return LinearPercentIndicator(
+                                        percent: progressPercent,
+                                        animation: true,
+                                        animationDuration: 900,
+                                        backgroundColor: Colors.grey.shade300,
+                                        progressColor: widget.categoryColor,
+                                        leading: Text(
+                                            '${(progressPercent * 100).toStringAsFixed(0)}%'),
+                                        lineHeight: 17,
+                                        barRadius: Radius.circular(10),
+                                      );
+                                    },
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 ),
               ),

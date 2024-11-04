@@ -172,39 +172,34 @@ class _ActivityScreenState extends State<ActivityScreen> {
                         child: ListView.builder(
                           itemCount: activityNames.length - 1,
                           itemBuilder: (context, index) => InkWell(
-                            onTap: (widget.lesson[index].type == 'word' &&
-                                        index == 1) ||
-                                    (widget.lesson[index].type == 'number' &&
-                                        index == 0)
-                                ? null
-                                : () {
-                                    print(widget.lessonTitle);
-                                    if (activityNames[index] == "Pronounce") {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ReadingCharacterSelection(
-                                            lesson: widget.lesson,
-                                            activity: activityNames[index],
-                                            lessonNumber: widget.lessonNumber,
-                                            lessonTitle: widget.lessonTitle,
-                                          ),
-                                        ),
-                                      );
-                                    } else {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              CharacterSelectionScreen(
-                                            lesson: widget.lesson,
-                                            activity: activityNames[index],
-                                            lessonTitle: widget.lessonTitle,
-                                            lessonNumber: widget.lessonNumber,
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                  },
+                            onTap: () {
+                              print(widget.lessonTitle);
+                              if (activityNames[index] == "Pronounce") {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ReadingCharacterSelection(
+                                      lesson: widget.lesson,
+                                      activity: activityNames[index],
+                                      lessonNumber: widget.lessonNumber,
+                                      lessonTitle: widget.lessonTitle,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        CharacterSelectionScreen(
+                                      lesson: widget.lesson,
+                                      activity: activityNames[index],
+                                      lessonTitle: widget.lessonTitle,
+                                      lessonNumber: widget.lessonNumber,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
                             child: Card(
                               margin: const EdgeInsets.symmetric(
                                 vertical: 8.0,

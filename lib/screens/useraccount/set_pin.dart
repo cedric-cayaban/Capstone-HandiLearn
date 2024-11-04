@@ -177,10 +177,10 @@ class _SetPinState extends State<SetPin> {
         child: Column(
           children: [
             SizedBox(
-              height: 250,
+              height: MediaQuery.of(context).size.height * 0.4,
             ),
             Container(
-              height: 400,
+              height: 420,
               width: MediaQuery.of(context).size.width * 0.80,
               decoration: BoxDecoration(
                 color: Colors.white,

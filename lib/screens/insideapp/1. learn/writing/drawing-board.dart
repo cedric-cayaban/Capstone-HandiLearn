@@ -12,6 +12,7 @@ import 'package:image/image.dart' as img;
 import 'package:provider/provider.dart';
 import 'package:test_drawing/objects/lesson.dart';
 import 'package:test_drawing/provider/lesson_provider.dart';
+import 'package:test_drawing/screens/insideapp/1.%20learn/activity_screen.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/character_selection.dart';
 import 'package:tflite_v2/tflite_v2.dart';
 import 'dart:ui' as ui;
@@ -112,7 +113,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   void loadPopUpModal(bool isMatch) {
     final lessonProvider = Provider.of<LessonProvider>(context, listen: false);
-    if (widget.index == lessonProvider.ucharacterDone) {
+    if (widget.index == lessonProvider.ucharacterDone && isMatch) {
       updateLesson(lessonProvider);
     }
 
@@ -134,17 +135,17 @@ class _DrawingScreenState extends State<DrawingScreen> {
               ((widget.lesson.type == 'word' ||
                       widget.lesson.type == 'cursive word')
                   ? 0.7
-                  : 0.5),
+                  : 0.43),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
+                Image.asset(
+                  checkAsset,
                   height: (widget.lesson.type == 'word' ||
                           widget.lesson.type == 'cursive word')
-                      ? 150
-                      : 300,
-                  width: 300,
-                  child: Image.asset(checkAsset),
+                      ? 120
+                      : 200,
+                  width: 400,
                 ),
                 Text(
                   isMatch ? 'Great Job!' : 'Oops, Try Again!',
@@ -172,24 +173,34 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             'assets/insideApp/learnWriting/components/reload.png'),
                       ),
                     ),
-                    if (isMatch &&
-                        widget.index < widget.forNextLesson.length - 1)
+                    if (isMatch)
                       GestureDetector(
                         onTap: () {
-                          // updateLesson(lessonProvider);
-                          Navigator.of(context).pop();
-                          var nextLesson =
-                              widget.forNextLesson[widget.index + 1];
-                          Navigator.of(context)
-                              .pushReplacement(MaterialPageRoute(
-                            builder: (context) => DrawingScreen(
-                              lessonNumber: widget.lessonNumber,
-                              index: widget.index + 1,
-                              lesson: nextLesson,
-                              forNextLesson: widget.forNextLesson,
-                              lessonField: widget.lessonField,
-                            ),
-                          ));
+                          if (widget.index < widget.forNextLesson.length - 1) {
+                            Navigator.of(context).pop();
+                            var nextLesson =
+                                widget.forNextLesson[widget.index + 1];
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (context) => DrawingScreen(
+                                lessonNumber: widget.lessonNumber,
+                                index: widget.index + 1,
+                                lesson: nextLesson,
+                                forNextLesson: widget.forNextLesson,
+                                lessonField: widget.lessonField,
+                              ),
+                            ));
+                          } else {
+                            Navigator.of(context).pop();
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (context) => ActivityScreen(
+                                  lesson: widget.forNextLesson,
+                                  lessonTitle:
+                                      lessonTitles[widget.lessonNumber],
+                                  lessonNumber: widget.lessonNumber),
+                            ));
+                          }
                         },
                         child: SizedBox(
                           height: 70,
@@ -197,7 +208,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                           child: Image.asset(
                               'assets/insideApp/learnWriting/components/arrow-forward.png'),
                         ),
-                      )
+                      ),
                   ],
                 )
               ],
@@ -206,6 +217,12 @@ class _DrawingScreenState extends State<DrawingScreen> {
         ),
       ),
     );
+  }
+
+  void eraseDrawing() {
+    setState(() {
+      drawnPoints.clear();
+    });
   }
 
   final AudioPlayer _audioPlayer = AudioPlayer();
@@ -228,9 +245,11 @@ class _DrawingScreenState extends State<DrawingScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
         title: Text(
-          'How to Write ${widget.lesson.character}',
-          style: const TextStyle(
-            fontSize: 25,
+          widget.lesson.type == 'cursive'
+              ? 'How to Write Cursive ${widget.lesson.character}'
+              : 'How to Write ${widget.lesson.character}',
+          style: TextStyle(
+            fontSize: widget.lesson.type == 'cursive' ? 20 : 25,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -256,13 +275,14 @@ class _DrawingScreenState extends State<DrawingScreen> {
                     ),
                   ),
                   const Gap(20),
-                  Text(
-                    'Step ${index + 1}',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
+                  if (widget.lesson.type != 'cursive')
+                    Text(
+                      'Step ${index + 1}',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -694,7 +714,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     List<Offset?> guidePointsForLetter =
         getGuidePoints(widget.lesson.type, characterKey, canvasSize);
 
-    double spacer = MediaQuery.of(context).size.height * 0.2;
+    double spacer = MediaQuery.of(context).size.height * 0.3;
     return SafeArea(
       child: Scaffold(
         appBar: null,
@@ -727,30 +747,31 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             //         lessonNumber: widget.lessonNumber)));
                           },
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          //SCAN BUTTON
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 30.0,
-                                  height: 35.0,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape
-                                        .circle, // Makes the container circular
+                        if (widget.lesson.type == 'word')
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            //SCAN BUTTON
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: 30.0,
+                                    height: 35.0,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape
+                                          .circle, // Makes the container circular
+                                    ),
+                                    child: Image.asset(
+                                      'assets/insideApp/learnWriting/components/scan.png',
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                  child: Image.asset(
-                                    'assets/insideApp/learnWriting/components/scan.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                const Text('Scan'),
-                              ],
+                                  const Text('Scan'),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
                       ],
                     ),
                     Expanded(
@@ -812,158 +833,178 @@ class _DrawingScreenState extends State<DrawingScreen> {
             // LETTERS
             : Padding(
                 padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
-                child: Column(
+                child: Stack(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // BACK BUTTON
-                        IconButton(
-                          icon: const Icon(
-                            size: 30,
-                            Icons.arrow_back,
-                            color: Colors.black,
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: (context) => CharacterSelectionScreen(
-                            //         lesson: widget.forNextLesson,
-                            //         activity: 'Writing',
-                            //         lessonNumber: widget.lessonNumber)));
-                          },
+                    //BACK BUTTON
+                    Positioned(
+                      child: IconButton(
+                        icon: const Icon(
+                          size: 30,
+                          Icons.arrow_back,
+                          color: Colors.black,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10, top: 20),
-                          // TOP RIGHT BUTTONS
-                          child: Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  sayTheSound();
-                                },
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 30.0,
-                                      height: 30.0,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Image.asset(
-                                        'assets/insideApp/learnWriting/components/sound.png',
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    const Text('Sound'),
-                                  ],
-                                ),
-                              ),
-                              const Gap(15),
-                              GestureDetector(
-                                onTap: () {
-                                  //HINT
-                                  loadHints();
-                                },
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 30.0,
-                                      height: 30.0,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Image.asset(
-                                        'assets/insideApp/learnWriting/components/hint.png',
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    const Text('Hint'),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (context) => CharacterSelectionScreen(
+                          //         lesson: widget.forNextLesson,
+                          //         activity: 'Writing',
+                          //         lessonNumber: widget.lessonNumber)));
+                        },
+                      ),
                     ),
-                    Expanded(
+                    Positioned(
+                      right: 10,
                       child: Padding(
-                        padding: EdgeInsets.only(top: spacer),
+                        padding: const EdgeInsets.only(top: 20),
+                        // TOP RIGHT BUTTONS
                         child: Column(
                           children: [
                             GestureDetector(
-                              onPanUpdate: (details) {
-                                RenderBox? renderBox = _drawingAreaKey
-                                    .currentContext
-                                    ?.findRenderObject() as RenderBox?;
-                                if (renderBox != null) {
-                                  Offset localPosition = renderBox
-                                      .globalToLocal(details.globalPosition);
-
-                                  // Trigger the state change immediately for smoother updates
-                                  setState(() {
-                                    drawnPoints = List.from(drawnPoints)
-                                      ..add(localPosition);
-                                  });
-                                }
+                              onTap: () {
+                                //HINT
+                                loadHints();
                               },
-                              onPanEnd: (details) {
-                                setState(() {
-                                  drawnPoints.add(null);
-                                  resampledPoints = resamplePoints(drawnPoints,
-                                      5.0); // Store resampled points
-                                  print(
-                                      'Resampled Drawn points after pan end for ${widget.lesson.character}: \n $resampledPoints \n\n');
-                                });
-                              },
-                              child: Center(
-                                child: CustomPaint(
-                                  painter: DrawingBoard(drawnPoints),
-                                  child: Container(
-                                    key: _drawingAreaKey,
-                                    height: canvasHeight,
-                                    width:
-                                        canvasWidth, // Width adjusted based on 'word'
-                                    child: loadSvg(widget.lesson.svgPath),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: 30.0,
+                                    height: 30.0,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Image.asset(
+                                      'assets/insideApp/learnWriting/components/hint.png',
+                                      fit: BoxFit.contain,
+                                    ),
                                   ),
-                                ),
+                                  const Text('Hint'),
+                                ],
                               ),
                             ),
-                            const Gap(40),
-                            ElevatedButton(
-                              onPressed: () async {
-                                if (guidePoints.isEmpty) {
-                                  print('Guide points not loaded yet');
-                                  return;
-                                }
-
-                                checkPressed = true;
-                                // Checking the match using the current canvas size
-                                // BABALIKAN ANDITO THRESHOLD
-                                List<Offset?> guidePointsForLetter =
-                                    getGuidePoints(widget.lesson.type,
-                                        characterKey, canvasSize);
-
-                                isMatch = drawingChecker(
-                                    resampledPoints,
-                                    getGuidePoints(widget.lesson.type,
-                                        characterKey, canvasSize),
-                                    widget.lesson.type == 'number'
-                                        ? 70
-                                        : 50); // Threshold
-
-                                setState(() {
-                                  loadPopUpModal(isMatch);
-                                });
+                            const Gap(15),
+                            GestureDetector(
+                              onTap: () {
+                                sayTheSound();
                               },
-                              child: Text(
-                                'Check',
-                                style: TextStyle(color: Colors.black),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: 30.0,
+                                    height: 30.0,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Image.asset(
+                                      'assets/insideApp/learnWriting/components/sound.png',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                  const Text('Sound'),
+                                ],
+                              ),
+                            ),
+                            const Gap(15),
+                            GestureDetector(
+                              onTap: () {
+                                eraseDrawing();
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: 30.0,
+                                    height: 30.0,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Image.asset(
+                                      'assets/insideApp/learnWriting/components/erase.png',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                  const Text('Erase'),
+                                ],
                               ),
                             ),
                           ],
                         ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: spacer),
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onPanUpdate: (details) {
+                              RenderBox? renderBox = _drawingAreaKey
+                                  .currentContext
+                                  ?.findRenderObject() as RenderBox?;
+                              if (renderBox != null) {
+                                Offset localPosition = renderBox
+                                    .globalToLocal(details.globalPosition);
+
+                                // Trigger the state change immediately for smoother updates
+                                setState(() {
+                                  drawnPoints = List.from(drawnPoints)
+                                    ..add(localPosition);
+                                });
+                              }
+                            },
+                            onPanEnd: (details) {
+                              setState(() {
+                                drawnPoints.add(null);
+                                resampledPoints = resamplePoints(
+                                    drawnPoints, 5.0); // Store resampled points
+                                print(
+                                    'Resampled Drawn points after pan end for ${widget.lesson.character}: \n $resampledPoints \n\n');
+                              });
+                            },
+                            child: Center(
+                              child: CustomPaint(
+                                painter: DrawingBoard(drawnPoints),
+                                child: Container(
+                                  key: _drawingAreaKey,
+                                  height: canvasHeight,
+                                  width:
+                                      canvasWidth, // Width adjusted based on 'word'
+                                  child: loadSvg(widget.lesson.svgPath),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Gap(40),
+                          ElevatedButton(
+                            onPressed: () async {
+                              if (guidePoints.isEmpty) {
+                                print('Guide points not loaded yet');
+                                return;
+                              }
+
+                              checkPressed = true;
+                              // Checking the match using the current canvas size
+                              // BABALIKAN ANDITO THRESHOLD
+                              List<Offset?> guidePointsForLetter =
+                                  getGuidePoints(widget.lesson.type,
+                                      characterKey, canvasSize);
+
+                              isMatch = drawingChecker(
+                                  resampledPoints,
+                                  getGuidePoints(widget.lesson.type,
+                                      characterKey, canvasSize),
+                                  widget.lesson.type == 'cursive'
+                                      ? 120
+                                      : 100); // Threshold
+
+                              setState(() {
+                                loadPopUpModal(isMatch);
+                              });
+                            },
+                            child: Text(
+                              'Check',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

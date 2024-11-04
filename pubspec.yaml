@@ -37,7 +37,7 @@ dependencies:
   email_auth: ^2.0.0
   firebase_auth: ^5.1.2
   firebase_core: ^3.2.0
-  firebase_storage: ^12.3.1
+  firebase_storage: ^12.2.0
   flutter:
     sdk: flutter
   flutter_painter: ^1.0.1
@@ -80,7 +80,7 @@ flutter:
     - assets/insideApp/progress/
     - assets/insideApp/shortStories/
     - assets/insideApp/games/
-    - assets/insideApp/games/1/
+    - assets/insideApp/games/memory game/
     - assets/insideApp/games/2/
     - assets/insideApp/games/sliding puzzle/
     - assets/insideApp/games/sliding puzzle/2by2/
@@ -92,13 +92,15 @@ flutter:
     - assets/insideApp/learnReading/
     - assets/insideApp/learnWriting/components/
     - assets/insideApp/learnWriting/cursive_letters/capital/
+    - assets/insideApp/learnWriting/cursive_letters/capital/hints/
     - assets/insideApp/learnWriting/cursive_letters/small/
-    - assets/insideApp/learnWriting/cursive_letters/hints/
+    - assets/insideApp/learnWriting/cursive_letters/small/hints/
     - assets/insideApp/learnWriting/numbers/
     - assets/insideApp/learnWriting/numbers/hints/
     - assets/insideApp/learnWriting/standard_letters/capital/
+    - assets/insideApp/learnWriting/standard_letters/capital/hints/
     - assets/insideApp/learnWriting/standard_letters/small/
-    - assets/insideApp/learnWriting/standard_letters/hints/
+    - assets/insideApp/learnWriting/standard_letters/small/hints/
     - assets/insideApp/learnWriting/words/cursive/
     - assets/insideApp/learnWriting/words/standard/
     - assets/insideApp/scanning/objects/
