@@ -136,6 +136,7 @@ class _SelectedItemState extends State<SelectedItem> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

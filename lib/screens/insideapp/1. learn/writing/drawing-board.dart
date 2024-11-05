@@ -146,7 +146,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                           widget.lesson.type == 'cursive word')
                       ? 120
                       : 200,
-                  width:  400,
+                  width: 400,
                 ),
                 Text(
                   isMatch ? 'Great Job!' : 'Oops, Try Again!',
@@ -740,13 +740,16 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             ]);
                             //Navigator.of(context).pop();
                             //Navigator.of(context).pop();
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                builder: (context) => CharacterSelectionScreen(
-                                    lessonTitle:
-                                        lessonNames[widget.lessonNumber],
-                                    lesson: widget.forNextLesson,
-                                    activity: 'Writing',
-                                    lessonNumber: widget.lessonNumber)));
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CharacterSelectionScreen(
+                                            lessonTitle: lessonNames[
+                                                widget.lessonNumber],
+                                            lesson: widget.forNextLesson,
+                                            activity: 'Writing',
+                                            lessonNumber:
+                                                widget.lessonNumber)));
                           },
                         ),
                         if (widget.lesson.type == 'word')
@@ -846,13 +849,15 @@ class _DrawingScreenState extends State<DrawingScreen> {
                           color: Colors.black,
                         ),
                         onPressed: () {
-                          
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(
-                              builder: (context) => CharacterSelectionScreen(
-                                lessonTitle: lessonNames[widget.lessonNumber],
-                                  lesson: widget.forNextLesson,
-                                  activity: 'Writing',
-                                  lessonNumber: widget.lessonNumber)));
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CharacterSelectionScreen(
+                                          lessonTitle:
+                                              lessonNames[widget.lessonNumber],
+                                          lesson: widget.forNextLesson,
+                                          activity: 'Writing',
+                                          lessonNumber: widget.lessonNumber)));
                         },
                       ),
                     ),
@@ -976,35 +981,40 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             ),
                           ),
                           const Gap(40),
-                          ElevatedButton(
-                            onPressed: () async {
-                              if (guidePoints.isEmpty) {
-                                print('Guide points not loaded yet');
-                                return;
-                              }
+                          SizedBox(
+                            height: 40,
+                            width: 100,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                if (guidePoints.isEmpty) {
+                                  print('Guide points not loaded yet');
+                                  return;
+                                }
 
-                              checkPressed = true;
-                              // Checking the match using the current canvas size
-                              // BABALIKAN ANDITO THRESHOLD
-                              List<Offset?> guidePointsForLetter =
-                                  getGuidePoints(widget.lesson.type,
-                                      characterKey, canvasSize);
+                                checkPressed = true;
+                                // Checking the match using the current canvas size
+                                // BABALIKAN ANDITO THRESHOLD
+                                List<Offset?> guidePointsForLetter =
+                                    getGuidePoints(widget.lesson.type,
+                                        characterKey, canvasSize);
 
-                              isMatch = drawingChecker(
-                                  resampledPoints,
-                                  getGuidePoints(widget.lesson.type,
-                                      characterKey, canvasSize),
-                                  widget.lesson.type == 'cursive'
-                                      ? 140
-                                      : 100); // Threshold
+                                isMatch = drawingChecker(
+                                    resampledPoints,
+                                    getGuidePoints(widget.lesson.type,
+                                        characterKey, canvasSize),
+                                    widget.lesson.type == 'cursive'
+                                        ? 140
+                                        : 100); // Threshold
 
-                              setState(() {
-                                loadPopUpModal(isMatch);
-                              });
-                            },
-                            child: Text(
-                              'Check',
-                              style: TextStyle(color: Colors.black),
+                                setState(() {
+                                  loadPopUpModal(isMatch);
+                                });
+                              },
+                              child: Text(
+                                'Done',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16),
+                              ),
                             ),
                           ),
                         ],

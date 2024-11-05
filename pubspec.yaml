@@ -80,6 +80,7 @@ flutter:
     - assets/insideApp/progress/
     - assets/insideApp/shortStories/
     - assets/insideApp/games/
+    - assets/insideApp/games/letter search/
     - assets/insideApp/games/memory game/
     - assets/insideApp/games/2/
     - assets/insideApp/games/sliding puzzle/
