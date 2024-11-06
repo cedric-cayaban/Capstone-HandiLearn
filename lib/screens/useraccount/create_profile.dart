@@ -90,6 +90,7 @@ class _CreateProfileState extends State<CreateProfile> {
 
   @override
   Widget build(BuildContext context) {
+    double spacer = MediaQuery.of(context).size.height * 0.1;
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset:
@@ -150,7 +151,7 @@ class _CreateProfileState extends State<CreateProfile> {
                     ),
                     child: Padding(
                       padding:
-                          const EdgeInsets.only(top: 90.0, left: 21, right: 21),
+                          EdgeInsets.only(top: spacer, left: 21, right: 21),
                       child: Column(
                         children: [
                           Container(
@@ -185,9 +186,11 @@ class _CreateProfileState extends State<CreateProfile> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 90),
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.08),
                           Container(
-                            height: MediaQuery.of(context).size.height * 0.55,
+                            height: MediaQuery.of(context).size.height * 0.6,
                             width: MediaQuery.of(context).size.width,
                             padding: const EdgeInsets.all(15.0),
                             decoration: BoxDecoration(
@@ -267,7 +270,10 @@ class _CreateProfileState extends State<CreateProfile> {
                                               ),
                                             ),
                                             child: CircleAvatar(
-                                              radius: 35,
+                                              radius: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.042,
                                               backgroundImage: AssetImage(
                                                   'assets/loginRegister/avatars/${index + 1}.png'),
                                             ),
@@ -298,7 +304,10 @@ class _CreateProfileState extends State<CreateProfile> {
                                               ),
                                             ),
                                             child: CircleAvatar(
-                                              radius: 35,
+                                              radius: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.042,
                                               backgroundImage: AssetImage(
                                                   'assets/loginRegister/avatars/${index + 4}.png'),
                                             ),
@@ -308,7 +317,9 @@ class _CreateProfileState extends State<CreateProfile> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 20),
+                                SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05),
                                 Container(
                                   width: double.infinity,
                                   child: Material(

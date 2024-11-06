@@ -25,6 +25,7 @@ class _ShortStoriesSelectionState extends State<ShortStoriesSelection> {
 
   @override
   Widget build(BuildContext context) {
+    double spacer = MediaQuery.of(context).size.height * 0.26;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -45,7 +46,7 @@ class _ShortStoriesSelectionState extends State<ShortStoriesSelection> {
         body: Container(
           height: MediaQuery.of(context).size.height, // Use full screen height
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image:
                   AssetImage("assets/insideApp/shortStories/selectionBg.png"),
@@ -56,7 +57,7 @@ class _ShortStoriesSelectionState extends State<ShortStoriesSelection> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                Gap(220),
+                Gap(spacer),
                 Container(
                   // decoration: BoxDecoration(color: Colors.red),
                   child: Column(
@@ -69,47 +70,70 @@ class _ShortStoriesSelectionState extends State<ShortStoriesSelection> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Gap(10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (_) => Story(),
-                                ),
-                              );
-                            },
-                            child: Image.asset(
-                              "assets/insideApp/shortStories/story1.png",
-                              height: 200,
-                              width: 150,
+
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        width: MediaQuery.of(context).size.width,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: GridView.builder(
+                            itemCount: 4,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: 0.85,
+                                    crossAxisSpacing: 20,
+                                    mainAxisSpacing: 35,
+                                    crossAxisCount: 2),
+                            itemBuilder: (context, index) => ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  7), // Adjust the radius as needed
+                              child: Image.asset(
+                                "assets/insideApp/shortStories/story${index + 1}.png",
+                              ),
                             ),
                           ),
-                          Image.asset(
-                            "assets/insideApp/shortStories/story2.png",
-                            height: 200,
-                            width: 150,
-                          ),
-                        ],
+                        ),
                       ),
-                      Gap(25),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Image.asset(
-                            "assets/insideApp/shortStories/story3.png",
-                            height: 200,
-                            width: 150,
-                          ),
-                          Image.asset(
-                            "assets/insideApp/shortStories/story4.png",
-                            height: 200,
-                            width: 150,
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      //   children: [
+                      //     GestureDetector(
+                      //       onTap: () {
+                      //         Navigator.of(context).pushReplacement(
+                      //           MaterialPageRoute(
+                      //             builder: (_) => Story(),
+                      //           ),
+                      //         );
+                      //       },
+                      //       child: Image.asset(
+                      //         "assets/insideApp/shortStories/story1.png",
+                      //         height: 200,
+                      //         width: 150,
+                      //       ),
+                      //     ),
+                      //     Image.asset(
+                      //       "assets/insideApp/shortStories/story2.png",
+                      //       height: 200,
+                      //       width: 150,
+                      //     ),
+                      //   ],
+                      // ),
+                      // Gap(25),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      //   children: [
+                      //     Image.asset(
+                      //       "assets/insideApp/shortStories/story3.png",
+                      //       height: 200,
+                      //       width: 150,
+                      //     ),
+                      //     Image.asset(
+                      //       "assets/insideApp/shortStories/story4.png",
+                      //       height: 200,
+                      //       width: 150,
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),
