@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:test_drawing/data/objects.dart';
 import 'package:test_drawing/screens/insideapp/3.%20scanning/image_description.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';
 import 'package:tflite_v2/tflite_v2.dart';
@@ -22,6 +24,20 @@ class _nameState extends State<CameraScreen> {
   File? file;
   var _recognitions;
   var v = "";
+  int _randomNumber = 0;
+
+  List<String> labels = [
+    'BAG',
+    'BOOK',
+    'CHAIR',
+    'RULER',
+    'PENCIL',
+    'NOTEBOOK',
+    'CRAYONS',
+    'ERASER',
+    'SHOES',
+    'SCISSORS'
+  ];
 
   @override
   void initState() {
@@ -35,6 +51,8 @@ class _nameState extends State<CameraScreen> {
         return;
       }
       setState(() {});
+
+      randomTheObjects();
     }).catchError((Object e) {
       if (e is CameraException) {
         switch (e.code) {
@@ -47,6 +65,60 @@ class _nameState extends State<CameraScreen> {
         }
       }
     });
+  }
+
+  void randomTheObjects() {
+    setState(() {
+      _randomNumber = Random().nextInt(10);
+    });
+    print(_randomNumber);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize:
+                MainAxisSize.min, // Ensures the dialog takes minimal space
+            children: [
+              Image.asset(
+                  'assets/insideApp/scanning/objects/$_randomNumber.gif'),
+            ],
+          ),
+          actions: [
+            Container(
+              child: Material(
+                borderRadius: BorderRadius.circular(10),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(10),
+                  onTap: () async {
+                    pickedNum = _randomNumber;
+                    Navigator.of(context).pop();
+                    // Navigator.of(context).pushReplacement(
+                    //     MaterialPageRoute(builder: (_) => CameraScreen()));
+                  },
+                  child: Container(
+                    height: 45,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0xFF10E119), Color(0xFF18991E)],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Text(
+                      "Let's find it",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _showDialog() {
@@ -107,7 +179,41 @@ class _nameState extends State<CameraScreen> {
     return v;
   }
 
-  void displayInstruction() {}
+  void _showFailedDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset('assets/insideApp/learnReading/sorry.gif'),
+              SizedBox(height: 5),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 70,
+                      width: 70,
+                      child: Image.asset(
+                          'assets/insideApp/scanning/try again.png'),
+                    ),
+                    Text(
+                      'Try Again',
+                      style: TextStyle(fontSize: 14),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,10 +273,6 @@ class _nameState extends State<CameraScreen> {
               alignment: Alignment.bottomCenter,
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.18,
-                // decoration: const BoxDecoration(
-                //   borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                //   color: Colors.black,
-                // ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -190,17 +292,19 @@ class _nameState extends State<CameraScreen> {
                           if (_recognitions[0]['confidence'] < .75) {
                             print("try again");
                             _showDialog();
-                          } else {
-                            var flabel = _recognitions[0]['label'].toString();
-                            print(flabel);
-                            var confidence = _recognitions[0]['confidence'];
-
+                          } else if (labels[pickedNum] ==
+                              _recognitions[0]['label'].toString()) {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => ObjectDescription(
-                                    file, flabel, confidence, pickedImageFile),
+                                    file,
+                                    _recognitions[0]['label'].toString(),
+                                    _recognitions[0]['confidence'],
+                                    pickedImageFile),
                               ),
                             );
+                          } else {
+                            _showFailedDialog();
                           }
                         } on CameraException catch (e) {
                           debugPrint("Error occured while taking picture : $e");

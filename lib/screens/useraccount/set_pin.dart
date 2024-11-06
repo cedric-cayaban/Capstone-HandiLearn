@@ -101,17 +101,8 @@ class _SetPinState extends State<SetPin> {
 
 // Determine the number of items to add based on the age
     int itemsToAdd;
-    if (age == "2") {
-      itemsToAdd = 3;
-    } else if (age == "3") {
-      itemsToAdd = 5;
-    } else if (age == "4") {
-      itemsToAdd = 7;
-    } else if (age == "5") {
-      itemsToAdd = 9;
-    } else {
-      itemsToAdd = lessonData.length; // Add all items if age > 5
-    }
+
+    itemsToAdd = lessonData.length; // Add all items if age > 5
 
 // Select the specified number of items from lessonData
     selectedData = Map.fromEntries(lessonData.entries.take(itemsToAdd));

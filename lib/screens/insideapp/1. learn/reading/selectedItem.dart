@@ -99,7 +99,18 @@ class _SelectedItemState extends State<SelectedItem> {
               Navigator.of(context).pop();
 
               _showSuccessDialog();
-            } else {
+            }else if (result.recognizedWords.toLowerCase() ==
+                    widget.lesson.character.toLowerCase() &&
+                widget.lesson.type == "number") {
+              if (widget.index == lessonProvider.ucharacterDone) {
+                updateLesson(lessonProvider);
+              }
+              _dialogShown = true; // Set flag here as well
+              Navigator.of(context).pop();
+
+              _showSuccessDialog();
+            } 
+            else {
               _dialogShown = true; // Set flag to prevent multiple dialogs
               Navigator.of(context).pop();
 
@@ -229,7 +240,7 @@ class _SelectedItemState extends State<SelectedItem> {
                       height: 70,
                       width: 70,
                       child:
-                          Image.asset('assets/insideApp/learnReading/next.png'),
+                          Image.asset('assets/insideApp/learnReading/try again.png'),
                     ),
                     Text(
                       'Try Again',

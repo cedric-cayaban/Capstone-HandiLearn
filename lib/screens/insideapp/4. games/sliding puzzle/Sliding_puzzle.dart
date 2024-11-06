@@ -14,13 +14,26 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
   late int emptyTileIndex;
   late int gridSize;
   late int tileCount; // Total number of tiles based on grid size
+  late String fullImageAsset;
 
   @override
   void initState() {
     super.initState();
     // Set the grid size and tile count based on difficulty
-    gridSize = widget.difficulty == 'Easy' ? 2 : 3;
+    gridSize = widget.difficulty == 'Easy'
+        ? 2
+        : widget.difficulty == 'Normal'
+            ? 3
+            : 3;
     tileCount = gridSize * gridSize;
+    if (widget.difficulty == 'Easy') {
+      fullImageAsset = 'assets/insideApp/games/sliding puzzle/2by2/b.png';
+    } else if (widget.difficulty == 'Normal') {
+      fullImageAsset = 'assets/insideApp/games/sliding puzzle/3by3/b.png';
+    } else {
+      fullImageAsset = 'assets/insideApp/games/sliding puzzle/4by4/b.png';
+    }
+
     _initializePuzzle();
   }
 
@@ -76,21 +89,37 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
     }
 
     // Set the image asset path based on tile index
-    String imageAsset =
-        'assets/insideApp/games/sliding puzzle/${gridSize}by${gridSize}/b${tiles[tileIndex]}.png';
-
-    return GestureDetector(
-      onTap: () => _moveTile(tileIndex), // Move tile when tapped
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.white, width: 1.0),
-          image: DecorationImage(
-            image: AssetImage(imageAsset),
-            fit: BoxFit.cover,
+    if (widget.difficulty == "Hard") {
+      String imageAsset =
+          'assets/insideApp/games/sliding puzzle/4by4/b${tiles[tileIndex]}.png';
+      return GestureDetector(
+        onTap: () => _moveTile(tileIndex), // Move tile when tapped
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white, width: 1.0),
+            image: DecorationImage(
+              image: AssetImage(imageAsset),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      String imageAsset =
+          'assets/insideApp/games/sliding puzzle/${gridSize}by${gridSize}/b${tiles[tileIndex]}.png';
+      return GestureDetector(
+        onTap: () => _moveTile(tileIndex), // Move tile when tapped
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white, width: 1.0),
+            image: DecorationImage(
+              image: AssetImage(imageAsset),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   void _showSolvedDialog() {
@@ -115,8 +144,6 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
 
   @override
   Widget build(BuildContext context) {
-    String fullImageAsset =
-        'assets/insideApp/games/sliding puzzle/${gridSize}by${gridSize}/b.png';
     return Scaffold(
       appBar: AppBar(
         title: Text('Image Sliding Puzzle'),
@@ -126,12 +153,6 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
             onPressed: _solvePuzzle, // Solve the puzzle
             tooltip: 'Solve Puzzle',
           ),
-          IconButton(
-            onPressed: () {
-              // Navigate to the next puzzle
-            },
-            icon: Icon(Icons.next_plan_outlined),
-          )
         ],
       ),
       body: Padding(

@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+
+import 'package:flutter/material.dart';
 
 class Game {
   final Color hiddenCard = Colors.red;
@@ -9,16 +10,15 @@ class Game {
   final String hiddenCardPath = "assets/insideApp/games/memory game/hidden.png";
   List<Map<int, String>> matchCheck = [];
   int gridSize;
-  int cardCount = 0;
-  int matchPairs = 0; // Number of pairs to match to win
+  int cardCount; // Number of cards based on difficulty
+  int matchPairs; // Number of pairs to match to win
 
-  Game({required this.gridSize}) {
-    cardCount = gridSize * gridSize;
-    matchPairs = cardCount ~/ 2;
+  Game({required this.gridSize, required this.cardCount})
+      : matchPairs = cardCount ~/ 2 {
     _generateCardPairs();
   }
 
-  // Generate pairs of cards based on grid size
+  // Generate pairs of cards based on card count
   void _generateCardPairs() {
     List<String> availableCards = [
       "assets/insideApp/games/memory game/b.png",
@@ -29,8 +29,11 @@ class Game {
       "assets/insideApp/games/memory game/j.png"
     ];
 
+    availableCards.shuffle();
+
     int numPairs = cardCount ~/ 2;
-    cardsList = availableCards.take(numPairs).expand((path) => [path, path]).toList();
+    cardsList =
+        availableCards.take(numPairs).expand((path) => [path, path]).toList();
   }
 
   // Initialize the game board
