@@ -22,6 +22,15 @@ class _LetterSearchState extends State<LetterSearch> {
     ]);
   }
 
+  void dispose() {
+    // Reset the orientation to the default system orientation (or another specific one)
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
+  }
+
   Widget selectLevel() {
     switch (widget.difficulty) {
       case 'Easy':
