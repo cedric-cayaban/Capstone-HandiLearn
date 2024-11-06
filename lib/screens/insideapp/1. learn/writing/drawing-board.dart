@@ -15,6 +15,7 @@ import 'package:test_drawing/provider/lesson_provider.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/activity_screen.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/character_selection.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/lesson_screen.dart';
+import 'package:test_drawing/screens/insideapp/1.%20learn/writing/handwriting_scanning.dart';
 import 'package:tflite_v2/tflite_v2.dart';
 import 'dart:ui' as ui;
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -757,7 +758,15 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             padding: const EdgeInsets.only(right: 10),
                             //SCAN BUTTON
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (_) => HandwritingScanning(
+                                      word: widget.lesson.character,
+                                    ),
+                                  ),
+                                );
+                              },
                               child: Column(
                                 children: [
                                   Container(

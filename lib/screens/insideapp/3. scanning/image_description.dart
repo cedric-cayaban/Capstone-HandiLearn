@@ -27,61 +27,30 @@ class ObjectDescription extends StatefulWidget {
 }
 
 class _ObjectDescriptionState extends State<ObjectDescription> {
-  final _auth = FirebaseAuth.instance;
-  String _uid = '';
-  String _name = '';
+  // String _uid = '';
+  // String _name = '';
   int randomNum = 0;
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getData();
-  }
-
-  void getData() async {
-    User user = _auth.currentUser!;
-    _uid = user.uid;
-    print('User email ${user.email}');
-    final DocumentSnapshot userDoc =
-        await FirebaseFirestore.instance.collection('users').doc(_uid).get();
-    _name = userDoc.get('first name');
-    setState(() {});
-    //print('User name: $_name');
-  }
-
-  @override
   Widget build(BuildContext context) {
-    bool isTeacher = true;
-    XFile files = XFile(widget.file.path);
-    // _pickedImage = picture
-    File picture = File(widget.file.path);
     File pickedImage = File(widget.pickedImage.path);
-    String label = widget.label;
+    // String label = widget.label;
     int object = 0;
     String url;
 
-    if (widget.label == 'BAG') {
-      object = 0;
-    } else if (widget.label == 'BOOK') {
-      object = 1;
-    } else if (widget.label == 'CHAIR') {
-      object = 2;
-    } else if (widget.label == 'RULER') {
-      object = 3;
-    } else if (widget.label == 'PENCIL') {
-      object = 4;
-    } else if (widget.label == 'NOTEBOOK') {
-      object = 5;
-    } else if (widget.label == 'CRAYONS') {
-      object = 6;
-    } else if (widget.label == 'ERASER') {
-      object = 7;
-    } else if (widget.label == 'SHOES') {
-      object = 8;
-    } else if (widget.label == 'SCISSORS') {
-      object = 9;
-    }
+    List<String> labels = [
+      'BAG',
+      'BOOK',
+      'CHAIR',
+      'RULER',
+      'PENCIL',
+      'NOTEBOOK',
+      'CRAYONS',
+      'ERASER',
+      'SHOES',
+      'SCISSORS'
+    ];
+
     int random() {
       Random random = new Random();
       int randomNumber = random.nextInt(10000);
@@ -89,72 +58,45 @@ class _ObjectDescriptionState extends State<ObjectDescription> {
       return randomNumber;
     }
 
-    void insertImage() async {
-      try {
-        String imageName = random().toString();
-        final ref = FirebaseStorage.instance
-            .ref()
-            .child('scannedObject')
-            .child('$imageName.jpg');
-        await ref.putFile(pickedImage);
-
-        url = await ref.getDownloadURL();
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(_uid)
-            .collection('scanned object')
-            .add({
-          'id': imageName,
-          'scanned object': url,
-          'label': label,
-          'name': _name,
-          'date': DateTime.now(),
-        });
-      } catch (error) {
-        print('error occured ${error}');
-      }
-    }
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          leading: SizedBox(),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (_) => Home(),
-                  ),
-                );
-              },
-              icon: const Icon(
-                Icons.home,
-                color: Colors.white,
-                size: 30,
-              ),
-            ),
-            const Gap(8),
-          ],
-        ),
-        extendBodyBehindAppBar: true,
-        body: Container(
-          height: double.infinity,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/insideApp/scanning/bgDesc.png"),
-              fit: BoxFit.fill,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                CupertinoPageRoute(
+                  builder: (_) => Home(),
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.home,
+              color: Colors.white,
+              size: 30,
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Gap(80),
-              Container(
+        ),
+        extendBodyBehindAppBar: true,
+        body: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/insideApp/scanning/bgDesc.png"),
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ),
+            // Gap(80),
+            Positioned(
+              top: 60,
+              child: Container(
                 height: 500,
                 width: 351,
                 decoration: BoxDecoration(
@@ -192,11 +134,11 @@ class _ObjectDescriptionState extends State<ObjectDescription> {
                         ),
                       ),
                       Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: const Color(0xFF89CFF3), width: 4),
-                        ),
-                        height: 198,
+                        // decoration: BoxDecoration(
+                        //   border: Border.all(
+                        //       color: const Color(0xFF89CFF3), width: 4),
+                        // ),
+                        height: 210,
                         width: 115,
                         child: Image.file(
                           pickedImage,
@@ -207,6 +149,7 @@ class _ObjectDescriptionState extends State<ObjectDescription> {
                       Text(
                         textAlign: TextAlign.center,
                         objectData[object]['description'].toString(),
+                        style: TextStyle(fontSize: 14),
                       ),
                       Gap(50),
                       Container(
@@ -254,8 +197,17 @@ class _ObjectDescriptionState extends State<ObjectDescription> {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+            Positioned(
+              bottom: 10,
+              right: 10,
+              child: Image.asset(
+                'assets/insideApp/scanning/mascot.png',
+                height: 200,
+                width: 200,
+              ),
+            )
+          ],
         ),
       ),
     );

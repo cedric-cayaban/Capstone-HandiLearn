@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/memory%20game/game1.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/memory%20game/memory_game.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/game2.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/level_selection.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';

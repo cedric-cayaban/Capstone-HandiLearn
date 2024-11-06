@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_drawing/screens/insideapp/3.%20scanning/randomize.dart';
+import 'package:test_drawing/screens/insideapp/3.%20scanning/camera_screen.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';
 
 class Instruction extends StatefulWidget {
@@ -66,19 +66,19 @@ class _InstructionState extends State<Instruction> {
             '4.2 You’ll hear a voice that tells you what it does and what it’s called. It’s like magic!'),
       ],
     ),
-    Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Text(
-          'Get Your Rewards!',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        Text(
-            '5.1 Each time you find and scan something, you earn points or fun avatar!'),
-        Text(
-            '5.2 Try to find as many objects as you can to collect lots of rewards. How many can you find?'),
-      ],
-    ),
+    // Column(
+    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //   children: [
+    //     Text(
+    //       'Get Your Rewards!',
+    //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    //     ),
+    //     Text(
+    //         '5.1 Each time you find and scan something, you earn points or fun avatar!'),
+    //     Text(
+    //         '5.2 Try to find as many objects as you can to collect lots of rewards. How many can you find?'),
+    //   ],
+    // ),
   ];
 
   void _nextPage() {
@@ -102,39 +102,67 @@ class _InstructionState extends State<Instruction> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (_) => Home(),
+      // appBar: AppBar(
+      //   leading: IconButton(
+      //     onPressed: () {
+      //       Navigator.pushReplacement(
+      //         context,
+      //         MaterialPageRoute(
+      //           builder: (_) => Home(),
+      //         ),
+      //       );
+      //     },
+      //     icon: const Icon(
+      //       Icons.arrow_back_ios_new_rounded,
+      //       size: 30,
+      //       color: Colors.black,
+      //     ),
+      //     //replace with our own icon data.
+      //   ),
+      // ),
+      body: Stack(
+        alignment: Alignment.center,
+        fit: StackFit.expand,
+        children: [
+          Positioned(
+            top: 0,
+            child: Container(
+              height: 300,
+              width: MediaQuery.of(context).size.width,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/insideApp/scanning/BG picture.png"),
+                  fit: BoxFit.fill,
+                ),
               ),
-            );
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 30,
-            color: Colors.black,
+            ),
           ),
-          //replace with our own icon data.
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
+          Positioned(
+            left: 10,
+            top: 25,
+            child: IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => Home(),
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          Positioned(
+            top: 170,
+            child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: Container(
-                height: 180,
+                height: 200,
+                width: MediaQuery.of(context).size.width * .90,
                 decoration: BoxDecoration(
-                  // gradient: LinearGradient(
-                  //   colors: [Color(0xFF68C2E7), Color(0xFFB3E6D6)],
-                  //   begin: Alignment.topCenter,
-                  //   end: Alignment.bottomCenter,
-                  // ),
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
@@ -149,7 +177,7 @@ class _InstructionState extends State<Instruction> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
                         textAlign: TextAlign.center,
@@ -162,19 +190,25 @@ class _InstructionState extends State<Instruction> {
                         color: Colors.black,
                       ),
                       Text(
-                          textAlign: TextAlign.center,
-                          'Hey there, little explorer! Are you ready for a super fun game? '
-                          'Let’s go on a treasure hunt to find and learn about special things around you! '
-                          'Here’s how to play:'),
+                        textAlign: TextAlign.center,
+                        'Hey there, little explorer! Are you ready for a super fun game? '
+                        'Let’s go on a treasure hunt to find and learn about special things around you! '
+                        'Here’s how to play:',
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-            Padding(
+          ),
+          Positioned(
+            bottom: 120,
+            child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: Container(
-                height: 300,
+                height: 220,
+                width: MediaQuery.of(context).size.width * .80,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [Color(0xFF68C2E7), Color(0xFFB3E6D6)],
@@ -215,24 +249,37 @@ class _InstructionState extends State<Instruction> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _currentPage != 4
+                        _currentPage != 3
                             ? IconButton(
                                 onPressed: _previousPage,
                                 icon: Icon(Icons.arrow_back),
                               )
                             : SizedBox(),
-                        _currentPage != 4
-                            ? Text(' ${_currentPage + 1}')
+                        _currentPage != 3
+                            ? Text(
+                                ' ${_currentPage + 1}',
+                              )
                             : TextButton(
+                                style: ButtonStyle(
+                                    elevation: WidgetStatePropertyAll(1),
+                                    backgroundColor:
+                                        WidgetStatePropertyAll(Colors.white),
+                                    shape: WidgetStatePropertyAll(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)))),
                                 onPressed: () {
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
-                                      builder: (_) => Randomize(),
+                                      builder: (_) => CameraScreen(),
                                     ),
                                   );
                                 },
-                                child: Text("Let's Find")),
-                        _currentPage != 4
+                                child: Text(
+                                  "Let's Find",
+                                  style: TextStyle(color: Colors.black),
+                                )),
+                        _currentPage != 3
                             ? IconButton(
                                 onPressed: _nextPage,
                                 icon: Icon(Icons.arrow_forward),
@@ -244,28 +291,39 @@ class _InstructionState extends State<Instruction> {
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (_) => Randomize(),
-                      ),
-                    );
-                  },
-                  child: Text('Skip instruction'),
-                ),
-                Image.asset(
-                  "assets/insideApp/scanning/mascot.png",
-                  height: 130,
-                  width: 130,
-                ),
-              ],
-            )
-          ],
-        ),
+          ),
+          Positioned(
+            bottom: 40,
+            left: 40,
+            child: ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(Color(0xFF2E91ED)),
+                  elevation: WidgetStatePropertyAll(1),
+                  shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)))),
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (_) => CameraScreen(),
+                  ),
+                );
+              },
+              child: Text(
+                'Skip instruction',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 5,
+            child: Image.asset(
+              'assets/insideApp/scanning/mascot.png',
+              height: 150,
+              width: 200,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -29,12 +29,16 @@ class _MemoryGameState extends State<MemoryGame> {
   }
 
   void _initializeGame() {
-    gridSize = widget.difficulty == 'easy'
-        ? 2
-        : widget.difficulty == 'normal'
-            ? 3
-            : 4;
-    _game = Game(gridSize: gridSize);
+    if (widget.difficulty == 'Easy') {
+      gridSize = 2; // 2x2 grid for 4 cards
+      _game = Game(gridSize: gridSize, cardCount: 4);
+    } else if (widget.difficulty == 'Normal') {
+      gridSize = 3; // 2x3 grid for 6 cards
+      _game = Game(gridSize: gridSize, cardCount: 6);
+    } else {
+      gridSize = 4; // 2x4 grid for 8 cards
+      _game = Game(gridSize: gridSize, cardCount: 8);
+    }
     _game.initGame();
   }
 
@@ -55,8 +59,6 @@ class _MemoryGameState extends State<MemoryGame> {
               size: 30,
             ),
           ),
-          title: Text('Game of Memory'),
-          centerTitle: true,
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/letter%20search/letter_search.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/memory%20game/memory_game.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/pictoword.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/sliding%20puzzle/Sliding_puzzle.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/sliding%20puzzle/3by3.dart';
 // 3x3 puzzle
 
 class SelectDifficulty extends StatefulWidget {
@@ -36,6 +36,12 @@ class _SelectDifficultyState extends State<SelectDifficulty> {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => LetterSearch(difficulty: difficulty),
       ));
+    } else if (widget.game == 'memory_game') {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => MemoryGame(difficulty: difficulty),
+        ),
+      );
     }
   }
 
