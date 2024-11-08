@@ -813,6 +813,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  word_search_safety:
+    dependency: "direct main"
+    description:
+      name: word_search_safety
+      sha256: "099b36b43b832c174ce8a832219045dd497d1c3e2635c5e9ec209472516fe5cb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.2-nullsafety.1"
   xdg_directories:
     dependency: transitive
     description:

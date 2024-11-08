@@ -53,14 +53,14 @@ class _LetterSearchEasyState extends State<LetterSearchEasy> {
   int currentTargetIndex = 0;
   bool showCheckmark = false;
 
-  void dispose() {
-    // Reset the orientation to the default system orientation (or another specific one)
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    super.dispose();
-  }
+  // void dispose() {
+  //   // Reset the orientation to the default system orientation (or another specific one)
+  //   SystemChrome.setPreferredOrientations([
+  //     DeviceOrientation.portraitUp,
+  //     DeviceOrientation.portraitDown,
+  //   ]);
+  //   super.dispose();
+  // }
 
   void loadFinishModal() {
     showDialog(
@@ -184,10 +184,7 @@ class _LetterSearchEasyState extends State<LetterSearchEasy> {
               left: 20,
               child: IconButton(
                   onPressed: () {
-                    SystemChrome.setPreferredOrientations([
-                      DeviceOrientation.portraitDown,
-                      DeviceOrientation.portraitUp,
-                    ]);
+                    
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => Games(),
                     ));

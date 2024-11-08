@@ -52,14 +52,14 @@ class _LetterSearchMediumState extends State<LetterSearchMedium> {
   int currentTargetIndex = 0;
   bool showCheckmark = false;
 
-  void dispose() {
-    // Reset the orientation to the default system orientation (or another specific one)
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    super.dispose();
-  }
+  // void dispose() {
+  //   // Reset the orientation to the default system orientation (or another specific one)
+  //   SystemChrome.setPreferredOrientations([
+  //     DeviceOrientation.portraitUp,
+  //     DeviceOrientation.portraitDown,
+  //   ]);
+  //   super.dispose();
+  // }
 
   void loadFinishModal() {
     showDialog(

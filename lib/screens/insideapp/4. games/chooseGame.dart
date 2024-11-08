@@ -97,7 +97,9 @@ class Games extends StatelessWidget {
                 );
               case 5:
                 return InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SelectDifficulty(game: 'word_search'),));
+                  },
                   child: Image.asset('assets/insideApp/games/memory_game.png'),
                 );
               default:

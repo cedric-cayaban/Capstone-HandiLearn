@@ -51,6 +51,7 @@ dependencies:
   smooth_page_indicator: ^1.2.0+3
   speech_to_text: ^6.6.2
   tflite_v2: ^1.0.0
+  word_search_safety: ^0.1.2-nullsafety.1
 
 dev_dependencies:
   flutter_lints: ^3.0.0
@@ -83,6 +84,7 @@ flutter:
     - assets/insideApp/games/letter search/
     - assets/insideApp/games/memory game/
     - assets/insideApp/games/2/
+    - assets/insideApp/games/word search/
     - assets/insideApp/games/sliding puzzle/
     - assets/insideApp/games/sliding puzzle/2by2/
     - assets/insideApp/games/sliding puzzle/3by3/
