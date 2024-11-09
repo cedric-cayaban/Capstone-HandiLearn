@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:test_drawing/data/userAccount.dart';
 import 'package:test_drawing/screens/useraccount/login.dart';
 import 'package:test_drawing/screens/useraccount/verify_email.dart';
@@ -20,11 +21,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
 
+  bool _isPasswordVisible = false; // For show password feature
+
   bool passwordConfirmed() {
     if (_confirmPasswordController.text.trim() ==
         _passwordController.text.trim()) {
       return true;
     } else {
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        title: 'Password not matched',
+      );
       return false;
     }
   }
@@ -37,16 +45,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             password: _passwordController.text.trim());
 
         await FirebaseAuth.instance.currentUser?.sendEmailVerification();
-
-        // final User? user = FirebaseAuth.instance.currentUser;
-        // final _uid = user?.uid;
-        // user!.reload();
-        // await FirebaseFirestore.instance.collection('users').doc(_uid).set({
-        //   'id': _uid,
-        //   'first name': _firstNameController.text.trim(),
-        //   'last name': _lastNameController.text.trim(),
-        //   'email': _emailController.text.trim(),
-        // });
 
         final User? user = FirebaseAuth.instance.currentUser;
         final _uid = user?.uid;
@@ -66,6 +64,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         );
       } catch (error) {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          title: 'Register Failed',
+          text: 'Invalid credentials',
+        );
         print(error);
       }
     }
@@ -172,8 +176,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const Gap(12),
                       TextField(
                         controller: _passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
+                        obscureText: !_isPasswordVisible,
+                        decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
@@ -182,12 +186,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                           hintText: 'Password',
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
                         ),
                       ),
                       const Gap(12),
                       TextField(
                         controller: _confirmPasswordController,
-                        obscureText: true,
+                        obscureText: !_isPasswordVisible,
                         decoration: const InputDecoration(
                           filled: true,
                           fillColor: Colors.white,

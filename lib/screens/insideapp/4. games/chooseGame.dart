@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/guessing%20game/guess.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/memory%20game/memory_game.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/game2.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/level_selection.dart';
@@ -14,11 +15,11 @@ class Games extends StatelessWidget {
           elevation: 0.0,
           leading: IconButton(
             onPressed: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context, MaterialPageRoute(builder: (_) => Home()));
             },
             icon: const Icon(
-              Icons.arrow_back_ios_new_rounded,
+              Icons.arrow_back,
               size: 30,
             ),
           ),
@@ -38,21 +39,7 @@ class Games extends StatelessWidget {
               case 0:
                 return InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            SelectDifficulty(game: 'object_odyssey'),
-                      ),
-                    );
-                  },
-                  child:
-                      Image.asset('assets/insideApp/games/object_odyssey.png'),
-                );
-              case 1:
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
@@ -60,12 +47,29 @@ class Games extends StatelessWidget {
                       ),
                     );
                   },
+                  child:
+                      Image.asset('assets/insideApp/games/object_odyssey.png'),
+                );
+
+              case 1:
+                return InkWell(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            SelectDifficulty(game: 'pictoword'),
+                      ),
+                    );
+                    // Navigator.of(context)
+                    //     .push(MaterialPageRoute(builder: (_) => GameScreen()));
+                  },
                   child: Image.asset('assets/insideApp/games/pictoword.png'),
                 );
               case 2:
                 return InkWell(
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
@@ -78,7 +82,7 @@ class Games extends StatelessWidget {
               case 3:
                 return InkWell(
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
@@ -91,17 +95,21 @@ class Games extends StatelessWidget {
               case 4:
                 return InkWell(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SelectDifficulty(game: 'letter_search'),));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) =>
+                          SelectDifficulty(game: 'letter_search'),
+                    ));
                   },
-                  child: Image.asset('assets/insideApp/games/memory_game.png'),
+                  child:
+                      Image.asset('assets/insideApp/games/letter search.png'),
                 );
-              case 5:
-                return InkWell(
-                  onTap: () {},
-                  child: Image.asset('assets/insideApp/games/memory_game.png'),
-                );
-              default:
-                return Container();
+              // case 5:
+              //   return InkWell(
+              //     onTap: () {},
+              //     child: Image.asset('assets/insideApp/games/memory_game.png'),
+              //   );
+              // default:
+              //   return Container();
             }
           },
         ),

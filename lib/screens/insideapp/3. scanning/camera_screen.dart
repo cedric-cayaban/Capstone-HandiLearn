@@ -187,8 +187,8 @@ class _nameState extends State<CameraScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset('assets/insideApp/learnReading/sorry.gif'),
-              SizedBox(height: 5),
+              // Image.asset('assets/insideApp/learnReading/sorry.gif'),
+              // SizedBox(height: 5),
               GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -196,15 +196,26 @@ class _nameState extends State<CameraScreen> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 70,
-                      width: 70,
+                      height: 150,
+                      width: 150,
                       child: Image.asset(
                           'assets/insideApp/scanning/try again.png'),
                     ),
                     Text(
                       'Try Again',
-                      style: TextStyle(fontSize: 14),
-                    )
+                      style: TextStyle(fontSize: 34),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: SizedBox(
+                        height: 70,
+                        width: 70,
+                        child: Image.asset(
+                            'assets/insideApp/learnReading/try again.png'),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -232,26 +243,26 @@ class _nameState extends State<CameraScreen> {
               );
             },
             icon: const Icon(
-              Icons.arrow_back_ios_new_rounded,
+              Icons.arrow_back,
               size: 30,
               color: Colors.white,
             ),
             //replace with our own icon data.
           ),
-          actions: [
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: Icon(Icons.read_more),
-            // ),
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: Icon(Icons.branding_watermark_outlined),
-            // ),
-            Image.asset('assets/insideApp/scanning/instruction.png'),
-            Gap(15),
-            Image.asset('assets/insideApp/scanning/tips.png'),
-            Gap(10),
-          ],
+          // actions: [
+          //   // IconButton(
+          //   //   onPressed: () {},
+          //   //   icon: Icon(Icons.read_more),
+          //   // ),
+          //   // IconButton(
+          //   //   onPressed: () {},
+          //   //   icon: Icon(Icons.branding_watermark_outlined),
+          //   // ),
+          //   Image.asset('assets/insideApp/scanning/instruction.png'),
+          //   Gap(15),
+          //   Image.asset('assets/insideApp/scanning/tips.png'),
+          //   Gap(10),
+          // ],
         ),
         extendBodyBehindAppBar: true,
         body: Stack(
@@ -294,6 +305,7 @@ class _nameState extends State<CameraScreen> {
                             _showDialog();
                           } else if (labels[pickedNum] ==
                               _recognitions[0]['label'].toString()) {
+                            print(_recognitions[0]['label'].toString());
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => ObjectDescription(

@@ -148,7 +148,7 @@ class _ObjectDescriptionState extends State<ObjectDescription> {
                       Gap(10),
                       Text(
                         textAlign: TextAlign.center,
-                        objectData[object]['description'].toString(),
+                        objectData[pickedNum]['description'].toString(),
                         style: TextStyle(fontSize: 14),
                       ),
                       Gap(50),
