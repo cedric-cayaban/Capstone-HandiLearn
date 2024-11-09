@@ -8,6 +8,13 @@ List<List<Progress>> categoryList = [
     Progress(name: 'Small Letters_Write', total: 26),
   ],
 
+  // WORDS
+  [
+    Progress(name: 'Words_Pronounce', total: 10),
+    Progress(name: 'Words_Write', total: 10),
+    Progress(name: 'Cursive Words_Write', total: 10),
+  ],
+
   // NUMBERS
   [
     Progress(name: 'Numbers_Pronounce', total: 10),
@@ -16,16 +23,9 @@ List<List<Progress>> categoryList = [
 
   // CURSIVES
   [
-    Progress(name: 'Capital Cursives_Pronounce', total: 26),
+    //Progress(name: 'Capital Cursives_Pronounce', total: 26),
     Progress(name: 'Capital Cursives_Write', total: 26),
     Progress(name: 'Small Cursives_Write', total: 26),
-  ],
-
-  // WORDS
-  [
-    Progress(name: 'Words_Pronounce', total: 10),
-    Progress(name: 'Words_Write', total: 10),
-    Progress(name: 'Cursive Words_Write', total: 10),
   ],
 ];
 List<List<String>> categoryNames = [
@@ -36,6 +36,13 @@ List<List<String>> categoryNames = [
     'Write Small Letters',
   ],
 
+  // WORDS
+  [
+    'Pronounce Words',
+    'Write Words',
+    'Write Cursive Words',
+  ],
+
   // NUMBERS
   [
     'Pronounce Numbers',
@@ -44,15 +51,8 @@ List<List<String>> categoryNames = [
 
   // CURSIVES
   [
-    'Pronounce Cursives',
+    //'Pronounce Cursives',
     'Write Capital Cursives',
     'Write Small Cursives',
-  ],
-
-  // WORDS
-  [
-    'Pronounce Words',
-    'Write Words',
-    'Write Cursive Words',
   ],
 ];

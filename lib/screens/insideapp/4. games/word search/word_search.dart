@@ -3,42 +3,38 @@ import 'package:flutter/services.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/letter%20search/levels/easy.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/letter%20search/levels/hard.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/letter%20search/levels/medium.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/word%20search/levels/easy.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/word%20search/levels/hard.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/word%20search/levels/medium.dart';
 
-class LetterSearch extends StatefulWidget {
-  const LetterSearch({required this.difficulty, super.key});
+class WordSearch extends StatefulWidget {
+  const WordSearch({required this.difficulty, super.key});
   final String difficulty;
 
   @override
-  State<LetterSearch> createState() => _LetterSearchState();
+  State<WordSearch> createState() => _WordSearchState();
 }
 
-class _LetterSearchState extends State<LetterSearch> {
+class _WordSearchState extends State<WordSearch> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
+
   }
 
-  void dispose() {
+ void dispose() {
     // Reset the orientation to the default system orientation (or another specific one)
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
     super.dispose();
   }
 
   Widget selectLevel() {
     switch (widget.difficulty) {
       case 'Easy':
-        return const LetterSearchEasy();
+        return const WordSearchEasy();
       case 'Normal':
-        return const LetterSearchMedium();
+        return const WordSearchMedium();
       case 'Hard':
-        return const LetterSearchHard();
+        return const WordSearchHard();
       default:
         return const Center(child: Text('Invalid difficulty level'));
     }

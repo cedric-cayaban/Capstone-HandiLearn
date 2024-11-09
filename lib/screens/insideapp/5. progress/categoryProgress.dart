@@ -7,6 +7,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:test_drawing/provider/progress_provider.dart';
+import 'package:test_drawing/provider/user_provider.dart';
 import 'package:test_drawing/screens/insideapp/5.%20progress/categoryList.dart';
 import 'package:test_drawing/screens/insideapp/5.%20progress/progressScreen.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';
@@ -16,11 +17,13 @@ class CategoryProgress extends StatefulWidget {
     required this.index,
     required this.categoryName,
     required this.categoryColor,
+    required this.subCategoriesMinus,
     super.key,
   });
 
   final int index;
   final String categoryName;
+  final int subCategoriesMinus;
   final Color categoryColor;
 
   @override
@@ -35,6 +38,7 @@ class _CategoryProgressState extends State<CategoryProgress> {
     double spacer = MediaQuery.of(context).size.height * 0.02;
     String profileId = Provider.of<ProgressProvider>(context).profileId;
     String lessonId = Provider.of<ProgressProvider>(context).lessonId;
+    int age = Provider.of<UserProvider>(context, listen: false).age;
 
     return SafeArea(
       child: Scaffold(
@@ -96,7 +100,7 @@ class _CategoryProgressState extends State<CategoryProgress> {
                   height: MediaQuery.of(context).size.height * 0.7,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
-                    itemCount: categoryList[widget.index].length,
+                    itemCount: categoryList[widget.index].length - widget.subCategoriesMinus,
                     itemBuilder: (context, index) {
                       final progressProvider =
                           Provider.of<ProgressProvider>(context);

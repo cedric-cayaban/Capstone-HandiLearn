@@ -3,6 +3,7 @@ import 'package:test_drawing/screens/insideapp/4.%20games/guessing%20game/guess.
 import 'package:test_drawing/screens/insideapp/4.%20games/letter%20search/letter_search.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/memory%20game/memory_game.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/sliding%20puzzle/Sliding_puzzle.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/word%20search/word_search.dart';
 // 3x3 puzzle
 
 class SelectDifficulty extends StatefulWidget {
@@ -40,6 +41,12 @@ class _SelectDifficultyState extends State<SelectDifficulty> {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (_) => MemoryGame(difficulty: difficulty),
+        ),
+      );
+    }else if (widget.game == 'word_search') {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => WordSearch(difficulty: difficulty),
         ),
       );
     }

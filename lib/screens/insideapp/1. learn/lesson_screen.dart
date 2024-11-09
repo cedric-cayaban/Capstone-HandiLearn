@@ -142,7 +142,9 @@ class _LessonScreenState extends State<LessonScreen> {
                                     print(lessonNames[index]);
                                     if (index == 0 ||
                                         index == 2 ||
-                                        index == 3) {
+                                        index == 3 
+                                        // || index == 4
+                                        ) {
                                       LastActivity = index.toString();
                                       Navigator.of(context).push(
                                         MaterialPageRoute(

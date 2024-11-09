@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/chooseGame.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/game_selection.dart';
 
 class LetterSearchEasy extends StatefulWidget {
   const LetterSearchEasy({super.key});
@@ -53,6 +53,15 @@ class _LetterSearchEasyState extends State<LetterSearchEasy> {
   int currentTargetIndex = 0;
   bool showCheckmark = false;
 
+  // void dispose() {
+  //   // Reset the orientation to the default system orientation (or another specific one)
+  //   SystemChrome.setPreferredOrientations([
+  //     DeviceOrientation.portraitUp,
+  //     DeviceOrientation.portraitDown,
+  //   ]);
+  //   super.dispose();
+  // }
+
   void loadFinishModal() {
     showDialog(
       barrierDismissible: false,
@@ -83,10 +92,6 @@ class _LetterSearchEasyState extends State<LetterSearchEasy> {
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).pop();
-                    SystemChrome.setPreferredOrientations([
-                      DeviceOrientation.portraitDown,
-                      DeviceOrientation.portraitUp,
-                    ]);
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => Games(),
                     ));
@@ -179,10 +184,7 @@ class _LetterSearchEasyState extends State<LetterSearchEasy> {
               left: 20,
               child: IconButton(
                   onPressed: () {
-                    SystemChrome.setPreferredOrientations([
-                      DeviceOrientation.portraitDown,
-                      DeviceOrientation.portraitUp,
-                    ]);
+                    
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => Games(),
                     ));
