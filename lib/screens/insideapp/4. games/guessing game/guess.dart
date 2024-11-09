@@ -47,7 +47,6 @@ class _PictowordState extends State<Pictoword> {
   }
 
   String generateRandomLetters() {
-    
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     final random = Random();
     String randomLetters =
