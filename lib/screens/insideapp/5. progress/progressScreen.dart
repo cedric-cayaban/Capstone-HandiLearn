@@ -453,6 +453,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                         ),
                                       ),
                                     ),
+                                  if (!isAccessible)
+                                    Image.asset('assets/insideApp/padlock.png')
                                 ],
                               ),
                             ),
