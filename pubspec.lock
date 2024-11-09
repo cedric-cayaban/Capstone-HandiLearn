@@ -125,17 +125,10 @@ packages:
     dependency: transitive
     description:
       name: camera_android
-<<<<<<< HEAD
       sha256: "32f04948a284b71d938fe275616faf4957d07f9b3aab8021bfc8c418301a289e"
       url: "https://pub.dev"
     source: hosted
     version: "0.10.9+11"
-=======
-      sha256: d8b17e36353cca3fd37e92f3fce28e7249730e078c72e9b43ee7c7ad2e2f7082
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.10.9+16"
->>>>>>> f6f200f4d9f1ec54e8f636ba7c50707eb0c66940
   camera_avfoundation:
     dependency: transitive
     description:
@@ -369,32 +362,18 @@ packages:
     dependency: transitive
     description:
       name: flutter_plugin_android_lifecycle
-<<<<<<< HEAD
       sha256: "9ee02950848f61c4129af3d6ec84a1cfc0e47931abc746b03e7a3bc3e8ff6eda"
       url: "https://pub.dev"
     source: hosted
     version: "2.0.22"
-=======
-      sha256: "9b78450b89f059e96c9ebb355fa6b3df1d6b330436e0b885fb49594c41721398"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.23"
->>>>>>> f6f200f4d9f1ec54e8f636ba7c50707eb0c66940
   flutter_svg:
     dependency: "direct main"
     description:
       name: flutter_svg
-<<<<<<< HEAD
-      sha256: de82e6bf958cec7190fbc1c5298282c851228e35ae2b14e2b103e7f777818c64
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.13"
-=======
       sha256: "578bd8c508144fdaffd4f77b8ef2d8c523602275cd697cc3db284dbd762ef4ce"
       url: "https://pub.dev"
     source: hosted
     version: "2.0.14"
->>>>>>> f6f200f4d9f1ec54e8f636ba7c50707eb0c66940
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -465,32 +444,18 @@ packages:
     dependency: transitive
     description:
       name: leak_tracker
-<<<<<<< HEAD
       sha256: "7f0df31977cb2c0b88585095d168e689669a2cc9b97c309665e3386f3e9d341a"
       url: "https://pub.dev"
     source: hosted
     version: "10.0.4"
-=======
-      sha256: "3f87a60e8c63aecc975dda1ceedbc8f24de75f09e4856ea27daf8958f2f0ce05"
-      url: "https://pub.dev"
-    source: hosted
-    version: "10.0.5"
->>>>>>> f6f200f4d9f1ec54e8f636ba7c50707eb0c66940
   leak_tracker_flutter_testing:
     dependency: transitive
     description:
       name: leak_tracker_flutter_testing
-<<<<<<< HEAD
       sha256: "06e98f569d004c1315b991ded39924b21af84cf14cc94791b8aea337d25b57f8"
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
-=======
-      sha256: "932549fb305594d82d7183ecd9fa93463e9914e1b67cacc34bc40906594a1806"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.5"
->>>>>>> f6f200f4d9f1ec54e8f636ba7c50707eb0c66940
   leak_tracker_testing:
     dependency: transitive
     description:
@@ -527,17 +492,10 @@ packages:
     dependency: transitive
     description:
       name: meta
-<<<<<<< HEAD
       sha256: "7687075e408b093f36e6bbf6c91878cc0d4cd10f409506f7bc996f68220b9136"
       url: "https://pub.dev"
     source: hosted
     version: "1.12.0"
-=======
-      sha256: bdb68674043280c3428e9ec998512fb681678676b3c54e773629ffe74419f8c7
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.15.0"
->>>>>>> f6f200f4d9f1ec54e8f636ba7c50707eb0c66940
   nested:
     dependency: transitive
     description:
@@ -582,17 +540,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_android
-<<<<<<< HEAD
       sha256: "6f01f8e37ec30b07bc424b4deabac37cacb1bc7e2e515ad74486039918a37eb7"
       url: "https://pub.dev"
     source: hosted
     version: "2.2.10"
-=======
-      sha256: c464428172cb986b758c6d1724c603097febb8fb855aa265aeecc9280c294d4a
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.12"
->>>>>>> f6f200f4d9f1ec54e8f636ba7c50707eb0c66940
   path_provider_foundation:
     dependency: transitive
     description:
@@ -786,17 +737,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-<<<<<<< HEAD
       sha256: "9955ae474176f7ac8ee4e989dadfb411a58c30415bcfb648fa04b2b8a03afa7f"
       url: "https://pub.dev"
     source: hosted
     version: "0.7.0"
-=======
-      sha256: "5b8a98dafc4d5c4c9c72d8b31ab2b23fc13422348d2997120294d3bac86b4ddb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.2"
->>>>>>> f6f200f4d9f1ec54e8f636ba7c50707eb0c66940
   tflite_v2:
     dependency: "direct main"
     description:
@@ -841,10 +785,10 @@ packages:
     dependency: transitive
     description:
       name: vector_graphics_compiler
-      sha256: "26d520739b7c6b5d2a2b3274427874a8390831fd4cd5bb8cfbd7d913477d3a2e"
+      sha256: ab9ff38fc771e9ee1139320adbe3d18a60327370c218c60752068ebee4b49ab1
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.14"
+    version: "1.1.15"
   vector_math:
     dependency: transitive
     description:
@@ -857,17 +801,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-<<<<<<< HEAD
       sha256: "3923c89304b715fb1eb6423f017651664a03bf5f4b29983627c4da791f74a4ec"
       url: "https://pub.dev"
     source: hosted
     version: "14.2.1"
-=======
-      sha256: "5c5f338a667b4c644744b661f309fb8080bb94b18a7e91ef1dbd343bed00ed6d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "14.2.5"
->>>>>>> f6f200f4d9f1ec54e8f636ba7c50707eb0c66940
   web:
     dependency: transitive
     description:
@@ -901,10 +838,5 @@ packages:
     source: hosted
     version: "6.5.0"
 sdks:
-<<<<<<< HEAD
   dart: ">=3.4.0 <4.0.0"
   flutter: ">=3.22.0"
-=======
-  dart: ">=3.5.0 <4.0.0"
-  flutter: ">=3.24.0"
->>>>>>> f6f200f4d9f1ec54e8f636ba7c50707eb0c66940

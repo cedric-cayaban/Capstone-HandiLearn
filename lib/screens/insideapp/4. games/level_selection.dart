@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/guessing%20game/guess.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/pictoword/picto.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/letter%20search/letter_search.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/memory%20game/memory_game.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/sliding%20puzzle/Sliding_puzzle.dart';
