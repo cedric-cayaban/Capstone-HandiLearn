@@ -12,7 +12,8 @@ import 'package:test_drawing/screens/insideapp/1.%20learn/lesson_screen.dart';
 import 'package:test_drawing/screens/insideapp/3.%20scanning/camera_screen.dart';
 import 'package:test_drawing/screens/insideapp/2.%20short%20stories/selections.dart';
 import 'package:test_drawing/screens/insideapp/3.%20scanning/instruction.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/chooseGame.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/game_selection.dart';
+
 import 'package:test_drawing/screens/insideapp/5.%20progress/categoryList.dart';
 import 'package:test_drawing/screens/insideapp/5.%20progress/progressScreen.dart';
 import 'package:test_drawing/screens/useraccount/choose_profile.dart';
@@ -68,6 +69,21 @@ class _HomeState extends State<Home> {
     String avatarUrl = Provider.of<UserProvider>(context, listen: false).avatar;
     String profileId = Provider.of<ProgressProvider>(context).profileId;
     String lessonId = Provider.of<ProgressProvider>(context).lessonId;
+    int age = Provider.of<UserProvider>(context, listen: false).age;
+
+    List<int> accessibleCategories = [];
+    List<int> subCategoriesMinus =
+        []; // FOR MINUS IN THE LENGTH OF CATEGORYLIST[INDEX]
+    if (age >= 2 && age <= 3) {
+      accessibleCategories = [0]; // Letters
+      subCategoriesMinus = [0, 0, 0, 0]; //
+    } else if (age >= 4 && age <= 5) {
+      accessibleCategories = [0, 1, 2]; // Letters, Words, Numbers
+      subCategoriesMinus = [0, 1, 0, 0]; //
+    } else if (age >= 6) {
+      accessibleCategories = [0, 1, 2, 3]; // All categories
+      subCategoriesMinus = [0, 0, 0, 0];
+    }
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitDown,
@@ -237,16 +253,26 @@ class _HomeState extends State<Home> {
                                             double categoryProgressValue = 0.0;
                                             double categoryExpectedValue = 0.0;
 
-                                            for (var progressItem
-                                                in categoryList[
-                                                    categoryIndex]) {
+                                            for (int progressItem = 0;
+                                                progressItem <
+                                                    categoryList[categoryIndex]
+                                                            .length -
+                                                        subCategoriesMinus[
+                                                            categoryIndex];
+                                                progressItem++) {
                                               double progress = double.parse(
-                                                  snapshot.data![
-                                                          progressItem.name] ??
+                                                  snapshot.data![categoryList[
+                                                                  categoryIndex]
+                                                              [progressItem]
+                                                          .name] ??
                                                       '0');
+                                              double total =
+                                                  categoryList[categoryIndex]
+                                                              [progressItem]
+                                                          .total ??
+                                                      0;
                                               categoryProgressValue += progress;
-                                              categoryExpectedValue +=
-                                                  progressItem.total;
+                                              categoryExpectedValue += total;
                                             }
 
                                             totalProgressValue +=

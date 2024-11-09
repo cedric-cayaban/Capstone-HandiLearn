@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_drawing/objects/crossword.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/chooseGame.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/game_selection.dart';
 import 'package:word_search_safety/word_search_safety.dart'; // Import the word_search_safety package
 
 class WordSearchEasy extends StatefulWidget {

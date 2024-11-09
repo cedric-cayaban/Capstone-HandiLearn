@@ -99,11 +99,22 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   @override
   void dispose() {
-    // Reset the orientation to the default system orientation (or another specific one)
+    Future.microtask(() async {
+      
+      if (mounted) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => ActivityScreen(
+            lesson: widget.forNextLesson,
+            lessonTitle: lessonTitles[widget.lessonNumber],
+            lessonNumber: widget.lessonNumber,
+          ),
+        ));
+      }
+    });
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
     super.dispose();
   }
 
@@ -177,7 +188,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                     ),
                     if (isMatch)
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           if (widget.index < widget.forNextLesson.length - 1) {
                             Navigator.of(context).pop();
                             var nextLesson =
@@ -193,6 +204,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             ));
                           } else {
                             Navigator.of(context).pop();
+
                             Navigator.of(context)
                                 .pushReplacement(MaterialPageRoute(
                               builder: (context) => ActivityScreen(

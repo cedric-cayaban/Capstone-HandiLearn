@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/chooseGame.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/game_selection.dart';
 
 class LetterSearchHard extends StatefulWidget {
   const LetterSearchHard({super.key});

@@ -7,6 +7,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:test_drawing/provider/progress_provider.dart';
+import 'package:test_drawing/provider/user_provider.dart';
 import 'package:test_drawing/screens/insideapp/5.%20progress/categoryList.dart';
 import 'package:test_drawing/screens/insideapp/5.%20progress/categoryProgress.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';
@@ -19,12 +20,11 @@ class ProgressScreen extends StatefulWidget {
 }
 
 class _ProgressScreenState extends State<ProgressScreen> {
-  @override
   List<String> categoryNames = [
     'Letters',
-    'Numbers',
-    'Cursives',
     'Words',
+    'Numbers',
+    'Cursive',
   ];
 
   List<Color> categoryColor = [
@@ -35,24 +35,44 @@ class _ProgressScreenState extends State<ProgressScreen> {
   ];
 
   String userId = FirebaseAuth.instance.currentUser!.uid;
+
+  @override
   Widget build(BuildContext context) {
     double spacer = MediaQuery.of(context).size.height * 0.02;
     String profileId = Provider.of<ProgressProvider>(context).profileId;
     String lessonId = Provider.of<ProgressProvider>(context).lessonId;
+    int age = Provider.of<UserProvider>(context, listen: false).age;
+
+    // Age-based category filtering
+    List<int> accessibleCategories = [];
+    List<int> subCategoriesMinus =
+        []; // FOR MINUS IN THE LENGTH OF CATEGORYLIST[INDEX]
+    if (age >= 2 && age <= 3) {
+      accessibleCategories = [0]; // Letters
+      subCategoriesMinus = [0, 0, 0, 0]; //
+    } else if (age >= 4 && age <= 5) {
+      accessibleCategories = [0, 1, 2]; // Letters, Words, Numbers
+      subCategoriesMinus = [0, 1, 0, 0]; //
+    } else if (age >= 6) {
+      accessibleCategories = [0, 1, 2, 3]; // All categories
+      subCategoriesMinus = [0, 0, 0, 0];
+    }
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: Colors.transparent,
           leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (_) => Home(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.arrow_back_ios)),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) => Home(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+          ),
         ),
         extendBodyBehindAppBar: true,
         body: Container(
@@ -149,7 +169,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                   linearGradient: const LinearGradient(
                                     colors: [
                                       Color(0xFFFFFF00),
-                                      Color(0xFF00FF00),
+                                      Color(0xFF00FF00)
                                     ],
                                   ),
                                   leading: Text('0%'),
@@ -165,7 +185,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                     child: Text('Document does not exist'));
                               }
 
-                              // Variables to accumulate progress and totals for each category
                               double totalProgressValue = 0.0;
                               double totalExpectedValue = 0.0;
 
@@ -175,21 +194,28 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                 double categoryProgressValue = 0.0;
                                 double categoryExpectedValue = 0.0;
 
-                                for (var progressItem
-                                    in categoryList[categoryIndex]) {
-                                  // Fetch current progress from Firestore for each Progress item
-                                  double progress = double.parse(
-                                      snapshot.data![progressItem.name] ?? '0');
+                                for (int progressItem = 0;
+                                    progressItem <
+                                        categoryList[categoryIndex].length -
+                                            subCategoriesMinus[categoryIndex];
+                                    progressItem++) {
+                                  double progress = double.parse(snapshot.data![
+                                          categoryList[categoryIndex]
+                                                  [progressItem]
+                                              .name] ??
+                                      '0');
+                                  double total = categoryList[categoryIndex]
+                                              [progressItem]
+                                          .total ??
+                                      0;
                                   categoryProgressValue += progress;
-                                  categoryExpectedValue += progressItem.total;
+                                  categoryExpectedValue += total;
                                 }
 
-                                // Accumulate for total progress
                                 totalProgressValue += categoryProgressValue;
                                 totalExpectedValue += categoryExpectedValue;
                               }
 
-                              // Calculate overall progress as the ratio of total progress value to total expected value
                               double totalProgress = totalExpectedValue == 0
                                   ? 0
                                   : totalProgressValue / totalExpectedValue;
@@ -202,7 +228,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                 linearGradient: const LinearGradient(
                                   colors: [
                                     Color(0xFFFFFF00),
-                                    Color(0xFF00FF00),
+                                    Color(0xFF00FF00)
                                   ],
                                 ),
                                 leading: Padding(
@@ -240,35 +266,133 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     children: List.generate(
                       4,
                       (index) {
+                        // Check if the category is accessible based on age
+                        bool isAccessible =
+                            accessibleCategories.contains(index);
+
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             InkWell(
-                              onTap: () {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) => CategoryProgress(
-                                      index: index,
-                                      categoryName: categoryNames[index],
-                                      categoryColor: categoryColor[index],
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: StreamBuilder<DocumentSnapshot>(
-                                  stream: FirebaseFirestore.instance
-                                      .collection('users')
-                                      .doc(userId)
-                                      .collection('profiles')
-                                      .doc(profileId)
-                                      .collection('LessonsFinished')
-                                      .doc(lessonId)
-                                      .snapshots(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
+                              onTap: isAccessible
+                                  ? () {
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              CategoryProgress(
+                                            index: index,
+                                            categoryName: categoryNames[index],
+                                            categoryColor: categoryColor[index],
+                                            subCategoriesMinus:
+                                                subCategoriesMinus[index],
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  : null, // Disable tap if not accessible
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  StreamBuilder<DocumentSnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection('users')
+                                        .doc(userId)
+                                        .collection('profiles')
+                                        .doc(profileId)
+                                        .collection('LessonsFinished')
+                                        .doc(lessonId)
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularPercentIndicator(
+                                          percent: 0,
+                                          animation: true,
+                                          animationDuration: 900,
+                                          radius: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.09,
+                                          lineWidth: 13,
+                                          center: CircleAvatar(
+                                            backgroundColor: Colors.white,
+                                            radius: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.07,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                const Gap(12),
+                                                const Padding(
+                                                  padding:
+                                                      EdgeInsets.only(left: 8),
+                                                  child: Text(
+                                                    '0%',
+                                                    style: TextStyle(
+                                                      fontSize: 26,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  categoryNames[index],
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.blueGrey,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          progressColor: categoryColor[index],
+                                          backgroundColor:
+                                              Colors.blueGrey.shade100,
+                                          circularStrokeCap:
+                                              CircularStrokeCap.round,
+                                        );
+                                      }
+
+                                      if (!snapshot.hasData ||
+                                          !snapshot.data!.exists) {
+                                        return Center(
+                                            child: Text(
+                                                'Document does not exist'));
+                                      }
+
+                                      double categoryProgressValue = 0.0;
+                                      double categoryExpectedValue = 0.0;
+
+                                      for (int progressItem = 0;
+                                          progressItem <
+                                              (categoryList[index].length -
+                                                  subCategoriesMinus[index]);
+                                          progressItem++) {
+                                        double progress = double.parse(
+                                            snapshot.data![categoryList[index]
+                                                        [progressItem]
+                                                    .name] ??
+                                                '0');
+                                        double total = categoryList[index]
+                                                    [progressItem]
+                                                .total ??
+                                            0;
+                                        categoryProgressValue += progress;
+                                        categoryExpectedValue += total;
+                                      }
+
+                                      double categoryProgress =
+                                          categoryExpectedValue == 0
+                                              ? 0
+                                              : categoryProgressValue /
+                                                  categoryExpectedValue;
+
                                       return CircularPercentIndicator(
-                                        percent: 0,
+                                        percent: categoryProgress,
                                         animation: true,
                                         animationDuration: 900,
                                         radius:
@@ -286,24 +410,25 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               const Gap(12),
-                                              const Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 8),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8),
                                                 child: Text(
-                                                  '0%',
+                                                  '${(categoryProgress * 100).toStringAsFixed(0)}%',
                                                   style: TextStyle(
-                                                    fontSize: 26,
-                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w500,
                                                     color: Colors.black,
                                                   ),
                                                 ),
                                               ),
                                               Text(
                                                 categoryNames[index],
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 15,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Colors.blueGrey,
+                                                  fontWeight: FontWeight.w500,
+                                                  color:
+                                                      Colors.blueGrey.shade900,
                                                 ),
                                               ),
                                             ],
@@ -315,89 +440,29 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                         circularStrokeCap:
                                             CircularStrokeCap.round,
                                       );
-                                    }
-
-                                    double totalPercent = 0.0;
-
-                                    for (var progressItem
-                                        in categoryList[index]) {
-                                      String fieldName = progressItem.name;
-                                      double total = progressItem.total;
-
-                                      // Fetch the current progress for this specific item from Firebase
-                                      String progressValueStr = snapshot
-                                              .data![fieldName]
-                                              ?.toString() ??
-                                          '0';
-                                      double currentProgress =
-                                          double.parse(progressValueStr);
-
-                                      // Calculate the individual progress percent
-                                      double itemPercent =
-                                          currentProgress / total;
-                                      totalPercent += itemPercent;
-                                    }
-
-                                    // Average percentage for category progress
-                                    double categoryProgress = totalPercent /
-                                        categoryList[index].length;
-
-                                    return CircularPercentIndicator(
-                                      percent: categoryProgress,
-                                      animation: true,
-                                      animationDuration: 900,
-                                      radius:
-                                          MediaQuery.of(context).size.height *
-                                              0.09,
-                                      lineWidth: 13,
-                                      center: CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        radius:
-                                            MediaQuery.of(context).size.height *
-                                                0.07,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Gap(12),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8),
-                                              child: Text(
-                                                '${(categoryProgress * 100).toStringAsFixed(0)}%',
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                            ),
-                                            Text(
-                                              categoryNames[index],
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.blueGrey.shade900,
-                                              ),
-                                            ),
-                                          ],
+                                    },
+                                  ),
+                                  // Dark overlay for inaccessible categories
+                                  if (!isAccessible)
+                                    Positioned.fill(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          color: Colors.black.withOpacity(0.4),
                                         ),
                                       ),
-                                      progressColor: categoryColor[index],
-                                      backgroundColor: Colors.blueGrey.shade100,
-                                      circularStrokeCap:
-                                          CircularStrokeCap.round,
-                                    );
-                                  }),
+                                    ),
+                                ],
+                              ),
                             ),
-                            const SizedBox(height: 8),
                           ],
                         );
                       },
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
