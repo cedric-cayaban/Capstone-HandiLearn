@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/chooseGame.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/memory%20game/game_utils.dart';
 
 class MemoryGame extends StatefulWidget {
@@ -21,6 +22,7 @@ class _MemoryGameState extends State<MemoryGame> {
   bool condition = false;
   bool canTap = true;
   late int gridSize;
+  late List<bool> _isTapped;
 
   @override
   void initState() {
@@ -39,6 +41,7 @@ class _MemoryGameState extends State<MemoryGame> {
       gridSize = 4; // 2x4 grid for 8 cards
       _game = Game(gridSize: gridSize, cardCount: 8);
     }
+    _isTapped = List.generate(_game.cardCount, (_) => false);
     _game.initGame();
   }
 
@@ -100,6 +103,7 @@ class _MemoryGameState extends State<MemoryGame> {
                         ? () async {
                             setState(() {
                               tries++;
+                              _isTapped[index] = true; // Start animation
                               _game.gameImg![index] = _game.cardsList[index];
                               _game.matchCheck
                                   .add({index: _game.cardsList[index]});
@@ -122,6 +126,10 @@ class _MemoryGameState extends State<MemoryGame> {
                                 await Future.delayed(
                                     Duration(milliseconds: 500));
                                 setState(() {
+                                  _isTapped[_game.matchCheck[0].keys.first] =
+                                      false;
+                                  _isTapped[_game.matchCheck[1].keys.first] =
+                                      false;
                                   _game.gameImg![_game.matchCheck[0].keys
                                       .first] = _game.hiddenCardPath;
                                   _game.gameImg![_game.matchCheck[1].keys
@@ -136,14 +144,19 @@ class _MemoryGameState extends State<MemoryGame> {
                             }
                           }
                         : null,
-                    child: Container(
-                      padding: EdgeInsets.all(16.0),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFFFB46A),
-                        borderRadius: BorderRadius.circular(8.0),
-                        image: DecorationImage(
-                          image: AssetImage(_game.gameImg![index]),
-                          fit: BoxFit.cover,
+                    child: AnimatedScale(
+                      scale:
+                          _isTapped[index] ? 1.0 : .9, // Scale up when tapped
+                      duration: Duration(milliseconds: 200),
+                      child: Container(
+                        padding: EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFFFB46A),
+                          borderRadius: BorderRadius.circular(8.0),
+                          image: DecorationImage(
+                            image: AssetImage(_game.gameImg![index]),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
@@ -160,6 +173,14 @@ class _MemoryGameState extends State<MemoryGame> {
                       type: QuickAlertType.success,
                       title: 'Good Job!',
                       text: 'Find more games.',
+                      onConfirmBtnTap: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (_) => Games(),
+                          ),
+                        );
+                      },
                     );
                   });
                 }

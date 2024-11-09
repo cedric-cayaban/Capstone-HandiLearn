@@ -39,107 +39,116 @@ class _ShortStoriesSelectionState extends State<ShortStoriesSelection> {
                 ),
               );
             },
-            icon: const Icon(Icons.arrow_back_ios),
+            icon: const Icon(Icons.arrow_back),
           ),
         ),
         extendBodyBehindAppBar: true,
-        body: Container(
-          height: MediaQuery.of(context).size.height, // Use full screen height
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image:
-                  AssetImage("assets/insideApp/shortStories/selectionBg.png"),
-              fit: BoxFit.fill,
+        body: Stack(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                      "assets/insideApp/shortStories/selectionBg.png"),
+                  fit: BoxFit.fill,
+                ),
+              ),
             ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Gap(spacer),
-                Container(
-                  // decoration: BoxDecoration(color: Colors.red),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Short Stories',
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.33,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.7,
+                decoration: const BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30)),
+                ),
+                child: Stack(
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned(
+                      top: 10,
+                      child: Text(
+                        'Short stories',
                         style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.6,
-                        width: MediaQuery.of(context).size.width,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: GridView.builder(
-                            itemCount: 4,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 0.85,
-                                    crossAxisSpacing: 20,
-                                    mainAxisSpacing: 35,
-                                    crossAxisCount: 2),
-                            itemBuilder: (context, index) => ClipRRect(
+                    ),
+                    Container(
+                      // color: Colors.black,
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      width: MediaQuery.of(context).size.width,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: GridView.builder(
+                          padding: EdgeInsets.all(12),
+                          itemCount: 4,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 0.85,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 35,
+                            crossAxisCount: 2,
+                          ),
+                          itemBuilder: (context, index) => InkWell(
+                            onTap: index == 0
+                                ? () {
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (_) => Story(),
+                                      ),
+                                    );
+                                  }
+                                : null,
+                            child: ClipRRect(
                               borderRadius: BorderRadius.circular(
-                                  7), // Adjust the radius as needed
-                              child: Image.asset(
-                                "assets/insideApp/shortStories/story${index + 1}.png",
+                                  12), // Adjust the radius as needed
+                              child: Stack(
+                                children: [
+                                  Image.asset(
+                                    "assets/insideApp/shortStories/story${index + 1}.png",
+                                    fit: BoxFit.cover,
+                                  ),
+                                  // Conditionally add the lock icon if the index is not equal to 1
+                                  if (index != 0)
+                                    Positioned.fill(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.3),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: Center(
+                                          child: Image.asset(
+                                            'assets/insideApp/padlock.png',
+                                            width: double
+                                                .infinity, // Adjust the size of the lock icon as needed
+                                            height: double.infinity,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
                           ),
                         ),
                       ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      //   children: [
-                      //     GestureDetector(
-                      //       onTap: () {
-                      //         Navigator.of(context).pushReplacement(
-                      //           MaterialPageRoute(
-                      //             builder: (_) => Story(),
-                      //           ),
-                      //         );
-                      //       },
-                      //       child: Image.asset(
-                      //         "assets/insideApp/shortStories/story1.png",
-                      //         height: 200,
-                      //         width: 150,
-                      //       ),
-                      //     ),
-                      //     Image.asset(
-                      //       "assets/insideApp/shortStories/story2.png",
-                      //       height: 200,
-                      //       width: 150,
-                      //     ),
-                      //   ],
-                      // ),
-                      // Gap(25),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      //   children: [
-                      //     Image.asset(
-                      //       "assets/insideApp/shortStories/story3.png",
-                      //       height: 200,
-                      //       width: 150,
-                      //     ),
-                      //     Image.asset(
-                      //       "assets/insideApp/shortStories/story4.png",
-                      //       height: 200,
-                      //       width: 150,
-                      //     ),
-                      //   ],
-                      // ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );

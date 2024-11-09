@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/guessing%20game/guess.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/letter%20search/letter_search.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/memory%20game/memory_game.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/pictoword.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/sliding%20puzzle/Sliding_puzzle.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/word%20search/word_search.dart';
 // 3x3 puzzle
@@ -22,23 +22,23 @@ class _SelectDifficultyState extends State<SelectDifficulty> {
     print(difficulty);
 
     if (widget.game == 'sliding_game') {
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (_) => SlidingPuzzle(difficulty: difficulty),
         ),
       );
     } else if (widget.game == 'pictoword') {
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (_) => Pictoword(difficulty: difficulty),
         ),
       );
     } else if (widget.game == 'letter_search') {
-      Navigator.of(context).push(MaterialPageRoute(
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => LetterSearch(difficulty: difficulty),
       ));
     } else if (widget.game == 'memory_game') {
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (_) => MemoryGame(difficulty: difficulty),
         ),

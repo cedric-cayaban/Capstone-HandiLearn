@@ -12,6 +12,7 @@ import 'package:test_drawing/data/userAccount.dart';
 import 'package:test_drawing/objects/lesson.dart';
 import 'package:test_drawing/provider/lesson_provider.dart';
 import 'package:test_drawing/screens/insideapp/1.%20learn/reading/character_selection.dart';
+import 'package:flutter/animation.dart';
 
 class SelectedItem extends StatefulWidget {
   SelectedItem({
@@ -33,7 +34,8 @@ class SelectedItem extends StatefulWidget {
   State<SelectedItem> createState() => _SelectedItemState();
 }
 
-class _SelectedItemState extends State<SelectedItem> {
+class _SelectedItemState extends State<SelectedItem>
+    with SingleTickerProviderStateMixin {
   stt.SpeechToText _speech = stt.SpeechToText();
 
   bool _isListening = false;
@@ -46,9 +48,23 @@ class _SelectedItemState extends State<SelectedItem> {
 
   bool _dialogShown = false; // Add this variable
 
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _animation = Tween<double>(begin: 1.0, end: 1.4).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
     sayTheSound();
     initSpeechState();
   }
@@ -66,17 +82,19 @@ class _SelectedItemState extends State<SelectedItem> {
 
   void _startListening() {
     final lessonProvider = Provider.of<LessonProvider>(context, listen: false);
-
-    // Get provider instance
-
     print('Starting to listen');
     _speech.listen(
       listenFor: Duration(seconds: 3),
       onResult: (result) {
         if (result.finalResult) {
+          String resultNumber = "";
           print(result.recognizedWords.toLowerCase());
           print(widget.lesson.type);
           print(widget.lesson.character.toLowerCase());
+          if (widget.lesson.type == "word") {
+            resultNumber =
+                convertNumberToWord(widget.lesson.character.toLowerCase());
+          }
           if (!_dialogShown) {
             if (widget.lesson.type == "standard" &&
                 result.recognizedWords.toLowerCase() ==
@@ -99,8 +117,7 @@ class _SelectedItemState extends State<SelectedItem> {
               Navigator.of(context).pop();
 
               _showSuccessDialog();
-            }else if (result.recognizedWords.toLowerCase() ==
-                    widget.lesson.character.toLowerCase() &&
+            } else if (result.recognizedWords.toLowerCase() == resultNumber &&
                 widget.lesson.type == "number") {
               if (widget.index == lessonProvider.ucharacterDone) {
                 updateLesson(lessonProvider);
@@ -109,8 +126,7 @@ class _SelectedItemState extends State<SelectedItem> {
               Navigator.of(context).pop();
 
               _showSuccessDialog();
-            } 
-            else {
+            } else {
               _dialogShown = true; // Set flag to prevent multiple dialogs
               Navigator.of(context).pop();
 
@@ -126,10 +142,32 @@ class _SelectedItemState extends State<SelectedItem> {
     });
 
     // Start a timer for 2 seconds
-    _listeningTimer = Timer(Duration(seconds: 3), () {
+    _listeningTimer = Timer(Duration(seconds: 5), () {
       // print('Hindi ka nagsasalita');
       _stopListening(); // Stop listening after 2 seconds
+      if (Navigator.of(context).canPop()) {
+        Navigator.of(context).pop(); // Close the dialog if it's still open
+      }
+      _showFailedDialog();
     });
+  }
+
+  String convertNumberToWord(String number) {
+    final numberWords = {
+      '0': 'zero',
+      '1': 'one',
+      '2': 'two',
+      '3': 'three',
+      '4': 'four',
+      '5': 'five',
+      '6': 'six',
+      '7': 'seven',
+      '8': 'eight',
+      '9': 'nine',
+    };
+
+    return numberWords[number] ??
+        number; // Returns the word or the original character if not a number
   }
 
   void _stopListening() {
@@ -234,14 +272,15 @@ class _SelectedItemState extends State<SelectedItem> {
                 onTap: () {
                   Navigator.pop(context);
                   _dialogShown = false;
+                  turnToSpeak();
                 },
                 child: Column(
                   children: [
                     SizedBox(
                       height: 70,
                       width: 70,
-                      child:
-                          Image.asset('assets/insideApp/learnReading/try again.png'),
+                      child: Image.asset(
+                          'assets/insideApp/learnReading/try again.png'),
                     ),
                     Text(
                       'Try Again',
@@ -269,6 +308,7 @@ class _SelectedItemState extends State<SelectedItem> {
   }
 
   void turnToSpeak() {
+    _startListening();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -291,24 +331,38 @@ class _SelectedItemState extends State<SelectedItem> {
                   Positioned(
                     child: Container(
                       height: 300,
-                      // decoration: BoxDecoration(color: Colors.red),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _isListening
-                                    ? _stopListening()
-                                    : _startListening();
-                              });
-                            },
-                            icon: Icon(
-                              Icons.mic_none,
-                              size: 50,
-                              color: _isListening ? Colors.green : Colors.red,
-                            ),
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              AnimatedBuilder(
+                                animation: _animation,
+                                builder: (context, child) {
+                                  return Transform.scale(
+                                    scale: _animation.value,
+                                    child: Container(
+                                      width: 80,
+                                      height: 80,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color:
+                                            Colors.blueAccent.withOpacity(0.3),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              // Add the microphone icon at the center of the circle
+                              Icon(
+                                Icons.mic,
+                                size: 40,
+                                color: Colors.blueAccent,
+                              ),
+                            ],
                           ),
+                          SizedBox(height: 16),
                           Text("It's your turn to say it")
                         ],
                       ),
@@ -321,6 +375,12 @@ class _SelectedItemState extends State<SelectedItem> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:test_drawing/screens/useraccount/choose_profile.dart';
 import 'package:test_drawing/screens/useraccount/forgot_password.dart';
 import 'package:test_drawing/screens/useraccount/register.dart';
@@ -21,15 +22,22 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text, password: _passwordController.text);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => ChooseProfile(),
+        ),
+      );
     } catch (e) {
       print(e);
-      return;
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        title: 'Login Failed',
+        text: 'Invalid credentials',
+      );
+
+      // return;
     }
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => ChooseProfile(),
-      ),
-    );
   }
 
   @override
@@ -121,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Text(
                             'Forgot Password?',
                             style: TextStyle(
-                              //color: Colors.red.shade700,
+                              color: Colors.red,
                               fontSize: 16,
                             ),
                           ),
