@@ -140,9 +140,7 @@ class _LessonScreenState extends State<LessonScreen> {
                                         6) // Only allow click if unlocked
                                 ? () {
                                     print(lessonNames[index]);
-                                    if (index == 0 ||
-                                        index == 2 ||
-                                        index == 3 
+                                    if (index == 0 || index == 2 || index == 3
                                         // || index == 4
                                         ) {
                                       LastActivity = index.toString();
@@ -190,8 +188,14 @@ class _LessonScreenState extends State<LessonScreen> {
                                   children: [
                                     // Lesson background image
                                     Opacity(
-                                      opacity: index > userProvider.age - 1 &&
-                                              userProvider.age != 6
+                                      opacity: (userProvider.age == 2 &&
+                                                  index >= 2) ||
+                                              (userProvider.age == 3 &&
+                                                  index >= 2) ||
+                                              (userProvider.age == 4 &&
+                                                  index >= 4) ||
+                                              (userProvider.age == 5 &&
+                                                  index >= 4)
                                           ? 0.5
                                           : 1,
                                       child: Container(
@@ -270,8 +274,10 @@ class _LessonScreenState extends State<LessonScreen> {
                                       ),
                                     ),
                                     // Lock overlay, only if lesson is locked (index > age)
-                                    if (index > userProvider.age - 1 &&
-                                        userProvider.age != 6)
+                                    if ((userProvider.age == 2 && index >= 2) ||
+                                        (userProvider.age == 3 && index >= 2) ||
+                                        (userProvider.age == 4 && index >= 4) ||
+                                        (userProvider.age == 5 && index >= 4))
                                       Positioned.fill(
                                         child: Container(
                                           decoration: BoxDecoration(
