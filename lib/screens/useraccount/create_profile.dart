@@ -117,14 +117,7 @@ class _CreateProfileState extends State<CreateProfile> {
             },
             icon: const Icon(Icons.arrow_back_ios),
           ),
-          actions: [
-            IconButton(
-              onPressed: null,
-              icon: const Icon(
-                Icons.person,
-              ),
-            ),
-          ],
+          
         ),
         body: Stack(
           children: [
