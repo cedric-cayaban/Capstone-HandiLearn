@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'package:test_drawing/provider/user_provider.dart';
+import 'package:test_drawing/screens/insideapp/3.%20scanning/instruction.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/level_selection.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/difficulty.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/quiz%20game/quiz.dart';

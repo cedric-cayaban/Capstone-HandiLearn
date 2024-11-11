@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/game_selection.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/letter%20search/letter_search.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/memory%20game/memory_game.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/modal/ins1.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/modal/ins2.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/pictoword/picto.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/quiz%20game/quiz.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/sliding%20puzzle/Sliding_puzzle.dart';
@@ -83,9 +85,60 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
     }
   }
 
+  final PageController _controller = PageController();
+
+  void modal() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            dialogBackgroundColor: Colors.white,
+          ),
+          child: AlertDialog(
+            backgroundColor: Colors.white,
+            contentPadding: EdgeInsets.all(16),
+            content: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setDialogState) {
+                bool onLastPage = false;
+                bool onFirstPage = true;
+
+                return SizedBox(
+                  height: 300,
+                  width: 200,
+                  child: PageView(
+                    controller: _controller,
+                    onPageChanged: (index) {
+                      setDialogState(() {
+                        onLastPage = (index == 1);
+                        onFirstPage = (index == 0);
+                      });
+                    },
+                    children: [
+                      Ins1(),
+                      Ins2(),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: modal,
+            icon: Icon(Icons.lightbulb),
+          ),
+        ],
+      ),
       backgroundColor: Colors.white,
       body: Center(
         child: Column(
