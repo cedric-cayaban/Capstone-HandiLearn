@@ -28,7 +28,7 @@ class _StoryState extends State<Story> {
   void forwardPlay() async {
     pageNumber++;
     setState(() {});
-    if (pageNumber < 34) {
+    if (pageNumber < 10) {
       print('Playing audio: $pageNumber');
       await _audioPlayer.play(
         AssetSource('insideApp/shortStories/story1/audio/$pageNumber.mp3'),
@@ -59,6 +59,14 @@ class _StoryState extends State<Story> {
   }
 
   @override
+  void dispose() {
+    // Stop the audio
+    _audioPlayer.stop();
+    _audioPlayer.dispose(); // Dispose of the audio player
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -67,7 +75,7 @@ class _StoryState extends State<Story> {
             controller: _controller,
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              ...List.generate(33, (index) {
+              ...List.generate(10, (index) {
                 return SafeArea(
                   child: Stack(
                     children: [
@@ -83,13 +91,13 @@ class _StoryState extends State<Story> {
               }),
             ],
           ),
-          pageNumber <= 33
+          pageNumber <= 10
               ? Positioned(
                   bottom: 1,
                   right: 1,
                   child: IconButton(
                     onPressed: () async {
-                      if (pageNumber <= 33) {
+                      if (pageNumber <= 10) {
                         await Future.delayed(const Duration(milliseconds: 300));
                         _controller
                             .nextPage(
@@ -110,11 +118,11 @@ class _StoryState extends State<Story> {
                   bottom: 15,
                   right: 20,
                   child: TextButton(
-                    style: ButtonStyle(
+                    style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(Colors.blue),
                         elevation: MaterialStatePropertyAll(2.0)),
                     onPressed: () {
-                      Navigator.of(context).push(
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (_) => ShortStoriesSelection(),
                         ),
@@ -174,7 +182,7 @@ class _StoryState extends State<Story> {
                 shadowColor: MaterialStatePropertyAll(Colors.black),
               ),
               onPressed: () {
-                Navigator.of(context).push(
+                Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (_) => ShortStoriesSelection(),
                   ),

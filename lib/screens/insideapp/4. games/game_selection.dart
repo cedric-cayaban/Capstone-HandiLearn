@@ -5,13 +5,10 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import 'package:test_drawing/data/lessons.dart';
-import 'package:test_drawing/data/userAccount.dart';
-import 'package:test_drawing/objects/lesson.dart';
 import 'package:test_drawing/provider/user_provider.dart';
-import 'package:test_drawing/screens/insideapp/1.%20learn/activity_screen.dart';
-import 'package:test_drawing/screens/insideapp/1.%20learn/character_selection.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/level_selection.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/difficulty.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/quiz%20game/quiz.dart';
 
 import '../home.dart';
 
@@ -128,11 +125,11 @@ class _GamesState extends State<Games> {
                             case 0:
                               return InkWell(
                                 onTap: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => SelectDifficulty(
-                                          game: 'object_odyssey'),
+                                      builder: (context) =>
+                                          DifficultyScreen(game: 'quiz_game'),
                                     ),
                                   );
                                 },
@@ -142,11 +139,11 @@ class _GamesState extends State<Games> {
                             case 1:
                               return InkWell(
                                 onTap: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          SelectDifficulty(game: 'pictoword'),
+                                          DifficultyScreen(game: 'pictoword'),
                                     ),
                                   );
                                 },
@@ -156,11 +153,11 @@ class _GamesState extends State<Games> {
                             case 2:
                               return InkWell(
                                 onTap: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          SelectDifficulty(game: 'memory_game'),
+                                          DifficultyScreen(game: 'memory_game'),
                                     ),
                                   );
                                 },
@@ -170,10 +167,10 @@ class _GamesState extends State<Games> {
                             case 3:
                               return InkWell(
                                 onTap: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => SelectDifficulty(
+                                      builder: (context) => DifficultyScreen(
                                           game: 'sliding_game'),
                                     ),
                                   );
@@ -184,9 +181,10 @@ class _GamesState extends State<Games> {
                             case 4:
                               return InkWell(
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
+                                  Navigator.of(context)
+                                      .pushReplacement(MaterialPageRoute(
                                     builder: (context) =>
-                                        SelectDifficulty(game: 'letter_search'),
+                                        DifficultyScreen(game: 'letter_search'),
                                   ));
                                 },
                                 child: Image.asset(
@@ -195,9 +193,10 @@ class _GamesState extends State<Games> {
                             case 5:
                               return InkWell(
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
+                                  Navigator.of(context)
+                                      .pushReplacement(MaterialPageRoute(
                                     builder: (context) =>
-                                        SelectDifficulty(game: 'word_search'),
+                                        DifficultyScreen(game: 'word_search'),
                                   ));
                                 },
                                 child: Image.asset(

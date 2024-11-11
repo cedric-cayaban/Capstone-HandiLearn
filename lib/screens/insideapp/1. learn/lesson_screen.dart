@@ -135,10 +135,14 @@ class _LessonScreenState extends State<LessonScreen> {
                         child: ListView.builder(
                           itemCount: lessonNames.length,
                           itemBuilder: (context, index) => InkWell(
-                            onTap: (index <= userProvider.age - 1 ||
-                                    userProvider.age ==
-                                        6) // Only allow click if unlocked
-                                ? () {
+                            onTap: (userProvider.age == 2 && index >= 2) ||
+                                    (userProvider.age == 3 && index >= 2) ||
+                                    (userProvider.age == 4 && index >= 4) ||
+                                    (userProvider.age == 5 &&
+                                        index >=
+                                            4) // Only allow click if unlocked
+                                ? null
+                                : () {
                                     print(lessonNames[index]);
                                     if (index == 0 || index == 2 || index == 3
                                         // || index == 4
@@ -166,8 +170,7 @@ class _LessonScreenState extends State<LessonScreen> {
                                         ),
                                       );
                                     }
-                                  }
-                                : null,
+                                  },
                             child: Card(
                               margin: const EdgeInsets.symmetric(
                                 vertical: 8.0,
