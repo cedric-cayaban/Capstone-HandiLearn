@@ -9,6 +9,7 @@ import 'package:test_drawing/screens/insideapp/home.dart';
 import 'package:test_drawing/screens/useraccount/create_profile.dart';
 import 'package:test_drawing/screens/useraccount/enterPin.dart';
 import 'package:test_drawing/screens/useraccount/login.dart';
+import 'package:test_drawing/screens/useraccount/parent_settings.dart';
 
 class ChooseProfile extends StatefulWidget {
   const ChooseProfile({super.key});
@@ -69,17 +70,31 @@ class _ChooseProfileState extends State<ChooseProfile> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        leading: const SizedBox(),
+        leading: IconButton(
+          onPressed: () {
+            FirebaseAuth.instance.signOut();
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const LoginScreen()),
+            );
+          },
+          icon: const Icon(
+            Icons.logout,
+            color: Colors.black,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {
-              FirebaseAuth.instance.signOut();
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (_) => const LoginScreen()),
+                MaterialPageRoute(builder: (_) => const ParentSettings()),
               );
             },
-            icon: const Icon(Icons.logout),
+            icon: const Icon(
+              Icons.person,
+              color: Colors.black,
+            ),
           ),
         ],
       ),
