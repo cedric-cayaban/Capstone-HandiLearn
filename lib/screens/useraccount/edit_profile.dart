@@ -18,6 +18,7 @@ class EditProfile extends StatefulWidget {
     required this.avatar,
     required this.profileId,
     required this.lessonId,
+    required this.pin,
     super.key,
   });
 
@@ -26,6 +27,7 @@ class EditProfile extends StatefulWidget {
   final String avatar;
   final String profileId;
   final String lessonId;
+  final String pin;
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -38,6 +40,7 @@ class _EditProfileState extends State<EditProfile> {
   int selectedIndex = -1;
   int selectedAvatar = -1;
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController pinController = TextEditingController();
   String name = '';
   String userId = FirebaseAuth.instance.currentUser!.uid;
 
@@ -74,6 +77,7 @@ class _EditProfileState extends State<EditProfile> {
   void initState() {
     super.initState();
     nameController.text = widget.name;
+    pinController.text = widget.pin;
     name = widget.name;
 
     // Initialize selectedIndex based on the age
@@ -100,7 +104,7 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    double spacer = MediaQuery.of(context).size.height * 0.1;
+    double spacer = MediaQuery.of(context).size.height * 0.09;
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -181,9 +185,9 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                           SizedBox(
                               height:
-                                  MediaQuery.of(context).size.height * 0.04),
+                                  MediaQuery.of(context).size.height * 0.02),
                           Container(
-                            height: MediaQuery.of(context).size.height * 0.65,
+                            height: MediaQuery.of(context).size.height * 0.69,
                             width: MediaQuery.of(context).size.width,
                             padding: const EdgeInsets.all(15.0),
                             decoration: BoxDecoration(
@@ -410,7 +414,34 @@ class _EditProfileState extends State<EditProfile> {
                                     ),
                                   ],
                                 ),
-                                const Text("Name"),
+                                const Text(
+                                  "Pin",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                TextField(
+                                  controller: pinController,
+                                  readOnly: true,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(16)),
+                                    ),
+                                    hintText: 'Name',
+                                  ),
+                                ),
+                                const Gap(10),
+                                const Text(
+                                  "Name",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                                 TextField(
                                   controller: nameController,
                                   decoration: const InputDecoration(
@@ -424,7 +455,13 @@ class _EditProfileState extends State<EditProfile> {
                                   ),
                                 ),
                                 const SizedBox(height: 10),
-                                const Text("Age"),
+                                const Text(
+                                  "Age",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
@@ -446,7 +483,13 @@ class _EditProfileState extends State<EditProfile> {
                                   }),
                                 ),
                                 const SizedBox(height: 10),
-                                const Text("Avatar"),
+                                const Text(
+                                  "Avatar",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                                 const SizedBox(height: 10),
                                 Column(
                                   children: [
@@ -520,7 +563,7 @@ class _EditProfileState extends State<EditProfile> {
                                 ),
                                 SizedBox(
                                     height: MediaQuery.of(context).size.height *
-                                        0.05),
+                                        0.02),
                                 Container(
                                   width: double.infinity,
                                   child: Material(
