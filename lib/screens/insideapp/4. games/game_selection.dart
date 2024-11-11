@@ -83,7 +83,7 @@ class _GamesState extends State<Games> {
               ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.33,
+              top: MediaQuery.of(context).size.height * 0.3,
               left: 0,
               right: 0,
               child: Container(
@@ -110,13 +110,14 @@ class _GamesState extends State<Games> {
                     ),
                     Expanded(
                       child: GridView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.only(
+                            right: 20, left: 20, bottom: 20),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount:
                                     2, // Number of items in each row
                                 crossAxisSpacing: 10, // Spacing between columns
-                                childAspectRatio: 1.1 // Spacing between rows
+                                childAspectRatio: 1.2 // Spacing between rows
                                 ),
                         itemCount: 6, // Total number of images
                         itemBuilder: (context, index) {
