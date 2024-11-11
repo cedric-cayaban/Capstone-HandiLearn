@@ -247,6 +247,7 @@ class _ParentSettingsState extends State<ParentSettings> {
                                               name: items[index]['name'],
                                               age: items[index]['age'],
                                               avatar: items[index]['avatar'],
+                                              pin: items[index]['pin'],
                                               profileId: items[index]
                                                   ['profile id'],
                                               lessonId: items[index]
