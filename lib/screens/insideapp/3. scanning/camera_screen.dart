@@ -75,77 +75,124 @@ class _nameState extends State<CameraScreen> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          content: Column(
-            mainAxisSize:
-                MainAxisSize.min, // Ensures the dialog takes minimal space
-            children: [
-              Image.asset(
-                  'assets/insideApp/scanning/objects/$_randomNumber.gif'),
-            ],
+        return Theme(
+          data: Theme.of(context).copyWith(
+            dialogBackgroundColor: Colors.white, // Change to your desired color
           ),
-          actions: [
-            Container(
-              child: Material(
-                borderRadius: BorderRadius.circular(10),
-                child: InkWell(
+          child: AlertDialog(
+            content: Column(
+              mainAxisSize:
+                  MainAxisSize.min, // Ensures the dialog takes minimal space
+              children: [
+                Image.asset(
+                    'assets/insideApp/scanning/objects/$_randomNumber.gif'),
+              ],
+            ),
+            actions: [
+              Container(
+                child: Material(
                   borderRadius: BorderRadius.circular(10),
-                  onTap: () async {
-                    pickedNum = _randomNumber;
-                    Navigator.of(context).pop();
-                    // Navigator.of(context).pushReplacement(
-                    //     MaterialPageRoute(builder: (_) => CameraScreen()));
-                  },
-                  child: Container(
-                    height: 45,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Color(0xFF10E119), Color(0xFF18991E)],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(10),
+                    onTap: () async {
+                      pickedNum = _randomNumber;
+                      Navigator.of(context).pop();
+                      // Navigator.of(context).pushReplacement(
+                      //     MaterialPageRoute(builder: (_) => CameraScreen()));
+                    },
+                    child: Container(
+                      height: 45,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Color(0xFF10E119), Color(0xFF18991E)],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Text(
-                      "Let's find it",
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      child: const Text(
+                        "Let's find it",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
   }
 
-  void _showDialog() {
-    showDialog(
-        context: context,
-        builder: (_) {
-          return CupertinoAlertDialog(
-            title: Icon(
-              Icons.error,
-              size: 50,
-              color: Colors.red.shade500,
-            ),
-            content: const Text(
-                'The image is too blurry or unclear. Please capture a sharp and well-lit image.'),
-            actions: [
-              Center(
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Got it!'),
-                ),
-              )
-            ],
-          );
-        });
-  }
+  // void _showDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (_) {
+  //       return CupertinoAlertDialog(
+  //         title: Padding(
+  //           padding: const EdgeInsets.all(8.0),
+  //           child: Column(
+  //             children: [
+  //               Icon(
+  //                 Icons.camera_alt,
+  //                 size: 60,
+  //                 color: Colors.blue.shade300, // Friendly color
+  //               ),
+  //               SizedBox(height: 10),
+  //               Text(
+  //                 'Oops!',
+  //                 style: TextStyle(
+  //                   fontSize: 24,
+  //                   fontWeight: FontWeight.bold,
+  //                   color: Colors.blueAccent,
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         content: Padding(
+  //           padding: const EdgeInsets.only(top: 10.0),
+  //           child: Text(
+  //             'This picture is a bit blurry. Let\'s try again!',
+  //             textAlign: TextAlign.center,
+  //             style: TextStyle(
+  //               fontSize: 18,
+  //               color: Colors.black87,
+  //             ),
+  //           ),
+  //         ),
+  //         actions: [
+  //           Padding(
+  //             padding: const EdgeInsets.all(10.0),
+  //             child: Center(
+  //               child: MaterialButton(
+  //                 onPressed: () {
+  //                   Navigator.pop(context);
+  //                 },
+  //                 color: Colors.green.shade300,
+  //                 shape: RoundedRectangleBorder(
+  //                   borderRadius: BorderRadius.circular(10),
+  //                 ),
+  //                 padding:
+  //                     const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+  //                 child: Text(
+  //                   'Got it!',
+  //                   style: TextStyle(
+  //                     fontSize: 18,
+  //                     fontWeight: FontWeight.bold,
+  //                     color: Colors.white,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   loadmodel() async {
     await Tflite.loadModel(
@@ -302,7 +349,6 @@ class _nameState extends State<CameraScreen> {
 
                           if (_recognitions[0]['confidence'] < .75) {
                             print("try again");
-                            _showDialog();
                           } else if (labels[pickedNum] ==
                               _recognitions[0]['label'].toString()) {
                             print(_recognitions[0]['label'].toString());

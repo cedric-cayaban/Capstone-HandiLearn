@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/game_selection.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/pictoword/picto.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/letter%20search/letter_search.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/memory%20game/memory_game.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/quiz%20game/quiz.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/sliding%20puzzle/Sliding_puzzle.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/word%20search/word_search.dart';
 // 3x3 puzzle
@@ -43,10 +45,16 @@ class _SelectDifficultyState extends State<SelectDifficulty> {
           builder: (_) => MemoryGame(difficulty: difficulty),
         ),
       );
-    }else if (widget.game == 'word_search') {
+    } else if (widget.game == 'word_search') {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => WordSearch(difficulty: difficulty),
+        ),
+      );
+    } else if (widget.game == 'quiz_game') {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => Quiz(difficulty: difficulty),
         ),
       );
     }
@@ -57,6 +65,13 @@ class _SelectDifficultyState extends State<SelectDifficulty> {
     return Scaffold(
       appBar: AppBar(
         title: Text('SELECT DIFFICULTY'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context)
+                .pushReplacement(MaterialPageRoute(builder: (_) => Games()));
+          },
+        ),
       ),
       body: Center(
         child: Column(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/game_selection.dart';
 
 class LetterSearchMedium extends StatefulWidget {
@@ -62,54 +63,65 @@ class _LetterSearchMediumState extends State<LetterSearchMedium> {
   // }
 
   void loadFinishModal() {
-    showDialog(
-      barrierDismissible: false,
+    QuickAlert.show(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.white,
-        content: Container(
-          color: Colors.white,
-          height: MediaQuery.of(context).size.height * 0.8,
-          width: MediaQuery.of(context).size.width * 0.4,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  "Congratulations!",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 5),
-                const Text("You found all the letters!",
-                    style: TextStyle(fontSize: 19)),
-                const SizedBox(height: 20),
-                Image.asset(
-                  height: MediaQuery.of(context).size.height * 0.25,
-                  'assets/insideApp/learnWriting/components/dancing.gif',
-                ),
-                const SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => Games(),
-                      ),
-                    );
-                  },
-                  child: Image.asset(
-                    height: 70,
-                    width: 70,
-                    'assets/insideApp/learnWriting/components/arrow-forward.png',
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      type: QuickAlertType.success,
+      title: "Congratulation!",
+      text: 'You found all the letters',
+      onConfirmBtnTap: () {
+        Navigator.of(context).pop();
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => Games()));
+      },
     );
+    // showDialog(
+    //   barrierDismissible: false,
+    //   context: context,
+    //   builder: (context) => AlertDialog(
+    //     backgroundColor: Colors.white,
+    //     content: Container(
+    //       color: Colors.white,
+    //       height: MediaQuery.of(context).size.height * 0.8,
+    //       width: MediaQuery.of(context).size.width * 0.4,
+    //       child: SingleChildScrollView(
+    //         child: Column(
+    //           mainAxisSize: MainAxisSize.min,
+    //           children: [
+    //             const Text(
+    //               "Congratulations!",
+    //               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    //             ),
+    //             const SizedBox(height: 5),
+    //             const Text("You found all the letters!",
+    //                 style: TextStyle(fontSize: 19)),
+    //             const SizedBox(height: 20),
+    //             Image.asset(
+    //               height: MediaQuery.of(context).size.height * 0.25,
+    //               'assets/insideApp/learnWriting/components/dancing.gif',
+    //             ),
+    //             const SizedBox(height: 20),
+    //             GestureDetector(
+    //               onTap: () {
+    //                 Navigator.of(context).pop();
+
+    //                 Navigator.of(context).pushReplacement(
+    //                   MaterialPageRoute(
+    //                     builder: (context) => Games(),
+    //                   ),
+    //                 );
+    //               },
+    //               child: Image.asset(
+    //                 height: 70,
+    //                 width: 70,
+    //                 'assets/insideApp/learnWriting/components/arrow-forward.png',
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   void onLetterTap(String tappedLetter) {

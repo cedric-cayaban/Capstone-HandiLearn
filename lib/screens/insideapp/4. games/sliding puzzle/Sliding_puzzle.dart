@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quickalert/quickalert.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/game_selection.dart';
 
 class SlidingPuzzle extends StatefulWidget {
   SlidingPuzzle({required this.difficulty, super.key});
@@ -60,7 +62,17 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
         emptyTileIndex = tileIndex; // Update empty tile index
       });
       if (_isPuzzleSolved()) {
-        _showSolvedDialog(); // Show dialog if the puzzle is solved
+        // Show dialog if the puzzle is solved
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          title: "Congratulation!",
+          text: 'You finished the puzzle',
+          onConfirmBtnTap: () {
+            Navigator.of(context)
+                .pushReplacement(MaterialPageRoute(builder: (_) => Games()));
+          },
+        );
       }
     }
   }
@@ -96,12 +108,20 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
         onTap: () => _moveTile(tileIndex), // Move tile when tapped
         child: Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.white, width: 1.0),
-            image: DecorationImage(
-              image: AssetImage(imageAsset),
-              fit: BoxFit.cover,
-            ),
-          ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black
+                      .withOpacity(0.1), // Shadow color with opacity
+                  spreadRadius: 1, // Spread of the shadow
+                  blurRadius: 2, // Blur effect for the shadow
+                  offset: Offset(0, 4), // Position of the shadow (x, y)
+                ),
+              ],
+              image: DecorationImage(
+                image: AssetImage(imageAsset),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(8)),
         ),
       );
     } else {
@@ -114,8 +134,9 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
             border: Border.all(color: Colors.white, width: 1.0),
             image: DecorationImage(
               image: AssetImage(imageAsset),
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             ),
+            borderRadius: BorderRadius.circular(8),
           ),
         ),
       );
@@ -132,7 +153,9 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close dialog
+                Navigator.of(context).pop();
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (_) => Games())); // Close dialog
               },
               child: Text('OK'),
             ),
@@ -146,51 +169,127 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Image Sliding Puzzle'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.check),
-            onPressed: _solvePuzzle, // Solve the puzzle
-            tooltip: 'Solve Puzzle',
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context)
+                .pushReplacement(MaterialPageRoute(builder: (_) => Games()));
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            size: 30,
+            color: Colors.white,
           ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            // Container for the full image preview
-            Container(
-              margin: EdgeInsets.only(bottom: 16.0),
-              height: 150, // Adjust height as needed
-              width: 150,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(fullImageAsset),
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
-            // GridView for the puzzle tiles
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: gridSize, // Dynamic grid size
-                  mainAxisSpacing: 8.0,
-                  crossAxisSpacing: 8.0,
-                ),
-                itemCount: tileCount, // Total tiles based on grid size
-                itemBuilder: (context, index) {
-                  return _buildTile(index);
-                },
-              ),
-            ),
-          ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _initializePuzzle, // Shuffle and restart the puzzle
-        child: Icon(Icons.refresh),
+      extendBodyBehindAppBar: true,
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/insideApp/games/puzzle game.png"),
+                fit: BoxFit
+                    .fill, // Keep the image covering the entire background
+              ),
+            ),
+            child: SizedBox(),
+          ),
+          Positioned(
+            top: 70,
+            child: Container(
+              margin: EdgeInsets.only(bottom: 16.0),
+              height: 180, // Adjust height as needed
+              width: 180,
+
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black
+                        .withOpacity(0.2), // Shadow color with opacity
+                    spreadRadius: 5, // Spread of the shadow
+                    blurRadius: 10, // Blur effect for the shadow
+                    offset: Offset(0, 4), // Position of the shadow (x, y)
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Image.asset(fullImageAsset),
+              ),
+            ),
+          ),
+          // GridView for the puzzle tiles
+          Positioned(
+            top: MediaQuery.of(context).size.height * .38,
+            child: Container(
+              width: MediaQuery.of(context).size.width *
+                  .80, // Set the width directly
+              height: MediaQuery.of(context).size.width *
+                  .80, // Set the height directly
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black
+                        .withOpacity(0.2), // Shadow color with opacity
+                    spreadRadius: 5, // Spread of the shadow
+                    blurRadius: 10, // Blur effect for the shadow
+                    offset: Offset(0, 4), // Position of the shadow (x, y)
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: gridSize, // Dynamic grid size
+                    mainAxisSpacing: 8.0,
+                    crossAxisSpacing: 8.0,
+                  ),
+                  itemCount: tileCount, // Total tiles based on grid size
+                  itemBuilder: (context, index) {
+                    return _buildTile(index);
+                  },
+                  padding: EdgeInsets.zero,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 16.0,
+            left: 20.0,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              child: IconButton(
+                onPressed: _initializePuzzle, // Shuffle and restart the puzzle
+                icon: Icon(Icons.shuffle),
+                color: Colors.black,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 16.0,
+            right: 20.0,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              child: IconButton(
+                onPressed: () {}, // Shuffle and restart the puzzle
+                icon: Icon(Icons.lightbulb),
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

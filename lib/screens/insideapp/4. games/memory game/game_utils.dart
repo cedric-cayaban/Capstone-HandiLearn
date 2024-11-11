@@ -21,11 +21,15 @@ class Game {
   // Generate pairs of cards based on card count
   void _generateCardPairs() {
     List<String> availableCards = [
+      "assets/insideApp/games/memory game/a.png",
       "assets/insideApp/games/memory game/b.png",
-      "assets/insideApp/games/memory game/q.png",
-      "assets/insideApp/games/memory game/f.png",
-      "assets/insideApp/games/memory game/o.png",
       "assets/insideApp/games/memory game/c.png",
+      "assets/insideApp/games/memory game/d.png",
+      "assets/insideApp/games/memory game/e.png",
+      "assets/insideApp/games/memory game/f.png",
+      "assets/insideApp/games/memory game/g.png",
+      "assets/insideApp/games/memory game/q.png",
+      "assets/insideApp/games/memory game/o.png",
       "assets/insideApp/games/memory game/j.png"
     ];
 

@@ -184,74 +184,79 @@ class _SelectedItemState extends State<SelectedItem>
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset('assets/insideApp/learnReading/read.gif'),
-              SizedBox(height: 5),
-              Text(
-                'Great Job',
-                style: TextStyle(fontSize: 30),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                      _dialogShown = false;
-                    },
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 70,
-                          width: 70,
-                          child: Image.asset(
-                              'assets/insideApp/learnReading/try again.png'),
-                        ),
-                        Text(
-                          'Try Again',
-                          style: TextStyle(fontSize: 14),
-                        )
-                      ],
+        return Theme(
+          data: Theme.of(context).copyWith(
+            dialogBackgroundColor: Colors.white, // Change to your desired color
+          ),
+          child: AlertDialog(
+            backgroundColor: Colors.white,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset('assets/insideApp/learnReading/read.gif'),
+                SizedBox(height: 5),
+                Text(
+                  'Great Job',
+                  style: TextStyle(fontSize: 30),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        _dialogShown = false;
+                      },
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 70,
+                            width: 70,
+                            child: Image.asset(
+                                'assets/insideApp/learnReading/try again.png'),
+                          ),
+                          Text(
+                            'Try Again',
+                            style: TextStyle(fontSize: 14),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                      _dialogShown = false;
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        _dialogShown = false;
 
-                      var nextLesson = widget.forNextLesson[widget.index + 1];
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => SelectedItem(
-                          lessonField: widget.lessonField,
-                          characterDone: updatedCharacterDone,
-                          lesson: nextLesson,
-                          index: widget.index + 1,
-                          forNextLesson: widget.forNextLesson,
-                        ),
-                      ));
-                    },
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 70,
-                          width: 70,
-                          child: Image.asset(
-                              'assets/insideApp/learnReading/next.png'),
-                        ),
-                        Text(
-                          'Next Letter',
-                          style: TextStyle(fontSize: 14),
-                        )
-                      ],
+                        var nextLesson = widget.forNextLesson[widget.index + 1];
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => SelectedItem(
+                            lessonField: widget.lessonField,
+                            characterDone: updatedCharacterDone,
+                            lesson: nextLesson,
+                            index: widget.index + 1,
+                            forNextLesson: widget.forNextLesson,
+                          ),
+                        ));
+                      },
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 70,
+                            width: 70,
+                            child: Image.asset(
+                                'assets/insideApp/learnReading/next.png'),
+                          ),
+                          Text(
+                            'Next Letter',
+                            style: TextStyle(fontSize: 14),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -262,34 +267,39 @@ class _SelectedItemState extends State<SelectedItem>
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset('assets/insideApp/learnReading/sorry.gif'),
-              SizedBox(height: 5),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                  _dialogShown = false;
-                  turnToSpeak();
-                },
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 70,
-                      width: 70,
-                      child: Image.asset(
-                          'assets/insideApp/learnReading/try again.png'),
-                    ),
-                    Text(
-                      'Try Again',
-                      style: TextStyle(fontSize: 14),
-                    )
-                  ],
+        return Theme(
+          data: Theme.of(context).copyWith(
+            dialogBackgroundColor: Colors.white, // Change to your desired color
+          ),
+          child: AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset('assets/insideApp/learnReading/sorry.gif'),
+                SizedBox(height: 5),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    _dialogShown = false;
+                    turnToSpeak();
+                  },
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 70,
+                        width: 70,
+                        child: Image.asset(
+                            'assets/insideApp/learnReading/try again.png'),
+                      ),
+                      Text(
+                        'Try Again',
+                        style: TextStyle(fontSize: 14),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -312,65 +322,70 @@ class _SelectedItemState extends State<SelectedItem>
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: Icon(Icons.backspace_rounded),
-                    ),
-                  ),
-                  Positioned(
-                    child: Container(
-                      height: 300,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              AnimatedBuilder(
-                                animation: _animation,
-                                builder: (context, child) {
-                                  return Transform.scale(
-                                    scale: _animation.value,
-                                    child: Container(
-                                      width: 80,
-                                      height: 80,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color:
-                                            Colors.blueAccent.withOpacity(0.3),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              // Add the microphone icon at the center of the circle
-                              Icon(
-                                Icons.mic,
-                                size: 40,
-                                color: Colors.blueAccent,
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 16),
-                          Text("It's your turn to say it")
-                        ],
+        return Theme(
+          data: Theme.of(context).copyWith(
+            dialogBackgroundColor: Colors.white, // Change to your desired color
+          ),
+          child: AlertDialog(
+            content: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: Icon(Icons.backspace_rounded),
                       ),
                     ),
-                  ),
-                ],
-              );
-            },
+                    Positioned(
+                      child: Container(
+                        height: 300,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                AnimatedBuilder(
+                                  animation: _animation,
+                                  builder: (context, child) {
+                                    return Transform.scale(
+                                      scale: _animation.value,
+                                      child: Container(
+                                        width: 80,
+                                        height: 80,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.blueAccent
+                                              .withOpacity(0.3),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                // Add the microphone icon at the center of the circle
+                                Icon(
+                                  Icons.mic,
+                                  size: 40,
+                                  color: Colors.blueAccent,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 16),
+                            Text("It's your turn to say it")
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
         );
       },
