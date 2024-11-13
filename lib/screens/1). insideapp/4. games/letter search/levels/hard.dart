@@ -65,16 +65,16 @@ class _LetterSearchHardState extends State<LetterSearchHard> {
 
   void loadFinishModal() {
     QuickAlert.show(
-          context: context,
-          type: QuickAlertType.success,
-          title: "Congratulation!",
-          text: 'You found all the letters',
-          onConfirmBtnTap: () {
-            Navigator.of(context).pop();
-            Navigator.of(context)
-                .pushReplacement(MaterialPageRoute(builder: (_) => Games()));
-          },
-        );
+      context: context,
+      type: QuickAlertType.success,
+      title: "Congratulation!",
+      text: 'You found all the letters',
+      onConfirmBtnTap: () {
+        Navigator.of(context).pop();
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => Games()));
+      },
+    );
     // showDialog(
     //   barrierDismissible: false,
     //   context: context,
@@ -103,7 +103,7 @@ class _LetterSearchHardState extends State<LetterSearchHard> {
     //             GestureDetector(
     //               onTap: () {
     //                 Navigator.of(context).pop();
-                    
+
     //                 Navigator.of(context).pushReplacement(MaterialPageRoute(
     //                   builder: (context) => Games(),
     //                 ));
@@ -212,43 +212,71 @@ class _LetterSearchHardState extends State<LetterSearchHard> {
             ),
             // LETTER TO FIND
             Positioned(
-              top: 20,
-              child: Card(
-                color: Colors.black54,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+              top: 0,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.3,
+                width: MediaQuery.of(context).size.width * 0.25,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/insideApp/games/letter search/find-board.png'),
+                    fit: BoxFit.fill,
+                  ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    currentTargetIndex < correctLetters.length
-                        ? 'Letter to find: ${correctLetters[currentTargetIndex]}'
-                        : 'All letters found!',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.08),
+                  child: Column(
+                    children: [
+                      Text(
+                        currentTargetIndex < correctLetters.length
+                            ? 'Lets find letter'
+                            : 'All letters found!',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        currentTargetIndex < correctLetters.length
+                            ? '${correctLetters[currentTargetIndex]}'
+                            : '',
+                        style: const TextStyle(
+                          fontSize: 30,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
             // Found letters in a card
             Positioned(
-              top: 20,
+              bottom: 10,
               right: 20,
-              child: Card(
-                color: Colors.black54,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.25,
+                width: MediaQuery.of(context).size.width * 0.2,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/insideApp/games/letter search/count3.png'),
+                    fit: BoxFit.fill,
+                  ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.08,
+                    left: MediaQuery.of(context).size.width * 0.099,
+                  ),
                   child: Text(
                     '${currentTargetIndex} / 5',
                     style: const TextStyle(
                       fontSize: 20,
-                      color: Colors.white,
+                      color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

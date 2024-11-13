@@ -95,15 +95,10 @@ class _WordSearchEasyState extends State<WordSearchEasy> {
             Positioned(
               top: MediaQuery.of(context).size.height * 0.78,
               child: Container(
-                height: MediaQuery.of(context).size.height * 0.12,
-                width: MediaQuery.of(context).size.width * 0.6,
-                decoration: BoxDecoration(
-                  color: Colors.black45,
-                  borderRadius: BorderRadius.circular(
-                      12.0), // Adjust the radius as needed
-                ),
-                child: Center(child: drawAnswerList()),
-              ),
+                  //color: Colors.black45,
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Center(child: drawAnswerList())),
             ),
           ],
         ),
@@ -423,16 +418,30 @@ class _WordSearchEasyState extends State<WordSearchEasy> {
       children: List.generate(answerList.value.length, (index) {
         bool isFound = answerList.value[index].done;
         return Container(
+          height: MediaQuery.of(context).size.height * 0.06,
+          width: MediaQuery.of(context).size.width * 0.25,
+          decoration: BoxDecoration(
+            color: Colors.black45,
+            border: Border.all(
+              color: Colors.white, // Change this to your preferred border color
+              width: 1.5, // Set the border width
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
           padding: EdgeInsets.symmetric(horizontal: 5.0),
-          child: Text(
-            answerList.value[index].answer,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-              fontSize: 25,
-              decoration: isFound ? TextDecoration.lineThrough : null,
-              decorationColor: Colors.white, // Line-through color
-              decorationThickness: 3.0, // Adjust line thickness
+          child: Center(
+            child: Text(
+              answerList.value[index].answer,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 25,
+                decoration: isFound ? TextDecoration.lineThrough : null,
+                decorationColor: Colors.white, // Line-through color
+                decorationThickness: 3.0, // Adjust line thickness
+              ),
             ),
           ),
         );

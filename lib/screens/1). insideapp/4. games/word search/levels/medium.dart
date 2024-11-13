@@ -97,15 +97,10 @@ class _WordSearchMediumState extends State<WordSearchMedium> {
             Positioned(
               top: MediaQuery.of(context).size.height * 0.78,
               child: Container(
-                height: MediaQuery.of(context).size.height * 0.12,
-                width: MediaQuery.of(context).size.width * 0.6,
-                decoration: BoxDecoration(
-                  color: Colors.black45,
-                  borderRadius: BorderRadius.circular(
-                      12.0), // Adjust the radius as needed
-                ),
-                child: Center(child: drawAnswerList()),
-              ),
+                  //color: Colors.black45,
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Center(child: drawAnswerList())),
             ),
           ],
         ),
@@ -460,16 +455,30 @@ class _WordSearchMediumState extends State<WordSearchMedium> {
           children: List.generate(3, (index) {
             bool isFound = answerList.value[index].done;
             return Container(
+              height: MediaQuery.of(context).size.height * 0.06,
+              width: MediaQuery.of(context).size.width * 0.25,
+              decoration: BoxDecoration(
+                color: Colors.black45,
+                border: Border.all(
+                  color: Colors.white, // Border color
+                  width: 1.5, // Border width
+                ),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
               padding: EdgeInsets.symmetric(horizontal: 5.0),
-              child: Text(
-                answerList.value[index].answer,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 25,
-                  decoration: isFound ? TextDecoration.lineThrough : null,
-                  decorationColor: Colors.white, // Line-through color
-                  decorationThickness: 2.0, // Adjust line thickness
+              child: Center(
+                child: Text(
+                  answerList.value[index].answer,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 25,
+                    decoration: isFound ? TextDecoration.lineThrough : null,
+                    decorationColor: Colors.white, // Line-through color
+                    decorationThickness: 3.0, // Line thickness
+                  ),
                 ),
               ),
             );
@@ -477,22 +486,39 @@ class _WordSearchMediumState extends State<WordSearchMedium> {
         ),
         SizedBox(height: 8.0), // Space between the two rows
 
-        // Bottom row with two words
+        // Bottom row with three words
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(2, (index) {
             bool isFound = answerList.value[index + 3].done;
-            return Container(
-              padding: EdgeInsets.symmetric(horizontal: 5.0),
-              child: Text(
-                answerList.value[index + 3].answer,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 25,
-                  decoration: isFound ? TextDecoration.lineThrough : null,
-                  decorationColor: Colors.white, // Line-through color
-                  decorationThickness: 2.0, // Adjust line thickness
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.06,
+                width: MediaQuery.of(context).size.width * 0.25,
+                decoration: BoxDecoration(
+                  color: Colors.black45,
+                  border: Border.all(
+                    color: Colors.white, // Border color
+                    width: 1.5, // Border width
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 5.0),
+                child: Center(
+                  child: Text(
+                    answerList.value[index + 3].answer,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 25,
+                      decoration: isFound ? TextDecoration.lineThrough : null,
+                      decorationColor: Colors.white, // Line-through color
+                      decorationThickness: 3.0, // Line thickness
+                    ),
+                  ),
                 ),
               ),
             );

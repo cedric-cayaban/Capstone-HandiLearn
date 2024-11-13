@@ -95,17 +95,12 @@ class _WordSearchHardState extends State<WordSearchHard> {
                   Image.asset('assets/insideApp/games/word search/footer.png'),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.76,
+              top: MediaQuery.of(context).size.height * 0.78,
               child: Container(
-                height: MediaQuery.of(context).size.height * 0.15,
-                width: MediaQuery.of(context).size.width * 0.6,
-                decoration: BoxDecoration(
-                  color: Colors.black45,
-                  borderRadius: BorderRadius.circular(
-                      12.0), // Adjust the radius as needed
-                ),
-                child: Center(child: drawAnswerList()),
-              ),
+                  //color: Colors.black45,
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Center(child: drawAnswerList())),
             ),
           ],
         ),
@@ -115,16 +110,16 @@ class _WordSearchHardState extends State<WordSearchHard> {
 
   void loadFinishModal() {
     QuickAlert.show(
-          context: context,
-          type: QuickAlertType.success,
-          title: "Congratulation!",
-          text: 'You find all the words',
-          onConfirmBtnTap: () {
-            Navigator.of(context).pop();
-            Navigator.of(context)
-                .pushReplacement(MaterialPageRoute(builder: (_) => Games()));
-          },
-        );
+      context: context,
+      type: QuickAlertType.success,
+      title: "Congratulation!",
+      text: 'You find all the words',
+      onConfirmBtnTap: () {
+        Navigator.of(context).pop();
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => Games()));
+      },
+    );
     // showDialog(
     //   barrierDismissible: false,
     //   context: context,
@@ -176,38 +171,37 @@ class _WordSearchHardState extends State<WordSearchHard> {
   }
 
   void onDragEnd([PointerUpEvent? event]) {
-  print("PointerUpEvent");
-  if (currentDragObj.value.currentDragLine.isEmpty) return;
+    print("PointerUpEvent");
+    if (currentDragObj.value.currentDragLine.isEmpty) return;
 
-  // Check if the drawn line matches any of the answers
-  int indexFound = answerList.value.indexWhere((answer) {
-    return answer.answerLines.join("-") ==
-        currentDragObj.value.currentDragLine.join("-");
-  });
-
-  if (indexFound >= 0) {
-    // Mark the word as found
-    setState(() {
-      answerList.value[indexFound].done = true;
-      charsDone.value.addAll(answerList.value[indexFound].answerLines);
+    // Check if the drawn line matches any of the answers
+    int indexFound = answerList.value.indexWhere((answer) {
+      return answer.answerLines.join("-") ==
+          currentDragObj.value.currentDragLine.join("-");
     });
 
-    // Update the UI by notifying listeners
-    charsDone.notifyListeners();
-    answerList.notifyListeners();
+    if (indexFound >= 0) {
+      // Mark the word as found
+      setState(() {
+        answerList.value[indexFound].done = true;
+        charsDone.value.addAll(answerList.value[indexFound].answerLines);
+      });
 
-    // Check if all words are found
-    if (answerList.value.every((answer) => answer.done)) {
-      // Show the loadFinishModal dialog if all words are found
-      loadFinishModal();
+      // Update the UI by notifying listeners
+      charsDone.notifyListeners();
+      answerList.notifyListeners();
+
+      // Check if all words are found
+      if (answerList.value.every((answer) => answer.done)) {
+        // Show the loadFinishModal dialog if all words are found
+        loadFinishModal();
+      }
     }
+
+    // Reset the drag line after checking
+    currentDragObj.value.currentDragLine.clear();
+    currentDragObj.notifyListeners();
   }
-
-  // Reset the drag line after checking
-  currentDragObj.value.currentDragLine.clear();
-  currentDragObj.notifyListeners();
-}
-
 
   int calculateIndexBasePosLocal(Offset localPosition) {
     double maxSizeBox =
@@ -434,16 +428,30 @@ class _WordSearchHardState extends State<WordSearchHard> {
       children: List.generate(answerList.value.length, (index) {
         bool isFound = answerList.value[index].done;
         return Container(
+          height: MediaQuery.of(context).size.height * 0.06,
+          width: MediaQuery.of(context).size.width * 0.28,
+          decoration: BoxDecoration(
+            color: Colors.black45,
+            border: Border.all(
+              color: Colors.white, // Change this to your preferred border color
+              width: 1.5, // Set the border width
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
           padding: EdgeInsets.symmetric(horizontal: 5.0),
-          child: Text(
-            answerList.value[index].answer,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-              fontSize: 25,
-              decoration: isFound ? TextDecoration.lineThrough : null,
-              decorationColor: Colors.white, // Line-through color
-              decorationThickness: 2.0, // Adjust line thickness
+          child: Center(
+            child: Text(
+              answerList.value[index].answer,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: MediaQuery.of(context).size.width * 0.055,
+                decoration: isFound ? TextDecoration.lineThrough : null,
+                decorationColor: Colors.white, // Line-through color
+                decorationThickness: 3.0, // Adjust line thickness
+              ),
             ),
           ),
         );

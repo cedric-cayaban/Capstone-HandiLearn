@@ -207,44 +207,72 @@ class _LetterSearchMediumState extends State<LetterSearchMedium> {
             ),
             // LETTER TO FIND
             Positioned(
-              top: 20,
-              child: Card(
-                color: Colors.black54,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+              top: 0,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.3,
+                width: MediaQuery.of(context).size.width * 0.25,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/insideApp/games/letter search/find-board.png'),
+                    fit: BoxFit.fill,
+                  ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    currentTargetIndex < correctLetters.length
-                        ? 'Letter to find: ${correctLetters[currentTargetIndex]}'
-                        : 'All letters found!',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.08),
+                  child: Column(
+                    children: [
+                      Text(
+                        currentTargetIndex < correctLetters.length
+                            ? 'Lets find letter'
+                            : 'All letters found!',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        currentTargetIndex < correctLetters.length
+                            ? '${correctLetters[currentTargetIndex]}'
+                            : '',
+                        style: const TextStyle(
+                          fontSize: 30,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
             // Found letters in a card
             Positioned(
-              top: 20,
+              bottom: 20,
               right: 20,
-              child: Card(
-                color: Colors.black54,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.2,
+                width: MediaQuery.of(context).size.width * 0.2,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/insideApp/games/letter search/count2.png'),
+                    fit: BoxFit.fill,
+                  ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    '${currentTargetIndex} / 3',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02),
+                  child: Center(
+                    child: Text(
+                      '${currentTargetIndex} / 3',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
