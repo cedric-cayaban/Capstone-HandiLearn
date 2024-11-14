@@ -20,6 +20,14 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
   int tries = 2;
   late int tileNum;
 
+  // List of colors for options
+  List<Color> optionColors = [
+    Color(0xFF6fb589),
+    Color(0xFFf6ac84),
+    Color(0xFF7fbed0),
+    Color(0xFFf5e86e),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -29,7 +37,7 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
     );
     _colorAnimation = ColorTween(
       begin: Colors.blueAccent,
-      end: Colors.greenAccent,
+      end: Colors.redAccent,
     ).animate(_controller!);
     initializeGame();
   }
@@ -37,10 +45,7 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
   void initializeGame() {
     if (widget.difficulty == "Easy") {
       tileNum = 2;
-      options = [
-        "B",
-        "A",
-      ];
+      options = ["B", "A"];
       question = '''I am the first letter on the alphabet. Who am I?''';
       correctAnswer = "A";
     } else if (widget.difficulty == "Normal") {
@@ -50,7 +55,7 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
       correctAnswer = "A";
     } else {
       tileNum = 4;
-      options = ["APPLE", "ORANGE", "PEAR", "STRAWBERRY"];
+      options = ["APPLE", "ORANGE", "PEAR", "BERRY"];
       question =
           '''I'm a sweet, crunchy fruit. You find me in pies and juice. Who Am I?''';
       correctAnswer = "APPLE";
@@ -75,12 +80,10 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
       onConfirmBtnTap: !isCorrect
           ? () {
               setState(() => selectedOption = null);
-
               Navigator.of(context).pop();
             }
           : () {
               setState(() => selectedOption = null);
-
               Navigator.of(context).pop();
               Navigator.of(context)
                   .pushReplacement(MaterialPageRoute(builder: (_) => Games()));
@@ -93,8 +96,9 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
       QuickAlert.show(
         context: context,
         type: QuickAlertType.error,
-        text: 'Number of tries is equal to 0',
-        confirmBtnText: "Find more games",
+        title: "Oops!",
+        text: "You've used all your tries. Let's try another game!",
+        confirmBtnText: "Find more fun games",
         onConfirmBtnTap: () {
           Navigator.of(context).pop();
           Navigator.of(context)
@@ -133,35 +137,72 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
       body: Stack(
         alignment: Alignment.center,
         children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Image.asset(
+              'assets/insideApp/games/quiz-bg.jpg',
+              fit: BoxFit.fill,
+            ),
+          ),
           Positioned(
             top: MediaQuery.of(context).size.height * .2,
             child: Container(
-              height: MediaQuery.of(context).size.height * .1,
+              height: MediaQuery.of(context).size.height * .15,
               width: MediaQuery.of(context).size.width * .8,
               decoration: BoxDecoration(
-                  border: Border.all(
-                width: 1,
-              )),
+                color: Color(0xFF6B8E23).withOpacity(0.2), // Soft pastel color
+                border: Border.all(
+                  color: Color(0xFF6B8E23), // Fun border color
+                  width: 4,
+                ),
+                borderRadius: BorderRadius.circular(25), // More rounded corners
+                boxShadow: [
+                  BoxShadow(
+                    color:
+                        Color(0xFF6B8E23).withOpacity(0.2), // Soft pink shadow
+                    spreadRadius: 4,
+                    blurRadius: 6,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  question,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  children: [
+                    // Padding(
+                    //   padding: const EdgeInsets.only(right: 8.0),
+                    //   child: Icon(
+                    //     Icons.lightbulb_outline, // Friendly icon
+                    //     color: Colors.yellowAccent,
+                    //     size: 30,
+                    //   ),
+                    // ),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          question,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: tileNum == 2 ? 24 : 20,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF3E2723), // Child-friendly color
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
           Positioned(
-            top: tileNum != 2
-                ? MediaQuery.of(context).size.height * .35
-                : MediaQuery.of(context).size.height * .45,
+            top: MediaQuery.of(context).size.height * .45,
             child: Container(
               height: MediaQuery.of(context).size.height * .42,
               width: MediaQuery.of(context).size.width * .8,
-              // decoration: BoxDecoration(color: Colors.red),
+              // color: Colors.red,
               child: GridView.builder(
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
@@ -182,16 +223,25 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
                       builder: (context, child) {
                         return Container(
                           decoration: BoxDecoration(
-                            color: isSelected
-                                ? _colorAnimation?.value
-                                : Colors.blueAccent,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                              color: isSelected
+                                  ? _colorAnimation?.value
+                                  : optionColors[index % optionColors.length],
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  spreadRadius: 1,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 4),
+                                ),
+                              ]),
                           child: Center(
                             child: Text(
                               option,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                         );
@@ -203,8 +253,16 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
             ),
           ),
           Positioned(
-            bottom: MediaQuery.of(context).size.height * .1,
-            child: Text('Number of tries: $tries'),
+            bottom: MediaQuery.of(context).size.height * .08,
+            left: 30,
+            child: Text(
+              'Tries left: $tries',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
+                color: Color(0xFF3E2723),
+              ),
+            ),
           ),
         ],
       ),

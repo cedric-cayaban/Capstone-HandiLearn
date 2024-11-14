@@ -782,6 +782,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                                   MaterialPageRoute(
                                     builder: (_) => HandwritingScanning(
                                       word: widget.lesson.character,
+                                      wordImage: widget.lesson.imgPath,
                                     ),
                                   ),
                                 );

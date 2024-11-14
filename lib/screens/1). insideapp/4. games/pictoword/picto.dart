@@ -14,7 +14,7 @@ class Pictoword extends StatefulWidget {
   _PictowordState createState() => _PictowordState();
 }
 
-class _PictowordState extends State<Pictoword> {
+class _PictowordState extends State<Pictoword> with TickerProviderStateMixin {
   late List<String?> blankTiles;
   late List<String> letters;
   late String correctAnswer;
@@ -22,6 +22,9 @@ class _PictowordState extends State<Pictoword> {
   late String imagePicto;
   late String hint;
   Set<String> usedLetters = {};
+
+  final Map<int, AnimationController> _animationControllers = {};
+  final Map<int, Animation<double>> _animations = {};
 
   @override
   void initState() {
@@ -76,6 +79,15 @@ class _PictowordState extends State<Pictoword> {
   }
 
   @override
+  void dispose() {
+    // Dispose all individual animation controllers
+    for (var controller in _animationControllers.values) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -111,7 +123,7 @@ class _PictowordState extends State<Pictoword> {
                 ),
               ),
               Positioned(
-                bottom: MediaQuery.of(context).size.height * .32,
+                bottom: MediaQuery.of(context).size.height * .34,
                 left: 0,
                 right: 0,
                 child: Wrap(
@@ -123,25 +135,31 @@ class _PictowordState extends State<Pictoword> {
                 ),
               ),
               Positioned(
-                bottom: MediaQuery.of(context).size.height * .07,
+                bottom: tilesNum > 3
+                    ? MediaQuery.of(context).size.height * .08
+                    : MediaQuery.of(context).size.height * .04,
                 left: 0,
                 right: 0,
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: tilesNum > 3 ? 56.0 : 36, vertical: 8.0),
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * .22,
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: tilesNum > 3 ? tilesNum ~/ 2 : tilesNum,
-                        mainAxisSpacing: 8.0,
-                        crossAxisSpacing: 8.0,
+                      horizontal: tilesNum > 6 ? 6.0 : 36, vertical: 8.0),
+                  child: Container(
+                    // decoration: BoxDecoration(color: Colors.red),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * .24,
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount:
+                              tilesNum > 3 ? tilesNum ~/ 2 : tilesNum,
+                          mainAxisSpacing: 8.0,
+                          crossAxisSpacing: 8.0,
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        itemCount: tilesNum,
+                        itemBuilder: (context, index) {
+                          return buildLetterBox(index, letters[index]);
+                        },
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      itemCount: tilesNum,
-                      itemBuilder: (context, index) {
-                        return buildLetterBox(letters[index]);
-                      },
                     ),
                   ),
                 ),
@@ -156,9 +174,11 @@ class _PictowordState extends State<Pictoword> {
                     height: 50,
                     width: MediaQuery.of(context).size.width * .30,
                     decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Color(0xFFb3c3b9),
+                        )),
                     child: Text('Clear',
                         style: TextStyle(color: Colors.white, fontSize: 16)),
                   ),
@@ -180,9 +200,11 @@ class _PictowordState extends State<Pictoword> {
                     height: 50,
                     width: MediaQuery.of(context).size.width * .30,
                     decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Color(0xFFb3c3b9),
+                        )),
                     child: Text('Hint',
                         style: TextStyle(color: Colors.white, fontSize: 16)),
                   ),
@@ -195,28 +217,51 @@ class _PictowordState extends State<Pictoword> {
     );
   }
 
-  Widget buildLetterBox(String letter) {
+  Widget buildLetterBox(int index, String letter) {
     bool isUsed = usedLetters.contains(letter);
+
+    // Initialize the animation for this tile if it doesn't exist
+    if (!_animationControllers.containsKey(index)) {
+      final controller = AnimationController(
+        duration: const Duration(milliseconds: 100),
+        vsync: this,
+      );
+      _animationControllers[index] = controller;
+      _animations[index] = Tween<double>(begin: 1.0, end: 1.2).animate(
+        CurvedAnimation(parent: controller, curve: Curves.easeInOut),
+      );
+    }
+
     return GestureDetector(
       onTap: isUsed
           ? null
           : () {
               if (blankTiles.contains(null)) {
                 placeLetterInBlankTile(letter);
+
+                // Trigger the animation for the tapped tile only
+                _animationControllers[index]!
+                    .forward()
+                    .then((_) => _animationControllers[index]!.reverse());
               }
             },
-      child: Opacity(
-        opacity: isUsed ? 0.4 : 1.0,
-        child: Container(
-          width: 40,
-          height: 40,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(4.0),
+      child: ScaleTransition(
+        scale: _animations[index]!,
+        child: Opacity(
+          opacity: isUsed ? 0.4 : 1.0,
+          child: Container(
+            width: 40,
+            height: 40,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(tilesNum > 2 ? 8 : 4.0),
+            ),
+            child: Text(
+              letter,
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
           ),
-          child:
-              Text(letter, style: TextStyle(color: Colors.white, fontSize: 20)),
         ),
       ),
     );

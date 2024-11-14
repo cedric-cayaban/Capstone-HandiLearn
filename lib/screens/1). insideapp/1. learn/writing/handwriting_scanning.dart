@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as img;
 import 'package:test_drawing/screens/1).%20insideapp/1.%20learn/writing/display_result.dart';
-import 'package:test_drawing/screens/1).%20insideapp/home.dart';
 import 'package:tflite_v2/tflite_v2.dart';
 
 class HandwritingScanning extends StatefulWidget {
