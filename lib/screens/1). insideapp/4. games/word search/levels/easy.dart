@@ -157,6 +157,7 @@ class _WordSearchEasyState extends State<WordSearchEasy> {
               child:
                   Image.asset('assets/insideApp/games/word search/header.png'),
             ),
+            // INSTRUCTION BUTTON
             Positioned(
               top: 20,
               right: 10,

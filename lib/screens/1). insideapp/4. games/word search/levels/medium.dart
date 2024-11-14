@@ -33,6 +33,8 @@ class _WordSearchMediumState extends State<WordSearchMedium> {
     generateRandomWord();
   }
 
+  //COPY DITO
+
   final PageController _controller = PageController();
   int _currentPage = 0;
 
@@ -120,6 +122,8 @@ class _WordSearchMediumState extends State<WordSearchMedium> {
     });
   }
 
+  //COPY DITO
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -155,6 +159,7 @@ class _WordSearchMediumState extends State<WordSearchMedium> {
               child:
                   Image.asset('assets/insideApp/games/word search/header.png'),
             ),
+            // INSTRUCTION BUTTON
             Positioned(
               top: 20,
               right: 10,
