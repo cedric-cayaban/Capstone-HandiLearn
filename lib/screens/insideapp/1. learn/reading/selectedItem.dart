@@ -395,6 +395,7 @@ class _SelectedItemState extends State<SelectedItem>
   @override
   void dispose() {
     _animationController.dispose();
+    _audioPlayer.dispose();
     super.dispose();
   }
 

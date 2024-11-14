@@ -100,7 +100,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
   @override
   void dispose() {
     Future.microtask(() async {
-      
       if (mounted) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => ActivityScreen(
@@ -112,9 +111,9 @@ class _DrawingScreenState extends State<DrawingScreen> {
       }
     });
     SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.dispose();
   }
 
@@ -775,6 +774,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                                   MaterialPageRoute(
                                     builder: (_) => HandwritingScanning(
                                       word: widget.lesson.character,
+                                      wordImage: widget.lesson.imgPath,
                                     ),
                                   ),
                                 );

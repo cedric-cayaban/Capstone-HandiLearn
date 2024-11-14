@@ -121,7 +121,7 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
                 image: AssetImage(imageAsset),
                 fit: BoxFit.cover,
               ),
-              borderRadius: BorderRadius.circular(8)),
+              borderRadius: BorderRadius.circular(10)),
         ),
       );
     } else {
@@ -265,7 +265,7 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
           ),
           Positioned(
             bottom: 16.0,
-            left: 20.0,
+            right: 20.0,
             child: Container(
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(10)),
@@ -276,19 +276,19 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
               ),
             ),
           ),
-          Positioned(
-            bottom: 16.0,
-            right: 20.0,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              child: IconButton(
-                onPressed: () {}, // Shuffle and restart the puzzle
-                icon: Icon(Icons.lightbulb),
-                color: Colors.black,
-              ),
-            ),
-          ),
+          // Positioned(
+          //   bottom: 16.0,
+          //   right: 20.0,
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //         color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          //     child: IconButton(
+          //       onPressed: () {}, // Shuffle and restart the puzzle
+          //       icon: Icon(Icons.lightbulb),
+          //       color: Colors.black,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

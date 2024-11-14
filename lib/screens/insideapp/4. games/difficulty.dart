@@ -77,7 +77,7 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
         ),
       );
     } else if (widget.game == 'quiz_game') {
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (_) => Quiz(difficulty: difficulty),
         ),
@@ -103,22 +103,52 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
                 bool onLastPage = false;
                 bool onFirstPage = true;
 
-                return SizedBox(
-                  height: 300,
-                  width: 200,
-                  child: PageView(
-                    controller: _controller,
-                    onPageChanged: (index) {
-                      setDialogState(() {
-                        onLastPage = (index == 1);
-                        onFirstPage = (index == 0);
-                      });
-                    },
-                    children: [
-                      Ins1(),
-                      Ins2(),
-                    ],
-                  ),
+                return Stack(
+                  children: [
+                    SizedBox(
+                      height: 300,
+                      width: 200,
+                      child: PageView(
+                        controller: _controller,
+                        onPageChanged: (index) {
+                          setDialogState(() {
+                            onLastPage = (index == 1);
+                            onFirstPage = (index == 0);
+                          });
+                        },
+                        children: [
+                          Ins1(),
+                          Ins2(),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      top: 130,
+                      right: 0,
+                      child: IconButton(
+                        onPressed: () {
+                          _controller.nextPage(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeIn,
+                          );
+                        },
+                        icon: Icon(Icons.arrow_forward),
+                      ),
+                    ),
+                    Positioned(
+                      top: 130,
+                      left: 0,
+                      child: IconButton(
+                        onPressed: () {
+                          _controller.previousPage(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeIn,
+                          );
+                        },
+                        icon: Icon(Icons.arrow_back),
+                      ),
+                    ),
+                  ],
                 );
               },
             ),
@@ -132,6 +162,7 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: SizedBox(),
         actions: [
           IconButton(
             onPressed: modal,

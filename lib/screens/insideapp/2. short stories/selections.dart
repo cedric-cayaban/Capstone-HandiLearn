@@ -63,7 +63,10 @@ class _ShortStoriesSelectionState extends State<ShortStoriesSelection> {
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.7,
                 decoration: const BoxDecoration(
-                  color: Colors.blue,
+                  color: Color(0xFFe8f5fb),
+                  border: Border(
+                    top: BorderSide(color: Colors.blue),
+                  ),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30)),
@@ -77,7 +80,7 @@ class _ShortStoriesSelectionState extends State<ShortStoriesSelection> {
                       child: Text(
                         'Short stories',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 22,
                           fontWeight: FontWeight.w600,
                         ),

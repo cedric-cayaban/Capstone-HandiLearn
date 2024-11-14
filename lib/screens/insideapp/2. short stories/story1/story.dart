@@ -1,7 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:test_drawing/screens/insideapp/2.%20short%20stories/selections.dart';
+import 'package:test_drawing/screens/insideapp/home.dart';
 
 class Story extends StatefulWidget {
   Story({super.key});
@@ -13,7 +15,8 @@ class Story extends StatefulWidget {
 class _StoryState extends State<Story> {
   final PageController _controller = PageController();
   final AudioPlayer _audioPlayer = AudioPlayer();
-  int pageNumber = 0;
+  int pageNumber = 1;
+  int imageNumber = 1;
 
   @override
   void initState() {
@@ -22,30 +25,62 @@ class _StoryState extends State<Story> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    forwardPlay();
+    // forwardPlay();
+    initPlay();
+  }
+
+  void initPlay() async {
+    if (pageNumber < 10) {
+      print('Playing audio: $pageNumber');
+
+      await _audioPlayer.play(
+        AssetSource(
+          'insideApp/shortStories/story1/audio/Story P${pageNumber}.mp3',
+        ),
+      );
+    } else {
+      print('End of story. No further audio.');
+      await _audioPlayer.stop();
+    }
   }
 
   void forwardPlay() async {
-    pageNumber++;
-    setState(() {});
+    if (pageNumber != 10) {
+      pageNumber++;
+      setState(() {});
+    }
     if (pageNumber < 10) {
       print('Playing audio: $pageNumber');
+
       await _audioPlayer.play(
-        AssetSource('insideApp/shortStories/story1/audio/$pageNumber.mp3'),
+        AssetSource(
+          'insideApp/shortStories/story1/audio/Story P${pageNumber}.mp3',
+        ),
+      );
+    } else if (pageNumber == 10) {
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        text: "End of Story",
+        onConfirmBtnTap: () {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => ShortStoriesSelection()));
+        },
       );
     } else {
-      return;
+      print('End of story. No further audio.');
+      await _audioPlayer.stop();
     }
-
-    // print(pageNumber);
   }
 
   void repeatSound() async {
-    print('Playing audio: $pageNumber');
-    await _audioPlayer.play(
-      AssetSource('insideApp/shortStories/story1/audio/$pageNumber.mp3'),
-    );
-    // print(pageNumber);
+    if (pageNumber <= 10) {
+      print('Playing audio: $pageNumber');
+      await _audioPlayer.play(
+        AssetSource(
+            'insideApp/shortStories/story1/audio/Story P${pageNumber}.mp3'),
+      );
+    }
   }
 
   void previousSound() async {
@@ -53,7 +88,8 @@ class _StoryState extends State<Story> {
     setState(() {});
     print('Playing audio: $pageNumber');
     await _audioPlayer.play(
-      AssetSource('insideApp/shortStories/story1/audio/$pageNumber.mp3'),
+      AssetSource(
+          'insideApp/shortStories/story1/audio/Story P${pageNumber}.mp3'),
     );
     // print(pageNumber);
   }
@@ -71,126 +107,157 @@ class _StoryState extends State<Story> {
     return Scaffold(
       body: Stack(
         children: [
-          PageView(
-            controller: _controller,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              ...List.generate(10, (index) {
-                return SafeArea(
-                  child: Stack(
-                    children: [
-                      Image.asset(
-                        'assets/insideApp/shortStories/story1/images/${index + 1}.png',
-                        fit: BoxFit.fill,
-                        height: double.infinity,
-                        width: double.infinity,
-                      ),
-                    ],
-                  ),
-                );
-              }),
-            ],
+          Image.asset(
+            'assets/insideApp/shortStories/story1/images/Short stories${pageNumber}.png',
+            fit: BoxFit.fill,
+            height: double.infinity,
+            width: double.infinity,
           ),
+          // PageView(
+          //   controller: _controller,
+          //   physics: const NeverScrollableScrollPhysics(),
+          //   children: [
+          //     ...List.generate(10, (index) {
+          //       return SafeArea(
+          //         child: Stack(
+          //           children: [
+          //             Image.asset(
+          //               'assets/insideApp/shortStories/story1/images/Short stories${index + 1}.png',
+          //               fit: BoxFit.fill,
+          //               height: double.infinity,
+          //               width: double.infinity,
+          //             ),
+          //           ],
+          //         ),
+          //       );
+          //     }),
+          //   ],
+          // ),
           pageNumber <= 10
               ? Positioned(
-                  bottom: 1,
-                  right: 1,
-                  child: IconButton(
-                    onPressed: () async {
+                  bottom: 20,
+                  right: MediaQuery.of(context).size.width * .03,
+                  child: InkWell(
+                    onTap: () async {
                       if (pageNumber <= 10) {
-                        await Future.delayed(const Duration(milliseconds: 300));
-                        _controller
-                            .nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        )
-                            .then((onValue) {
-                          forwardPlay();
-                        });
+                        // await Future.delayed(const Duration(milliseconds: 300));
+                        // _controller
+                        //     .nextPage(
+                        //   duration: const Duration(milliseconds: 300),
+                        //   curve: Curves.easeInOut,
+                        // )
+                        //     .then((onValue) {
+                        //   forwardPlay();
+                        // });
+                        forwardPlay();
                       }
                     },
-                    icon: const Icon(Icons.arrow_circle_right_outlined),
-                    iconSize: 50,
-                    color: Colors.white,
+                    child: Container(
+                      height: 25,
+                      width: 25,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                              'assets/insideApp/shortStories/Forward.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
                   ),
                 )
               : Positioned(
-                  bottom: 15,
-                  right: 20,
-                  child: TextButton(
-                    style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.blue),
-                        elevation: MaterialStatePropertyAll(2.0)),
-                    onPressed: () {
+                  bottom: 25,
+                  right: MediaQuery.of(context).size.width * .03,
+                  child: InkWell(
+                    onTap: () {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (_) => ShortStoriesSelection(),
                         ),
                       );
                     },
-                    child: const Text(
-                      'Home',
-                      style: TextStyle(color: Colors.white),
+                    child: Container(
+                      height: 25,
+                      width: 25,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                              'assets/insideApp/shortStories/Home.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
                 ),
           Positioned(
-            bottom: 1,
-            left: 1,
-            child: IconButton(
-              onPressed: () {
+            bottom: 20,
+            right: MediaQuery.of(context).size.width * .35,
+            child: InkWell(
+              onTap: () async {
                 if (pageNumber > 1) {
-                  _controller
-                      .previousPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  )
-                      .then((onValue) {
-                    previousSound();
-                  });
+                  // _controller
+                  //     .previousPage(
+                  //   duration: const Duration(milliseconds: 300),
+                  //   curve: Curves.easeInOut,
+                  // )
+                  //     .then((onValue) {
+                  //   previousSound();
+                  // });
+                  previousSound();
                 }
               },
-              icon: const Icon(Icons.arrow_circle_left_outlined),
-              iconSize: 50,
-              color: Colors.white,
+              child: Container(
+                height: 25,
+                width: 25,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/insideApp/shortStories/Backward.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
           ),
           Positioned(
             top: 40,
             right: 20,
-            child: IconButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(Colors.blue),
-                elevation: MaterialStatePropertyAll(5.0),
-                shadowColor: MaterialStatePropertyAll(Colors.black),
+            child: InkWell(
+              onTap: repeatSound,
+              child: Container(
+                height: 28,
+                width: 33,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image:
+                        AssetImage('assets/insideApp/shortStories/Repeat.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
-              onPressed: () {
-                repeatSound();
-              },
-              icon: Icon(Icons.repeat_rounded),
-              iconSize: 30,
-              color: Colors.white,
             ),
           ),
           Positioned(
             top: 40,
             left: 20,
-            child: IconButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(Colors.blue),
-                elevation: MaterialStatePropertyAll(5.0),
-                shadowColor: MaterialStatePropertyAll(Colors.black),
-              ),
-              onPressed: () {
+            child: InkWell(
+              onTap: () {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (_) => ShortStoriesSelection(),
                   ),
                 );
               },
-              icon: Icon(Icons.home_rounded),
-              iconSize: 30,
-              color: Colors.white,
+              child: Container(
+                height: 28,
+                width: 33,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/insideApp/shortStories/Home.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
           ),
         ],

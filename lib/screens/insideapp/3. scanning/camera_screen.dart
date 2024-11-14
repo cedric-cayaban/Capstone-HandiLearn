@@ -5,6 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:test_drawing/data/objects.dart';
 import 'package:test_drawing/screens/insideapp/3.%20scanning/image_description.dart';
 import 'package:test_drawing/screens/insideapp/home.dart';
@@ -349,6 +350,11 @@ class _nameState extends State<CameraScreen> {
 
                           if (_recognitions[0]['confidence'] < .75) {
                             print("try again");
+                            QuickAlert.show(
+                                context: context,
+                                type: QuickAlertType.error,
+                                title: "Try again!",
+                                text: "Incorrect object");
                           } else if (labels[pickedNum] ==
                               _recognitions[0]['label'].toString()) {
                             print(_recognitions[0]['label'].toString());
