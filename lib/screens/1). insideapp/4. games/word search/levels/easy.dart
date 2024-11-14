@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:test_drawing/objects/crossword.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/game_selection.dart';
+import 'package:test_drawing/screens/1).%20insideapp/4.%20games/instructions/word_search.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/modal/ins1.dart';
+import 'package:test_drawing/screens/insideapp/4.%20games/modal/ins2.dart';
 import 'package:word_search_safety/word_search_safety.dart'; // Import the word_search_safety package
 
 class WordSearchEasy extends StatefulWidget {
@@ -30,6 +33,96 @@ class _WordSearchEasyState extends State<WordSearchEasy> {
     generateRandomWord();
   }
 
+  //COPY DITO
+  final PageController _controller = PageController();
+  int _currentPage = 0;
+
+  void _nextPage() {
+    if (_currentPage < 2) {
+      _controller.nextPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _previousPage() {
+    if (_currentPage > 0) {
+      _controller.previousPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void loadInstructions() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            dialogBackgroundColor: Colors.white,
+          ),
+          child: AlertDialog(
+            title: Center(child: Text('How to play')),
+            backgroundColor: Colors.white,
+            contentPadding: EdgeInsets.all(16),
+            content: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setDialogState) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: PageView(
+                          controller: _controller,
+                          onPageChanged: (index) {
+                            setDialogState(() {
+                              _currentPage = index;
+                            });
+                          },
+                          children: [
+                            WordSearchTip1(),
+                            WordSearchTip2(),
+                            WordSearchTip3(),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          IconButton(
+                            onPressed: _currentPage > 0 ? _previousPage : null,
+                            icon: Icon(Icons.arrow_back),
+                            color: _currentPage > 0 ? Colors.blue : Colors.grey,
+                          ),
+                          Text(' ${_currentPage + 1}'),
+                          IconButton(
+                            onPressed: _currentPage < 2 ? _nextPage : null,
+                            icon: Icon(Icons.arrow_forward),
+                            color: _currentPage < 2 ? Colors.blue : Colors.grey,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    ).then((_) {
+      // Reset the current page to 0 when the dialog is closed
+      setState(() {
+        _currentPage = 0;
+      });
+    });
+  }
+
+//COPY DITO
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -55,7 +148,7 @@ class _WordSearchEasyState extends State<WordSearchEasy> {
                     ));
                   },
                   icon: const Icon(
-                    color: Colors.black,
+                    color: Colors.white,
                     Icons.arrow_back,
                     size: 30,
                   )),
@@ -64,6 +157,25 @@ class _WordSearchEasyState extends State<WordSearchEasy> {
               top: MediaQuery.of(context).size.height * 0.04,
               child:
                   Image.asset('assets/insideApp/games/word search/header.png'),
+            ),
+            Positioned(
+              top: 20,
+              right: 10,
+              child: GestureDetector(
+                onTap: loadInstructions,
+                child: CircleAvatar(
+                  radius: 26, // Adjust size to match the image’s
+                  backgroundColor: Colors.white,
+
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(
+                      'assets/insideApp/games/instruction.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
             ),
             Positioned(
               top: MediaQuery.of(context).size.height * 0.2,

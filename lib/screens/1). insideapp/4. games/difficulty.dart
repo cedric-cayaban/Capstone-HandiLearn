@@ -10,7 +10,6 @@ import 'package:test_drawing/screens/1).%20insideapp/4.%20games/word%20search/wo
 import 'package:test_drawing/screens/insideapp/4.%20games/modal/ins1.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/modal/ins2.dart';
 
-
 class DifficultyScreen extends StatefulWidget {
   DifficultyScreen({required this.game, super.key});
 
@@ -133,14 +132,7 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: modal,
-            icon: Icon(Icons.lightbulb),
-          ),
-        ],
-      ),
+      appBar: AppBar(),
       backgroundColor: Colors.white,
       body: Center(
         child: Column(
