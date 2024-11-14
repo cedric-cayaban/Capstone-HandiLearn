@@ -3,8 +3,7 @@ import 'package:quickalert/quickalert.dart';
 import 'package:test_drawing/objects/crossword.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/game_selection.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/instructions/word_search.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/modal/ins1.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/modal/ins2.dart';
+
 import 'package:word_search_safety/word_search_safety.dart'; // Import the word_search_safety package
 
 class WordSearchEasy extends StatefulWidget {

@@ -7,9 +7,6 @@ import 'package:test_drawing/screens/1).%20insideapp/4.%20games/quiz%20game/quiz
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/sliding%20puzzle/Sliding_puzzle.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/word%20search/word_search.dart';
 
-import 'package:test_drawing/screens/insideapp/4.%20games/modal/ins1.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/modal/ins2.dart';
-
 class DifficultyScreen extends StatefulWidget {
   DifficultyScreen({required this.game, super.key});
 
@@ -86,78 +83,9 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
     }
   }
 
-  final PageController _controller = PageController();
+  
 
-  void modal() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            dialogBackgroundColor: Colors.white,
-          ),
-          child: AlertDialog(
-            backgroundColor: Colors.white,
-            contentPadding: EdgeInsets.all(16),
-            content: StatefulBuilder(
-              builder: (BuildContext context, StateSetter setDialogState) {
-                bool onLastPage = false;
-                bool onFirstPage = true;
-
-                return Stack(
-                  children: [
-                    SizedBox(
-                      height: 300,
-                      width: 200,
-                      child: PageView(
-                        controller: _controller,
-                        onPageChanged: (index) {
-                          setDialogState(() {
-                            onLastPage = (index == 1);
-                            onFirstPage = (index == 0);
-                          });
-                        },
-                        children: [
-                          Ins1(),
-                          Ins2(),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      top: 130,
-                      right: 0,
-                      child: IconButton(
-                        onPressed: () {
-                          _controller.nextPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeIn,
-                          );
-                        },
-                        icon: Icon(Icons.arrow_forward),
-                      ),
-                    ),
-                    Positioned(
-                      top: 130,
-                      left: 0,
-                      child: IconButton(
-                        onPressed: () {
-                          _controller.previousPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeIn,
-                          );
-                        },
-                        icon: Icon(Icons.arrow_back),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-        );
-      },
-    );
-  }
+  
 
   @override
   Widget build(BuildContext context) {
