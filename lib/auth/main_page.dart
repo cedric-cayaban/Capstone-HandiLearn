@@ -2,7 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:test_drawing/screens/get_started.dart';
-import 'package:test_drawing/screens/useraccount/choose_profile.dart';
+import 'package:test_drawing/screens/3).%20useraccount/choose_profile.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});

@@ -1,7 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:test_drawing/screens/onboarding/onboarding.dart';
+import 'package:test_drawing/screens/2.)%20onboarding/onboarding.dart';
 
 class GetStarted extends StatelessWidget {
   const GetStarted({super.key});

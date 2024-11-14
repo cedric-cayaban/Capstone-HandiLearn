@@ -258,7 +258,7 @@ List<String> hints_0 = [
 ];
 List<String> hints_1 = [
   'assets/insideApp/learnWriting/numbers/hints/1-step1.png',
-  'assets/insideApp/learnWriting/numbers/hints/1-step1.png',
+  'assets/insideApp/learnWriting/numbers/hints/1-step2.png',
 ];
 List<String> hints_2 = [
   'assets/insideApp/learnWriting/numbers/hints/2-step1.png',
@@ -268,7 +268,7 @@ List<String> hints_3 = [
 ];
 List<String> hints_4 = [
   'assets/insideApp/learnWriting/numbers/hints/4-step1.png',
-  'assets/insideApp/learnWriting/numbers/hints/4-step1.png',
+  'assets/insideApp/learnWriting/numbers/hints/4-step2.png',
 ];
 List<String> hints_5 = [
   'assets/insideApp/learnWriting/numbers/hints/5-step1.png',
@@ -277,7 +277,6 @@ List<String> hints_6 = [
   'assets/insideApp/learnWriting/numbers/hints/6-step1.png',
 ];
 List<String> hints_7 = [
-  'assets/insideApp/learnWriting/numbers/hints/7-step1.png',
   'assets/insideApp/learnWriting/numbers/hints/7-step1.png',
 ];
 List<String> hints_8 = [
