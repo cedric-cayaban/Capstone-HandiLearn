@@ -63,13 +63,13 @@ class _WordSearchEasyState extends State<WordSearchEasy> {
             dialogBackgroundColor: Colors.white,
           ),
           child: AlertDialog(
-            title: Center(child: Text('How to play')),
+            //title: Center(child: Text('How to play')),
             backgroundColor: Colors.white,
             contentPadding: EdgeInsets.all(16),
             content: StatefulBuilder(
               builder: (BuildContext context, StateSetter setDialogState) {
                 return SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.5,
+                  height: 450,
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: Column(
                     children: [
@@ -147,7 +147,7 @@ class _WordSearchEasyState extends State<WordSearchEasy> {
                     ));
                   },
                   icon: const Icon(
-                    color: Colors.white,
+                    color: Colors.black,
                     Icons.arrow_back,
                     size: 30,
                   )),
