@@ -68,6 +68,8 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
           type: QuickAlertType.success,
           title: "Congratulation!",
           text: 'You finished the puzzle',
+            confirmBtnColor: Colors.greenAccent.shade700,
+          
           onConfirmBtnTap: () {
             Navigator.of(context)
                 .pushReplacement(MaterialPageRoute(builder: (_) => Games()));

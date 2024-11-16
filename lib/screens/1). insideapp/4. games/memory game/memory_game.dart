@@ -207,6 +207,7 @@ class _MemoryGameState extends State<MemoryGame> {
                         type: QuickAlertType.success,
                         title: 'Congratulations!',
                         text: "Let's play more games!",
+                        confirmBtnColor: Colors.greenAccent.shade700,
                         onConfirmBtnTap: () {
                           Navigator.pop(context);
                           Navigator.of(context).pushReplacement(

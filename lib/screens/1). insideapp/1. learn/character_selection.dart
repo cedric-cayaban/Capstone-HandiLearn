@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:test_drawing/objects/lesson.dart';
 import 'package:test_drawing/provider/lesson_provider.dart';
@@ -43,13 +44,31 @@ class _LetterSelectionsScreenState extends State<CharacterSelectionScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.portraitDown,
+    //   DeviceOrientation.portraitUp,
+    // ]).then(
+    //   (value) {
+    //     print('NAGING PORTRAIT');
+    //   },
+    // );
     late String lessonField = "${widget.lessonTitle}_${widget.activity}";
     final lessonProvider = Provider.of<LessonProvider>(context, listen: false);
     lessonProvider.fetchCharacterDone(lessonField);
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.portraitDown,
+    //   DeviceOrientation.portraitUp,
+    // ]).then(
+    //   (value) {
+    //     print('NAGING PORTRAIT');
+    //   },
+    // );
     final lessonProvider = Provider.of<LessonProvider>(context);
 
     return SafeArea(
@@ -137,17 +156,19 @@ class _LetterSelectionsScreenState extends State<CharacterSelectionScreen> {
                             return InkWell(
                               onTap: isUnlocked
                                   ? () {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (context) => DrawingScreen(
-                                          lessonNumber: widget.lessonNumber,
-                                          forNextLesson: widget.lesson,
-                                          lesson: widget.lesson[index],
-                                          index: index,
-                                          lessonField:
-                                              "${widget.lessonTitle}_${widget.activity}",
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => DrawingScreen(
+                                            lessonNumber: widget.lessonNumber,
+                                            forNextLesson: widget.lesson,
+                                            lesson: widget.lesson[index],
+                                            index: index,
+                                            lessonField:
+                                                "${widget.lessonTitle}_${widget.activity}",
+                                          ),
                                         ),
-                                      ));
+                                        //(Route<dynamic> route) => false,
+                                      );
                                     }
                                   : null,
                               child: Card(

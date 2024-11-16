@@ -157,6 +157,7 @@ class _LetterSearchEasyState extends State<LetterSearchEasy> {
       type: QuickAlertType.success,
       title: "Congratulation!",
       text: 'You found all the letters',
+      confirmBtnColor: Colors.greenAccent.shade700,
       onConfirmBtnTap: () {
         Navigator.of(context).pop();
         Navigator.of(context)

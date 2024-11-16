@@ -266,6 +266,7 @@ class _WordSearchMediumState extends State<WordSearchMedium> {
       type: QuickAlertType.success,
       title: "Congratulation!",
       text: 'You find all the letters',
+      confirmBtnColor: Colors.greenAccent.shade700,
       onConfirmBtnTap: () {
         Navigator.of(context)
             .pushReplacement(MaterialPageRoute(builder: (_) => Games()));

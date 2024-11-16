@@ -38,6 +38,16 @@ class _HomeState extends State<Home> {
     // print(LastActivity);
   }
 
+  void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
+  }
+
+  
+
   // void getData() async {
   //   print(id);
   //   User user = FirebaseAuth.instance.currentUser!;

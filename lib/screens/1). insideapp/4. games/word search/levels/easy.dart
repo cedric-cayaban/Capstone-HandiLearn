@@ -224,6 +224,7 @@ class _WordSearchEasyState extends State<WordSearchEasy> {
       type: QuickAlertType.success,
       title: "Congratulation!",
       text: 'You found all the words!',
+      confirmBtnColor: Colors.greenAccent.shade700,
       onConfirmBtnTap: () {
         Navigator.of(context).pop();
         Navigator.of(context)

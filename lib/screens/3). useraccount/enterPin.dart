@@ -88,85 +88,88 @@ class _EnterPinState extends State<EnterPin> {
                   MainAxisSize.min, // Ensures the dialog takes minimal space
               children: [
                 Image.asset('assets/loginRegister/notverified.png'),
-                SizedBox(height: 5), // Space between image and text
-                Text(
+                const SizedBox(height: 5), // Space between image and text
+                const Text(
                   'Pin is incorrect',
                   style: TextStyle(
                     fontSize: 30,
                   ),
                 ),
-                Text('Enter the correct pin for this profile'),
+                const Text('Enter the correct pin for this profile'),
               ],
             ),
             actions: [
-              Container(
-                child: Material(
-                  borderRadius: BorderRadius.circular(10),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(10),
-                    onTap: () async {
-                      enteredPin = "";
-                      setState(() {});
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      height: 45,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFF10E119),
-                            Color(0xFF18991E),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: [
+                    Material(
+                      borderRadius: BorderRadius.circular(10),
+                      child: InkWell(
                         borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Text(
-                        'Okay',
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        onTap: () async {
+                          enteredPin = "";
+                          setState(() {});
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          height: 45,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color(0xFF10E119),
+                                Color(0xFF18991E),
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Text(
+                            'Try again',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Container(
-                child: Material(
-                  borderRadius: BorderRadius.circular(10),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(10),
-                    onTap: () async {
-                      Navigator.pop(context);
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => ChooseProfile(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      height: 45,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFF10E119),
-                            Color(0xFF18991E),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Material(
+                      borderRadius: BorderRadius.circular(10),
+                      child: InkWell(
                         borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Text(
-                        'Choose another profile',
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        onTap: () async {
+                          Navigator.pop(context);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const ChooseProfile(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 45,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color(0xFF10E119),
+                                Color(0xFF18991E),
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Text(
+                            'Choose another profile',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ],
@@ -194,7 +197,7 @@ class _EnterPinState extends State<EnterPin> {
               onPressed: () {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (_) => ChooseProfile(),
+                    builder: (_) => const ChooseProfile(),
                   ),
                 );
               },
@@ -204,7 +207,7 @@ class _EnterPinState extends State<EnterPin> {
         body: Container(
           height: double.infinity,
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/loginRegister/bgPin.png"),
               fit: BoxFit.fill,
@@ -227,8 +230,8 @@ class _EnterPinState extends State<EnterPin> {
                         color: Colors.grey.withOpacity(0.5), // Shadow color
                         spreadRadius: 2, // Spread radius
                         blurRadius: 7, // Blur radius
-                        offset:
-                            Offset(0, 3), // Changes the position of the shadow
+                        offset: const Offset(
+                            0, 3), // Changes the position of the shadow
                       ),
                     ],
                   ),
@@ -244,7 +247,7 @@ class _EnterPinState extends State<EnterPin> {
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
-                        Gap(5),
+                        const Gap(5),
 
                         /// pin code area
                         Row(
@@ -319,7 +322,7 @@ class _EnterPinState extends State<EnterPin> {
                             const TextButton(
                                 onPressed: null, child: SizedBox()),
                             numButton(0),
-                            Gap(5),
+                            const Gap(5),
                             TextButton(
                               onPressed: () {
                                 setState(
@@ -360,7 +363,7 @@ class _EnterPinState extends State<EnterPin> {
                                 height: 45, // Fixed height
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  gradient: LinearGradient(
+                                  gradient: const LinearGradient(
                                     colors: [
                                       Color(0xFF10E119),
                                       Color(0xFF18991E)

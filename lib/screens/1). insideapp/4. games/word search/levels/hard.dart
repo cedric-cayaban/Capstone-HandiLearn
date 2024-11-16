@@ -227,6 +227,7 @@ class _WordSearchHardState extends State<WordSearchHard> {
       type: QuickAlertType.success,
       title: "Congratulation!",
       text: 'You find all the words',
+      confirmBtnColor: Colors.greenAccent.shade700,
       onConfirmBtnTap: () {
         Navigator.of(context).pop();
         Navigator.of(context)

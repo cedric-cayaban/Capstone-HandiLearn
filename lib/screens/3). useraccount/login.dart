@@ -34,6 +34,8 @@ class _LoginScreenState extends State<LoginScreen> {
         type: QuickAlertType.error,
         title: 'Login Failed',
         text: 'Invalid credentials',
+        confirmBtnText: 'Try again',
+        confirmBtnColor: Colors.orange,
       );
 
       // return;

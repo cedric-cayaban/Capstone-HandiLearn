@@ -77,23 +77,28 @@ class _DrawingScreenState extends State<DrawingScreen> {
       ]);
     }
 
-    //BABALIKAN
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      //loadHints();
+      // Load guide points asynchronously
       loadGuidePoints().then((data) {
-        setState(() {
-          guidePoints = data;
-          isLoading = false; // Set loading to false when data is ready
-          if (widget.lesson.type == 'word' ||
-              widget.lesson.type == 'cursive word') {
-            loadModel();
-          }
-        });
+        if (mounted) {
+          // Check if the widget is still mounted
+          setState(() {
+            guidePoints = data;
+            isLoading = false; // Set loading to false when data is ready
+            if (widget.lesson.type == 'word' ||
+                widget.lesson.type == 'cursive word') {
+              loadModel();
+            }
+          });
+        }
       }).catchError((error) {
         print('Error loading guide points: $error');
-        setState(() {
-          isLoading = false; // Even on error, stop showing loading indicator
-        });
+        if (mounted) {
+          // Check if the widget is still mounted
+          setState(() {
+            isLoading = false; // Even on error, stop showing loading indicator
+          });
+        }
       });
     });
   }
@@ -107,21 +112,25 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   @override
   void dispose() {
-    Future.microtask(() async {
-      if (mounted) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => ActivityScreen(
-            lesson: widget.forNextLesson,
-            lessonTitle: lessonTitles[widget.lessonNumber],
-            lessonNumber: widget.lessonNumber,
-          ),
-        ));
-      }
-    });
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    Future.microtask(() async {
+      if (mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => ActivityScreen(
+              lesson: widget.forNextLesson,
+              lessonTitle: lessonTitles[widget.lessonNumber],
+              lessonNumber: widget.lessonNumber,
+            ),
+          ),
+          (Route<dynamic> route) => false,
+        );
+      }
+    });
+
     super.dispose();
   }
 
@@ -200,26 +209,31 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             Navigator.of(context).pop();
                             var nextLesson =
                                 widget.forNextLesson[widget.index + 1];
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => DrawingScreen(
-                                lessonNumber: widget.lessonNumber,
-                                index: widget.index + 1,
-                                lesson: nextLesson,
-                                forNextLesson: widget.forNextLesson,
-                                lessonField: widget.lessonField,
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => DrawingScreen(
+                                  lessonNumber: widget.lessonNumber,
+                                  index: widget.index + 1,
+                                  lesson: nextLesson,
+                                  forNextLesson: widget.forNextLesson,
+                                  lessonField: widget.lessonField,
+                                ),
                               ),
-                            ));
+                              // (Route<dynamic> route) => false,
+                            );
                           } else {
                             Navigator.of(context).pop();
 
-                            Navigator.of(context)
-                                .pushReplacement(MaterialPageRoute(
-                              builder: (context) => ActivityScreen(
-                                  lesson: widget.forNextLesson,
-                                  lessonTitle:
-                                      lessonTitles[widget.lessonNumber],
-                                  lessonNumber: widget.lessonNumber),
-                            ));
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (context) => ActivityScreen(
+                                    lesson: widget.forNextLesson,
+                                    lessonTitle:
+                                        lessonTitles[widget.lessonNumber],
+                                    lessonNumber: widget.lessonNumber),
+                              ),
+                              (Route<dynamic> route) => false,
+                            );
                           }
                         },
                         child: SizedBox(
@@ -264,14 +278,25 @@ class _DrawingScreenState extends State<DrawingScreen> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
-        title: Text(
-          widget.lesson.type == 'cursive'
-              ? 'How to Write Cursive ${widget.lesson.character}'
-              : 'How to Write ${widget.lesson.character}',
-          style: TextStyle(
-            fontSize: widget.lesson.type == 'cursive' ? 20 : 25,
-            fontWeight: FontWeight.w500,
+        title: AppBar(
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: Text(
+            widget.lesson.type == 'cursive'
+                ? 'How to Write Cursive ${widget.lesson.character}'
+                : 'How to Write ${widget.lesson.character}',
+            style: TextStyle(
+              fontSize: widget.lesson.type == 'cursive' ? 20 : 25,
+              fontWeight: FontWeight.w500,
+            ),
           ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.close))
+          ],
         ),
         content: Container(
           color: Colors.white,
@@ -753,59 +778,86 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             Icons.arrow_back,
                             color: Colors.black,
                           ),
-                          onPressed: () async {
-                            await SystemChrome.setPreferredOrientations([
-                              DeviceOrientation.portraitUp,
-                              DeviceOrientation.portraitDown,
-                            ]);
+                          onPressed: () {
+                            // SystemChrome.setPreferredOrientations([
+                            //   DeviceOrientation.portraitUp,
+                            //   DeviceOrientation.portraitDown,
+                            // ]);
                             //Navigator.of(context).pop();
                             //Navigator.of(context).pop();
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        CharacterSelectionScreen(
-                                            lessonTitle: lessonNames[
-                                                widget.lessonNumber],
-                                            lesson: widget.forNextLesson,
-                                            activity: 'Writing',
-                                            lessonNumber:
-                                                widget.lessonNumber)));
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CharacterSelectionScreen(
+                                          lessonTitle:
+                                              lessonNames[widget.lessonNumber],
+                                          lesson: widget.forNextLesson,
+                                          activity: 'Writing',
+                                          lessonNumber: widget.lessonNumber)),
+                              (Route<dynamic> route) => false,
+                            );
                           },
                         ),
-                        if (widget.lesson.type == 'word')
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            //SCAN BUTTON
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (_) => HandwritingScanning(
-                                      word: widget.lesson.character,
-                                     // wordImage: widget.lesson.imgPath,
-                                    ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Row(
+                            children: [
+                              if (widget.lesson.type == 'word')
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (_) => HandwritingScanning(
+                                          word: widget.lesson.character,
+                                          // wordImage: widget.lesson.imgPath,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: 45.0,
+                                        height: 35.0,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape
+                                              .circle, // Makes the container circular
+                                        ),
+                                        child: Image.asset(
+                                          'assets/insideApp/learnWriting/components/scan.png',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      const Text('Scan'),
+                                    ],
                                   ),
-                                );
-                              },
-                              child: Column(
-                                children: [
-                                  Container(
-                                    width: 30.0,
-                                    height: 35.0,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape
-                                          .circle, // Makes the container circular
+                                ),
+                              const Gap(20),
+                              GestureDetector(
+                                onTap: () {
+                                  eraseDrawing();
+                                },
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width: 30.0,
+                                      height: 35.0,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape
+                                            .circle, // Makes the container circular
+                                      ),
+                                      child: Image.asset(
+                                        'assets/insideApp/learnWriting/components/erase.png',
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                    child: Image.asset(
-                                      'assets/insideApp/learnWriting/components/scan.png',
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  const Text('Scan'),
-                                ],
+                                    const Text('Erase'),
+                                  ],
+                                ),
                               ),
-                            ),
+                            ],
                           ),
+                        ),
                       ],
                     ),
                     Expanded(

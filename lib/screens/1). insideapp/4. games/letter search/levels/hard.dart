@@ -157,6 +157,7 @@ class _LetterSearchHardState extends State<LetterSearchHard> {
       type: QuickAlertType.success,
       title: "Congratulation!",
       text: 'You found all the letters',
+      confirmBtnColor: Colors.greenAccent.shade700,
       onConfirmBtnTap: () {
         Navigator.of(context).pop();
         Navigator.of(context)
