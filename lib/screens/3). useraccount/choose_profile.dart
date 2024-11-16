@@ -82,73 +82,95 @@ class _ChooseProfileState extends State<ChooseProfile> {
     showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.white,
-        title: AppBar(
-          backgroundColor: Colors.transparent,
-          automaticallyImplyLeading: false,
-          title: const Text('Verify Parent'),
-          centerTitle: true,
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  passController.clear();
-                },
-                icon: Icon(Icons.close))
-          ],
-        ),
-        content: SizedBox(
-          height: 350,
-          width: 500,
-          child: Column(
-            children: [
-              const Gap(30),
-              Image.asset('assets/loginRegister/lock.png'),
-              const Gap(30),
-              TextField(
-                controller: passController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(16),
+      builder: (context) {
+        bool _isPasswordVisible = false; // Local state for the dialog
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            backgroundColor: Colors.white,
+            title: AppBar(
+              backgroundColor: Colors.transparent,
+              automaticallyImplyLeading: false,
+              title: const Text(
+                'Verify Parent',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+              ),
+              centerTitle: true,
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    passController.clear();
+                  },
+                  icon: const Icon(Icons.close),
+                ),
+              ],
+            ),
+            content: SizedBox(
+              height: 350,
+              width: 500,
+              child: Column(
+                children: [
+                  const Gap(30),
+                  Image.asset('assets/loginRegister/lock.png'),
+                  const Gap(30),
+                  TextField(
+                    obscureText: !_isPasswordVisible,
+                    controller: passController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(16),
+                        ),
+                      ),
+                      hintText: 'Enter parent password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
                     ),
                   ),
-                  hintText: 'Enter parent password',
-                ),
-              ),
-              const Gap(30),
-              InkWell(
-                borderRadius: BorderRadius.circular(10),
-                onTap: () {
-                  verifyParent(passController.text);
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 45,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF10E119), Color(0xFF18991E)],
-                    ),
+                  const Gap(30),
+                  InkWell(
                     borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    'Okay',
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                    onTap: () {
+                      verifyParent(passController.text);
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 45,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF10E119), Color(0xFF18991E)],
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        'Okay',
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -191,7 +213,7 @@ class _ChooseProfileState extends State<ChooseProfile> {
                 MaterialPageRoute(builder: (_) => const LoginScreen()),
               );
             },
-            icon: Image.asset(height: 30, 'assets/loginRegister/logout.png')),
+            icon: Image.asset(height: 25, 'assets/loginRegister/logout.png')),
         actions: [
           IconButton(
             onPressed: () {

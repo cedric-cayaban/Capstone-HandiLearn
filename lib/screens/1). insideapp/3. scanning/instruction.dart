@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:test_drawing/screens/1).%20insideapp/3.%20scanning/camera_screen.dart';
 import 'package:test_drawing/screens/1).%20insideapp/home.dart';
 
@@ -19,12 +21,20 @@ class _InstructionState extends State<Instruction> {
       children: [
         Text(
           'Look at the Picture!',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        Image.asset('assets/insideApp/scanning/insImage1.png'),
+        //const Gap(10),
+        Text(
+          '1.1 The game will show you a picture of something fun! It could be a toy, or a book.',
+          style:
+              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
         ),
         Text(
-            '1.1 The game will show you a picture of something fun! It could be a toy, a book, '
-            'or something outside like a tree.'),
-        Text('1.2 Remember what it looks like. Can you see it in your mind?'),
+          '1.2 Remember what it looks like. Can you see it in your mind?',
+          style:
+              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
+        ),
       ],
     ),
     Column(
@@ -32,12 +42,19 @@ class _InstructionState extends State<Instruction> {
       children: [
         Text(
           'Search Around!',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        Image.asset('assets/insideApp/scanning/insImage2.png'),
+        Text(
+          '2.1 Now it’s time to find that thing! Look around your room.',
+          style:
+              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
         ),
         Text(
-            '2.1 Now it’s time to find that thing! Look around your room, in your house, or even outside.'),
-        Text(
-            '2.2 You can ask a grown-up to help you look, too! It’s like a treasure hunt!'),
+          '2.2 You can ask a grown-up to help you look, too! It’s like a treasure hunt!',
+          style:
+              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
+        ),
       ],
     ),
     Column(
@@ -45,12 +62,19 @@ class _InstructionState extends State<Instruction> {
       children: [
         Text(
           'Time to Scan!',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        Image.asset('assets/insideApp/scanning/insImage3.png'),
+        Text(
+          '3.1 When you find the object, it’s time to use the Scan Button on the game.',
+          style:
+              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
         ),
         Text(
-            '3.1 When you find the object, it’s time to use the Scan Button on the game.'),
-        Text(
-            '3.2 Hold your tablet or phone up to the object and press the button. The scanner will help you check if it’s the right one!'),
+          '3.2 Hold your tablet or phone up to the object and press the button.',
+          style:
+              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
+        ),
       ],
     ),
     Column(
@@ -58,12 +82,19 @@ class _InstructionState extends State<Instruction> {
       children: [
         Text(
           'Learn Something New!',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        Image.asset('assets/insideApp/scanning/insImage4.png'),
+        Text(
+          '4.1 Hooray! After you scan, the game will tell you what the object is.',
+          style:
+              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
         ),
         Text(
-            '4.1 Hooray! After you scan, the game will tell you what the object is.'),
-        Text(
-            '4.2 You’ll hear a voice that tells you what it does and what it’s called. It’s like magic!'),
+          '4.2 You’ll hear a voice that tells you what it does and what it’s called. It’s like magic!',
+          style:
+              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
+        ),
       ],
     ),
     // Column(
@@ -156,7 +187,7 @@ class _InstructionState extends State<Instruction> {
             ),
           ),
           Positioned(
-            top: 170,
+            top: MediaQuery.of(context).size.height * 0.1,
             child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: Container(
@@ -203,11 +234,11 @@ class _InstructionState extends State<Instruction> {
             ),
           ),
           Positioned(
-            bottom: 120,
+            top: MediaQuery.of(context).size.height * 0.35,
             child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: Container(
-                height: 220,
+                height: 420,
                 width: MediaQuery.of(context).size.width * .80,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -246,46 +277,54 @@ class _InstructionState extends State<Instruction> {
                         },
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _currentPage != 3
-                            ? IconButton(
-                                onPressed: _previousPage,
-                                icon: Icon(Icons.arrow_back),
-                              )
-                            : SizedBox(),
-                        _currentPage != 3
-                            ? Text(
-                                ' ${_currentPage + 1}',
-                              )
-                            : TextButton(
-                                style: ButtonStyle(
-                                    elevation: WidgetStatePropertyAll(1),
-                                    backgroundColor:
-                                        WidgetStatePropertyAll(Colors.white),
-                                    shape: WidgetStatePropertyAll(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10)))),
-                                onPressed: () {
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (_) => CameraScreen(),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  "Let's Find",
-                                  style: TextStyle(color: Colors.black),
-                                )),
-                        _currentPage != 3
-                            ? IconButton(
-                                onPressed: _nextPage,
-                                icon: Icon(Icons.arrow_forward),
-                              )
-                            : SizedBox(),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _currentPage != 3
+                              ? IconButton(
+                                  onPressed: _previousPage,
+                                  icon: Image.asset(
+                                      height: 35,
+                                      'assets/insideApp/scanning/back.png'),
+                                )
+                              : SizedBox(),
+                          _currentPage != 3
+                              ? Text(
+                                  ' ${_currentPage + 1}',
+                                  style: TextStyle(fontSize: 15),
+                                )
+                              : TextButton(
+                                  style: ButtonStyle(
+                                      elevation: WidgetStatePropertyAll(1),
+                                      backgroundColor:
+                                          WidgetStatePropertyAll(Colors.orange),
+                                      shape: WidgetStatePropertyAll(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)))),
+                                  onPressed: () {
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (_) => CameraScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    "Let's Start",
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                          _currentPage != 3
+                              ? IconButton(
+                                  onPressed: _nextPage,
+                                  icon: Image.asset(
+                                      height: 35,
+                                      'assets/insideApp/scanning/next.png'),
+                                )
+                              : SizedBox(),
+                        ],
+                      ),
                     ),
                   ],
                 ),
