@@ -87,7 +87,7 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       //appBar: AppBar(),
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blueGrey,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -103,7 +103,7 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
               height: MediaQuery.of(context).size.height * .50,
               width: MediaQuery.of(context).size.width * .80,
               decoration: BoxDecoration(
-                color: Colors.grey,
+                color: Colors.blueGrey.shade700,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
@@ -191,10 +191,17 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (_) => Games()));
               },
-              icon: Icon(Icons.arrow_back, color: Colors.black),
-              label: Text(
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+                size: 30,
+              ),
+              label: const Text(
                 "Back",
-                style: TextStyle(color: Colors.black, fontSize: 16),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700),
               ),
             ),
           ],

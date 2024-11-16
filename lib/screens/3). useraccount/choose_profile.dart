@@ -1,9 +1,14 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:test_drawing/data/userAccount.dart';
 import 'package:test_drawing/provider/progress_provider.dart';
 import 'package:test_drawing/screens/1).%20insideapp/home.dart';
@@ -23,7 +28,7 @@ class _ChooseProfileState extends State<ChooseProfile> {
   var collection = FirebaseFirestore.instance.collection('users');
   late List<Map<String, dynamic>> items = [];
   bool isLoaded = false;
-
+  final passController = TextEditingController();
   _incrementCounter() async {
     List<Map<String, dynamic>> tempList = [];
     User user = FirebaseAuth.instance.currentUser!;
@@ -46,6 +51,105 @@ class _ChooseProfileState extends State<ChooseProfile> {
     });
 
     print(items);
+  }
+
+  void verifyParent(String password) async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    try {
+      String email = currentUser!.email!;
+
+      AuthCredential credential =
+          EmailAuthProvider.credential(email: email, password: password);
+      await currentUser.reauthenticateWithCredential(credential);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const ParentSettings()),
+      );
+    } catch (e) {
+      passController.clear();
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        title: 'Continuing Failed',
+        text: 'Invalid password',
+        confirmBtnText: 'Try again',
+        confirmBtnColor: Colors.orange,
+      );
+    }
+  }
+
+  void passwordDialog() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        title: AppBar(
+          backgroundColor: Colors.transparent,
+          automaticallyImplyLeading: false,
+          title: const Text('Verify Parent'),
+          centerTitle: true,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  passController.clear();
+                },
+                icon: Icon(Icons.close))
+          ],
+        ),
+        content: SizedBox(
+          height: 350,
+          width: 500,
+          child: Column(
+            children: [
+              const Gap(30),
+              Image.asset('assets/loginRegister/lock.png'),
+              const Gap(30),
+              TextField(
+                controller: passController,
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(16),
+                    ),
+                  ),
+                  hintText: 'Enter parent password',
+                ),
+              ),
+              const Gap(30),
+              InkWell(
+                borderRadius: BorderRadius.circular(10),
+                onTap: () {
+                  verifyParent(passController.text);
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 45,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF10E119), Color(0xFF18991E)],
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    'Okay',
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -80,30 +184,20 @@ class _ChooseProfileState extends State<ChooseProfile> {
           ),
         ),
         leading: IconButton(
-          onPressed: () {
-            FirebaseAuth.instance.signOut();
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => const LoginScreen()),
-            );
-          },
-          icon: const Icon(
-            Icons.logout,
-            color: Colors.black,
-          ),
-        ),
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
+              );
+            },
+            icon: Image.asset(height: 30, 'assets/loginRegister/logout.png')),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const ParentSettings()),
-              );
+              passwordDialog();
             },
-            icon: const Icon(
-              Icons.person,
-              color: Colors.black,
-            ),
+            icon: Image.asset('assets/loginRegister/profile.png'),
           ),
         ],
       ),
