@@ -8,8 +8,6 @@ import 'package:test_drawing/screens/1).%20insideapp/4.%20games/pictoword/picto.
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/quiz%20game/quiz.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/sliding%20puzzle/Sliding_puzzle.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/word%20search/word_search.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/modal/ins1.dart';
-import 'package:test_drawing/screens/insideapp/4.%20games/modal/ins2.dart';
 
 class DifficultyScreen extends StatefulWidget {
   DifficultyScreen({required this.game, super.key});
@@ -87,92 +85,11 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
     }
   }
 
-  final PageController _controller = PageController();
-
-  void modal() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            dialogBackgroundColor: Colors.white,
-          ),
-          child: AlertDialog(
-            backgroundColor: Colors.white,
-            contentPadding: EdgeInsets.all(16),
-            content: StatefulBuilder(
-              builder: (BuildContext context, StateSetter setDialogState) {
-                bool onLastPage = false;
-                bool onFirstPage = true;
-
-                return Stack(
-                  children: [
-                    SizedBox(
-                      height: 300,
-                      width: 200,
-                      child: PageView(
-                        controller: _controller,
-                        onPageChanged: (index) {
-                          setDialogState(() {
-                            onLastPage = (index == 1);
-                            onFirstPage = (index == 0);
-                          });
-                        },
-                        children: [
-                          I2(),
-                          I1(),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      top: 130,
-                      right: 0,
-                      child: IconButton(
-                        onPressed: () {
-                          _controller.nextPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeIn,
-                          );
-                        },
-                        icon: Icon(Icons.arrow_forward),
-                      ),
-                    ),
-                    Positioned(
-                      top: 130,
-                      left: 0,
-                      child: IconButton(
-                        onPressed: () {
-                          _controller.previousPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeIn,
-                          );
-                        },
-                        icon: Icon(Icons.arrow_back),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: SizedBox(),
-        actions: [
-          IconButton(
-            onPressed: modal,
-            icon: Icon(Icons.lightbulb),
-          ),
-        ],
-      ),
-      backgroundColor: Colors.white,
+      //appBar: AppBar(),
+      backgroundColor: Colors.blueGrey,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -188,7 +105,7 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
               height: MediaQuery.of(context).size.height * .50,
               width: MediaQuery.of(context).size.width * .80,
               decoration: BoxDecoration(
-                color: Colors.grey,
+                color: Colors.blueGrey.shade700,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
@@ -276,10 +193,17 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (_) => Games()));
               },
-              icon: Icon(Icons.arrow_back, color: Colors.black),
-              label: Text(
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+                size: 30,
+              ),
+              label: const Text(
                 "Back",
-                style: TextStyle(color: Colors.black, fontSize: 16),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700),
               ),
             ),
           ],

@@ -302,6 +302,7 @@ class _PictowordState extends State<Pictoword> with TickerProviderStateMixin {
             type: QuickAlertType.success,
             title: 'Congratulations!',
             text: 'You got the correct answer!',
+            confirmBtnColor: Colors.greenAccent.shade700,
             onConfirmBtnTap: () {
               clearBlankTiles();
               Navigator.of(context).pop();
@@ -315,6 +316,7 @@ class _PictowordState extends State<Pictoword> with TickerProviderStateMixin {
             type: QuickAlertType.error,
             title: 'Try again!',
             text: "Your answer is incorrect",
+            confirmBtnColor: Colors.orange,
             onConfirmBtnTap: () {
               clearBlankTiles();
               Navigator.of(context).pop();

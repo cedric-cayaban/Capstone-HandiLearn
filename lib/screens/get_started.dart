@@ -13,13 +13,26 @@ class GetStarted extends StatelessWidget {
       DeviceOrientation.portraitUp,
     ]);
     return Scaffold(
-      body: AnimatedSplashScreen(
-        splash: 'assets/onboarding/logo.png',
-        nextScreen: OnBoarding(),
-        splashIconSize: 400,
-        animationDuration: Durations.short2,
-        splashTransition: SplashTransition.fadeTransition,
-        backgroundColor: Color(0xFF3FE546),
+      body: Stack(
+        children: [
+          // Background Image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/onboarding/splashScreen.png', // Path to your background image
+              fit: BoxFit.cover, // Ensures the image covers the entire screen
+            ),
+          ),
+          // Splash Screen
+          AnimatedSplashScreen(
+            splash: null,
+            nextScreen: OnBoarding(),
+            splashIconSize: 400,
+            animationDuration: Durations.short2,
+            splashTransition: SplashTransition.fadeTransition,
+            backgroundColor:
+                Colors.transparent, // Make the splash background transparent
+          ),
+        ],
       ),
     );
   }

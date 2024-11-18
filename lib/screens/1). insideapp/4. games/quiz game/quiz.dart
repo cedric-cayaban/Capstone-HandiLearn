@@ -77,6 +77,7 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
       type: isCorrect ? QuickAlertType.success : QuickAlertType.warning,
       title: isCorrect ? "Good job!" : "Try Again!",
       text: isCorrect ? 'Find more games' : "Pick another answer",
+      confirmBtnColor: isCorrect ? Colors.greenAccent.shade700 : Colors.orange,
       onConfirmBtnTap: !isCorrect
           ? () {
               setState(() => selectedOption = null);
