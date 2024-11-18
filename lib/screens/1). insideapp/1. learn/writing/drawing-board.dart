@@ -835,6 +835,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                               const Gap(20),
                               GestureDetector(
                                 onTap: () {
+                                  print('testing');
                                   eraseDrawing();
                                 },
                                 child: Column(
