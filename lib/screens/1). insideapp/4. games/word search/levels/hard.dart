@@ -70,43 +70,45 @@ class _WordSearchHardState extends State<WordSearchHard> {
             contentPadding: EdgeInsets.all(16),
             content: StatefulBuilder(
               builder: (BuildContext context, StateSetter setDialogState) {
-                return SizedBox(
-                  height: 450,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: PageView(
-                          controller: _controller,
-                          onPageChanged: (index) {
-                            setDialogState(() {
-                              _currentPage = index;
-                            });
-                          },
+                return SingleChildScrollView(
+                  child: SizedBox(
+                    height: 450,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: PageView(
+                            controller: _controller,
+                            onPageChanged: (index) {
+                              setDialogState(() {
+                                _currentPage = index;
+                              });
+                            },
+                            children: [
+                              WordSearchTip1(),
+                              WordSearchTip2(),
+                              WordSearchTip3(),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            WordSearchTip1(),
-                            WordSearchTip2(),
-                            WordSearchTip3(),
+                            IconButton(
+                              onPressed: _currentPage > 0 ? _previousPage : null,
+                              icon: Icon(Icons.arrow_back),
+                              color: _currentPage > 0 ? Colors.blue : Colors.grey,
+                            ),
+                            Text(' ${_currentPage + 1}'),
+                            IconButton(
+                              onPressed: _currentPage < 2 ? _nextPage : null,
+                              icon: Icon(Icons.arrow_forward),
+                              color: _currentPage < 2 ? Colors.blue : Colors.grey,
+                            ),
                           ],
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          IconButton(
-                            onPressed: _currentPage > 0 ? _previousPage : null,
-                            icon: Icon(Icons.arrow_back),
-                            color: _currentPage > 0 ? Colors.blue : Colors.grey,
-                          ),
-                          Text(' ${_currentPage + 1}'),
-                          IconButton(
-                            onPressed: _currentPage < 2 ? _nextPage : null,
-                            icon: Icon(Icons.arrow_forward),
-                            color: _currentPage < 2 ? Colors.blue : Colors.grey,
-                          ),
-                        ],
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },

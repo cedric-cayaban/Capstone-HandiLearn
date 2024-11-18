@@ -100,7 +100,8 @@ class _CategoryProgressState extends State<CategoryProgress> {
                   height: MediaQuery.of(context).size.height * 0.7,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
-                    itemCount: categoryList[widget.index].length - widget.subCategoriesMinus,
+                    itemCount: categoryList[widget.index].length -
+                        widget.subCategoriesMinus,
                     itemBuilder: (context, index) {
                       final progressProvider =
                           Provider.of<ProgressProvider>(context);
@@ -149,7 +150,7 @@ class _CategoryProgressState extends State<CategoryProgress> {
                                           ConnectionState.waiting) {
                                         return LinearPercentIndicator(
                                           percent: 0,
-                                          animation: true,
+                                          //animation: true,
                                           animationDuration: 900,
                                           backgroundColor: Colors.grey.shade300,
                                           progressColor: widget.categoryColor,
@@ -177,7 +178,7 @@ class _CategoryProgressState extends State<CategoryProgress> {
 
                                       return LinearPercentIndicator(
                                         percent: progressPercent,
-                                        animation: true,
+                                        //animation: true,
                                         animationDuration: 900,
                                         backgroundColor: Colors.grey.shade300,
                                         progressColor: widget.categoryColor,

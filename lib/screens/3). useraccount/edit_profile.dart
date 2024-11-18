@@ -104,28 +104,11 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    double spacer = MediaQuery.of(context).size.height * 0.09;
+    double spacer = MediaQuery.of(context).size.height * 0.06;
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-          title: const Text(
-            'Edit Profile',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => ParentSettings()),
-              );
-            },
-            icon: const Icon(Icons.arrow_back_ios),
-          ),
-        ),
         body: Stack(
           children: [
             Positioned.fill(
@@ -185,9 +168,9 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                           SizedBox(
                               height:
-                                  MediaQuery.of(context).size.height * 0.02),
+                                  MediaQuery.of(context).size.height * 0.01),
                           Container(
-                            height: MediaQuery.of(context).size.height * 0.69,
+                            height: 630,
                             width: MediaQuery.of(context).size.width,
                             padding: const EdgeInsets.all(15.0),
                             decoration: BoxDecoration(
@@ -255,8 +238,8 @@ class _EditProfileState extends State<EditProfile> {
                                                             .waiting) {
                                                       return LinearPercentIndicator(
                                                         percent: 0,
-                                                        animation: true,
-                                                        animationDuration: 900,
+                                                        // animation: true,
+                                                        // animationDuration: 900,
                                                         backgroundColor: Colors
                                                             .blueGrey.shade100,
                                                         linearGradient:
@@ -388,8 +371,8 @@ class _EditProfileState extends State<EditProfile> {
 
                                                     return LinearPercentIndicator(
                                                       percent: totalProgress,
-                                                      animation: true,
-                                                      animationDuration: 900,
+                                                      // animation: true,
+                                                      // animationDuration: 900,
                                                       backgroundColor:
                                                           Colors.grey.shade300,
                                                       linearGradient:
@@ -606,6 +589,20 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 );
               },
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0, left: 10),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (_) => ParentSettings()),
+                    );
+                  },
+                  icon: const Icon(Icons.arrow_back_ios),
+                ),
+              ),
             ),
           ],
         ),

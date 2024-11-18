@@ -46,8 +46,6 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
-  
-
   // void getData() async {
   //   print(id);
   //   User user = FirebaseAuth.instance.currentUser!;
@@ -226,7 +224,7 @@ class _HomeState extends State<Home> {
                                               ConnectionState.waiting) {
                                             return LinearPercentIndicator(
                                               percent: 0,
-                                              animation: true,
+                                              //animation: true,
                                               animationDuration: 900,
                                               backgroundColor:
                                                   Colors.blueGrey.shade100,
@@ -299,7 +297,7 @@ class _HomeState extends State<Home> {
 
                                           return LinearPercentIndicator(
                                             percent: totalProgress,
-                                            animation: true,
+                                            //animation: true,
                                             animationDuration: 900,
                                             backgroundColor:
                                                 Colors.grey.shade300,

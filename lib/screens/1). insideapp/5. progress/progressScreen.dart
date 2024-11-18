@@ -163,7 +163,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                   ConnectionState.waiting) {
                                 return LinearPercentIndicator(
                                   percent: 0,
-                                  animation: true,
+                                  //animation: true,
                                   animationDuration: 900,
                                   backgroundColor: Colors.blueGrey.shade100,
                                   linearGradient: const LinearGradient(
@@ -222,7 +222,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
                               return LinearPercentIndicator(
                                 percent: totalProgress,
-                                animation: true,
+                                //animation: true,
                                 animationDuration: 900,
                                 backgroundColor: Colors.grey.shade300,
                                 linearGradient: const LinearGradient(
@@ -307,7 +307,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                           ConnectionState.waiting) {
                                         return CircularPercentIndicator(
                                           percent: 0,
-                                          animation: true,
+                                          //animation: true,
                                           animationDuration: 900,
                                           radius: MediaQuery.of(context)
                                                   .size
@@ -393,7 +393,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
                                       return CircularPercentIndicator(
                                         percent: categoryProgress,
-                                        animation: true,
+                                        //animation: true,
                                         animationDuration: 900,
                                         radius:
                                             MediaQuery.of(context).size.height *

@@ -800,24 +800,69 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             );
                           },
                         ),
-                        if (widget.lesson.type == 'word')
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            //SCAN BUTTON
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (_) => HandwritingScanning(
-                                      word: widget.lesson.character,
-                                      wordImage: widget.lesson.imgPath,
-                                      characterDone:
-                                          lessonProvider.ucharacterDone,
-                                      lessonField: widget.lessonField,
-                                      index: widget.index,
+                        Row(
+                          children: [
+                            if (widget.lesson.type == 'word')
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (_) => HandwritingScanning(
+                                        word: widget.lesson.character,
+                                        wordImage: widget.lesson.imgPath,
+                                        characterDone:
+                                            lessonProvider.ucharacterDone,
+                                        lessonField: widget.lessonField,
+                                        index: widget.index,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width: 30.0,
+                                      height: 35.0,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape
+                                            .circle, // Makes the container circular
+                                      ),
+                                      child: Image.asset(
+                                        'assets/insideApp/learnWriting/components/scan.png',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    const Text('Scan'),
+                                  ],
+                                ),
+                              ),
+
+                            // WORD SOUND
+                            const Gap(20),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: 30.0,
+                                    height: 35.0,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape
+                                          .circle, // Makes the container circular
+                                    ),
+                                    child: Image.asset(
+                                      'assets/insideApp/learnWriting/components/sound.png',
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
-                                );
+                                  const Text('Sound'),
+                                ],
+                              ),
+                            ),
+                            const Gap(20),
+                            GestureDetector(
+                              onTap: () {
+                                eraseDrawing();
                               },
                               child: Column(
                                 children: [
@@ -829,15 +874,16 @@ class _DrawingScreenState extends State<DrawingScreen> {
                                           .circle, // Makes the container circular
                                     ),
                                     child: Image.asset(
-                                      'assets/insideApp/learnWriting/components/scan.png',
+                                      'assets/insideApp/learnWriting/components/erase.png',
                                       fit: BoxFit.cover,
                                     ),
                                   ),
-                                  const Text('Scan'),
+                                  const Text('Erase'),
                                 ],
                               ),
                             ),
-                          ),
+                          ],
+                        ),
                       ],
                     ),
                     Expanded(

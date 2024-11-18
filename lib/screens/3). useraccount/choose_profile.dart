@@ -85,87 +85,93 @@ class _ChooseProfileState extends State<ChooseProfile> {
       builder: (context) {
         bool _isPasswordVisible = false; // Local state for the dialog
         return StatefulBuilder(
-          builder: (context, setState) => AlertDialog(
+          builder: (context, setState) => Dialog(
             backgroundColor: Colors.white,
-            title: AppBar(
-              backgroundColor: Colors.transparent,
-              automaticallyImplyLeading: false,
-              title: const Text(
-                'Verify Parent',
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-              ),
-              centerTitle: true,
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    passController.clear();
-                  },
-                  icon: const Icon(Icons.close),
-                ),
-              ],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
-            content: SizedBox(
-              height: 350,
-              width: 500,
-              child: Column(
-                children: [
-                  const Gap(30),
-                  Image.asset('assets/loginRegister/lock.png'),
-                  const Gap(30),
-                  TextField(
-                    obscureText: !_isPasswordVisible,
-                    controller: passController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(16),
-                        ),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AppBar(
+                      backgroundColor: Colors.transparent,
+                      automaticallyImplyLeading: false,
+                      title: const Text(
+                        'Verify Parent',
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.w500),
                       ),
-                      hintText: 'Enter parent password',
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                      centerTitle: true,
+                      actions: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            passController.clear();
+                          },
+                          icon: const Icon(Icons.close),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
-                      ),
+                      ],
                     ),
-                  ),
-                  const Gap(30),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(10),
-                    onTap: () {
-                      verifyParent(passController.text);
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: 45,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFF10E119), Color(0xFF18991E)],
+                    const Gap(30),
+                    Image.asset('assets/loginRegister/lock.png'),
+                    const Gap(30),
+                    TextField(
+                      obscureText: !_isPasswordVisible,
+                      controller: passController,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(16),
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        'Okay',
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                        hintText: 'Enter parent password',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    const Gap(30),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(10),
+                      onTap: () {
+                        verifyParent(passController.text);
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 45,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF10E119), Color(0xFF18991E)],
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          'Okay',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -194,6 +200,7 @@ class _ChooseProfileState extends State<ChooseProfile> {
     int selectedIndex = 0; // Variable to store the selected index
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
