@@ -68,7 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           context: context,
           type: QuickAlertType.error,
           title: 'Register Failed',
-          text: 'Email already used',
+          text: 'Invalid credentials',
           confirmBtnColor: Colors.orange,
         );
         print(error);
