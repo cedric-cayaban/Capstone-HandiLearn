@@ -4,13 +4,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as img;
-import 'package:test_drawing/screens/1).%20insideapp/1.%20learn/writing/display_result.dart';
+import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
+import 'package:test_drawing/provider/lesson_provider.dart';
+import 'package:test_drawing/screens/1).%20insideapp/home.dart';
 import 'package:tflite_v2/tflite_v2.dart';
+import 'dart:math' as math;
 
 class HandwritingScanning extends StatefulWidget {
-  HandwritingScanning({super.key, required this.word});
+  HandwritingScanning({
+    super.key,
+    required this.word,
+    required this.wordImage,
+    required this.characterDone,
+    required this.lessonField,
+    required this.index,
+  });
 
   final String word;
+  final String wordImage;
+  final int characterDone;
+  final String lessonField;
+  final int index;
 
   @override
   State<HandwritingScanning> createState() => _HandwritingScanningState();
@@ -25,7 +40,10 @@ class _HandwritingScanningState extends State<HandwritingScanning> {
   @override
   void initState() {
     super.initState();
-
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.landscapeLeft,
+    //   DeviceOrientation.landscapeRight,
+    // ]);
     _initializeControllerFuture = _initializeCamera();
     loadModel();
   }
@@ -38,6 +56,7 @@ class _HandwritingScanningState extends State<HandwritingScanning> {
   }
 
   Future<void> loadModel() async {
+    print('model initialize');
     await Tflite.loadModel(
       model: "assets/insideApp/scanning/model_unquant.tflite",
       labels: "assets/insideApp/scanning/labels.txt",
@@ -48,110 +67,346 @@ class _HandwritingScanningState extends State<HandwritingScanning> {
   void dispose() {
     _controller.dispose();
     // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.portraitUp,
     //   DeviceOrientation.portraitDown,
-    //   DeviceOrientation.landscapeLeft,
-    //   DeviceOrientation.landscapeRight,
+    //   DeviceOrientation.portraitUp,
     // ]);
-    Tflite.close(); // Close the TFLite model when the widget is disposed
+    Tflite.close();
     super.dispose();
   }
 
-  Future<File?> _convertAndSaveGrayscale(String imagePath) async {
-    final imageBytes = await File(imagePath).readAsBytes();
-    final image = img.decodeImage(imageBytes);
+  // Future<File?> _convertAndSaveGrayscale(String imagePath) async {
+  //   final imageBytes = await File(imagePath).readAsBytes();
+  //   final image = img.decodeImage(imageBytes);
 
-    if (image != null) {
-      final grayscaleImage = img.grayscale(image);
-      final tempDir = await getTemporaryDirectory();
-      final processedImagePath =
-          '${tempDir.path}/processed_${DateTime.now().millisecondsSinceEpoch}.png';
+  //   if (image != null) {
+  //     final grayscaleImage = img.grayscale(image);
+  //     final tempDir = await getTemporaryDirectory();
+  //     final processedImagePath =
+  //         '${tempDir.path}/processed_${DateTime.now().millisecondsSinceEpoch}.png';
 
-      final processedImageFile = await File(processedImagePath)
-          .writeAsBytes(img.encodePng(grayscaleImage));
-      return processedImageFile;
-    }
-    return null;
-  }
+  //     final processedImageFile = await File(processedImagePath)
+  //         .writeAsBytes(img.encodePng(grayscaleImage));
+  //     return processedImageFile;
+  //   }
+  //   return null;
+  // }
 
-  Future<String> detectImage(String imagePath) async {
-    final recognitions = await Tflite.runModelOnImage(
-      path: imagePath,
+  // Future<String> detectImage(String imagePath) async {
+  //   final recognitions = await Tflite.runModelOnImage(
+  //     path: imagePath,
+  //     numResults: 6,
+  //     threshold: 0.05,
+  //     imageMean: 127.5,
+  //     imageStd: 127.5,
+  //   );
+
+  //   setState(() => _recognitions = recognitions);
+
+  //   if (_recognitions != null && _recognitions.isNotEmpty) {
+  //     final wordFound = _recognitions.any(
+  //       (recognition) =>
+  //           recognition['label'].toString().toUpperCase() ==
+  //               widget.word.toUpperCase() &&
+  //           recognition['confidence'] > 0.5,
+  //     );
+
+  //     return wordFound
+  //         ? "${widget.word} recognized!"
+  //         : "${widget.word} not recognized.";
+  //   }
+  //   return "No recognitions found.";
+  // }
+
+  // Future<void> _captureAndProcessImage() async {
+  //   try {
+  //     final imageFile = await _controller.takePicture();
+  //     final processedImageFile = await _convertAndSaveGrayscale(imageFile.path);
+
+  //     if (processedImageFile != null) {
+  //       final label = await detectImage(processedImageFile.path);
+
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => DisplayResult(
+  //             imagePath: imageFile.path,
+  //             label: label,
+  //           ),
+  //         ),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
+  Future detectimage(String image) async {
+    print('detected image');
+    int startTime = DateTime.now().millisecondsSinceEpoch;
+    var recognitions = await Tflite.runModelOnImage(
+      path: image,
       numResults: 6,
       threshold: 0.05,
       imageMean: 127.5,
       imageStd: 127.5,
     );
+    setState(() {
+      _recognitions = recognitions;
+      v = recognitions.toString();
+    });
+    print(v);
 
-    setState(() => _recognitions = recognitions);
-
-    if (_recognitions != null && _recognitions.isNotEmpty) {
-      final wordFound = _recognitions.any(
-        (recognition) =>
-            recognition['label'].toString().toUpperCase() ==
-                widget.word.toUpperCase() &&
-            recognition['confidence'] > 0.01,
-      );
-
-      return wordFound
-          ? "${widget.word} recognized!"
-          : "${widget.word} not recognized.";
-    }
-    return "No recognitions found.";
+    print(_recognitions);
+    int endTime = DateTime.now().millisecondsSinceEpoch;
+    return v;
   }
 
-  Future<void> _captureAndProcessImage() async {
-    try {
-      final imageFile = await _controller.takePicture();
-      final processedImageFile = await _convertAndSaveGrayscale(imageFile.path);
+  void updateLesson(LessonProvider provider) async {
+    print("updateLesson");
+    await provider.updateLesson(widget.lessonField, widget.characterDone);
+    provider.updateDialogStatus(false); // Reset dialog status
+  }
 
-      if (processedImageFile != null) {
-        final label = await detectImage(processedImageFile.path);
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DisplayResult(
-              imagePath: imageFile.path,
-              label: label,
+  void showRotatedSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Transform.rotate(
+          angle: math.pi / 2, // Rotates the dialog by 45 degrees
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              dialogBackgroundColor:
+                  Colors.white, // Change to your desired color
+            ),
+            child: AlertDialog(
+              backgroundColor: Colors.white,
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    'assets/insideApp/learnReading/read.gif',
+                    height: 190,
+                    width: 300,
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    'Great Job',
+                    style: TextStyle(fontSize: 30),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 70,
+                              width: 70,
+                              child: Image.asset(
+                                  'assets/insideApp/learnReading/try again.png'),
+                            ),
+                            Text(
+                              'Try Again',
+                              style: TextStyle(fontSize: 14),
+                            )
+                          ],
+                        ),
+                      ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     Navigator.pop(context);
+                      //   },
+                      //   child: Column(
+                      //     children: [
+                      //       SizedBox(
+                      //         height: 70,
+                      //         width: 70,
+                      //         child: Image.asset(
+                      //             'assets/insideApp/learnReading/next.png'),
+                      //       ),
+                      //       Text(
+                      //         'Next Letter',
+                      //         style: TextStyle(fontSize: 14),
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );
-      }
-    } catch (e) {
-      print(e);
-    }
+      },
+    );
+  }
+
+  void showRotatedErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Transform.rotate(
+          angle: math.pi / 2, // Rotates the dialog by 45 degrees
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              dialogBackgroundColor:
+                  Colors.white, // Change to your desired color
+            ),
+            child: AlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset('assets/insideApp/learnReading/sorry.gif'),
+                  SizedBox(height: 5),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 70,
+                          width: 70,
+                          child: Image.asset(
+                              'assets/insideApp/learnReading/try again.png'),
+                        ),
+                        Text(
+                          'Try Again',
+                          style: TextStyle(fontSize: 14),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    print('nasa handwriting na');
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.portraitUp,
-    ]);
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.landscapeLeft,
+    //   DeviceOrientation.landscapeRight,
+    // ]);
     return SafeArea(
       child: Scaffold(
-        
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          leading: SizedBox(),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (_) => Home()));
+                },
+                icon: Icon(
+                  Icons.arrow_upward,
+                  color: Colors.white,
+                ))
+          ],
+        ),
+        extendBodyBehindAppBar: true,
         body: FutureBuilder<void>(
           future: _initializeControllerFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return Stack(
+                alignment: Alignment.center,
                 children: [
                   // Camera preview takes up 80% of the screen height
-                  SizedBox(
-                    width: double.infinity,
-                    height: double.infinity,
-                    child: CameraPreview(_controller),
+                  Positioned(
+                    top: 0,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * .8,
+                      child: CameraPreview(_controller),
+                    ),
                   ),
+                  Positioned(
+                      bottom: 0,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * .2,
+                        decoration: BoxDecoration(color: Colors.black),
+                      )),
                   // Button positioned below the camera preview
-                  Align(
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      'assets/insideApp/scanning/scanner.png',
-                      height: double.infinity * .8,
-                      width: double.infinity * .8,
+                  // Positioned(
+                  //   top: 5,
+                  //   right: 5,
+                  //   child: GestureDetector(
+                  //     onTap: () {
+                  //       Navigator.pushReplacement(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (_) => Home(),
+                  //         ),
+                  //       );
+                  //     },
+                  //     child: Container(
+                  //       color: Colors.white, // Change this color for testing
+                  //       child: Icon(Icons.arrow_upward),
+                  //     ),
+                  //   ),
+                  // ),
+
+                  Positioned(
+                    // alignment: Alignment.center,
+                    top: MediaQuery.of(context).size.height * .15,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          // color: Colors.red,
+                          ),
+                      child: Image.asset(
+                        'assets/insideApp/scanning/scanning.png',
+                        height: MediaQuery.of(context).size.height * .5,
+                        width: MediaQuery.of(context).size.height * .4,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: MediaQuery.of(context).size.height * .15,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          // color: Colors.red,
+                          ),
+                      child: Image.asset(
+                        'assets/insideApp/scanning/scanner red.gif',
+                        height: MediaQuery.of(context).size.height * .5,
+                        width: MediaQuery.of(context).size.height * .4,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    right: 10,
+                    bottom: 30,
+                    child: Transform.rotate(
+                      angle:
+                          3.14 / 2, // 45 degrees in radians; adjust as needed
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Image.asset(
+                            "assets/insideApp/scanning/writing image/${widget.word}.png",
+                            height: 80,
+                            width: 100,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   Align(
@@ -163,7 +418,54 @@ class _HandwritingScanningState extends State<HandwritingScanning> {
                         children: [
                           Expanded(
                               child: IconButton(
-                            onPressed: _captureAndProcessImage,
+                            onPressed: () async {
+                              try {
+                                final imageFile =
+                                    await _controller.takePicture();
+
+                                // Call detectImage and await its completion to update _recognitions
+                                await detectimage(imageFile.path);
+                                print(_recognitions);
+                                print(widget.word);
+
+                                final lessonProvider =
+                                    Provider.of<LessonProvider>(context,
+                                        listen: false);
+
+                                // Check if _recognitions is not null or empty before accessing it
+                                if (_recognitions != null &&
+                                    _recognitions.isNotEmpty) {
+                                  if (_recognitions[0]['confidence'] > 0.4 &&
+                                      _recognitions[0]['label']
+                                              .toString()
+                                              .toUpperCase() ==
+                                          widget.word
+                                              .toString()
+                                              .toUpperCase()) {
+                                    if (widget.index ==
+                                        lessonProvider.ucharacterDone) {
+                                      updateLesson(lessonProvider);
+                                    }
+                                    showRotatedSuccessDialog(context);
+                                  } else {
+                                    showRotatedErrorDialog(context);
+                                  }
+                                } else {
+                                  // Handle case where no recognitions were found
+                                  print('No recognitions found');
+                                  QuickAlert.show(
+                                    context: context,
+                                    type: QuickAlertType.error,
+                                    title: 'Error',
+                                    text:
+                                        'No recognitions found, please try again.',
+                                  );
+                                }
+                              } catch (e) {
+                                print('Error during scanning');
+                                print(e);
+                              }
+                            },
                             iconSize: 80,
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),

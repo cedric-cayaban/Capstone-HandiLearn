@@ -760,6 +760,8 @@ class _DrawingScreenState extends State<DrawingScreen> {
         getGuidePoints(widget.lesson.type, characterKey, canvasSize);
 
     double spacer = MediaQuery.of(context).size.height * 0.3;
+    final lessonProvider = Provider.of<LessonProvider>(context);
+
     return SafeArea(
       child: Scaffold(
         appBar: null,
@@ -798,67 +800,44 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             );
                           },
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Row(
-                            children: [
-                              if (widget.lesson.type == 'word')
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (_) => HandwritingScanning(
-                                          word: widget.lesson.character,
-                                          // wordImage: widget.lesson.imgPath,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        width: 45.0,
-                                        height: 35.0,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape
-                                              .circle, // Makes the container circular
-                                        ),
-                                        child: Image.asset(
-                                          'assets/insideApp/learnWriting/components/scan.png',
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      const Text('Scan'),
-                                    ],
-                                  ),
-                                ),
-                              const Gap(20),
-                              GestureDetector(
-                                onTap: () {
-                                  print('testing');
-                                  eraseDrawing();
-                                },
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 30.0,
-                                      height: 35.0,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape
-                                            .circle, // Makes the container circular
-                                      ),
-                                      child: Image.asset(
-                                        'assets/insideApp/learnWriting/components/erase.png',
-                                        fit: BoxFit.cover,
-                                      ),
+                        if (widget.lesson.type == 'word')
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            //SCAN BUTTON
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (_) => HandwritingScanning(
+                                      word: widget.lesson.character,
+                                      wordImage: widget.lesson.imgPath,
+                                      characterDone:
+                                          lessonProvider.ucharacterDone,
+                                      lessonField: widget.lessonField,
+                                      index: widget.index,
                                     ),
-                                    const Text('Erase'),
-                                  ],
-                                ),
+                                  ),
+                                );
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: 30.0,
+                                    height: 35.0,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape
+                                          .circle, // Makes the container circular
+                                    ),
+                                    child: Image.asset(
+                                      'assets/insideApp/learnWriting/components/scan.png',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  const Text('Scan'),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
                       ],
                     ),
                     Expanded(

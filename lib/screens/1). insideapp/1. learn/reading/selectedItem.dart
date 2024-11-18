@@ -333,16 +333,6 @@ class _SelectedItemState extends State<SelectedItem>
                   alignment: Alignment.center,
                   children: [
                     Positioned(
-                      top: 0,
-                      right: 0,
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        icon: Icon(Icons.backspace_rounded),
-                      ),
-                    ),
-                    Positioned(
                       child: Container(
                         height: 300,
                         child: Column(
@@ -368,7 +358,6 @@ class _SelectedItemState extends State<SelectedItem>
                                     );
                                   },
                                 ),
-                                // Add the microphone icon at the center of the circle
                                 Icon(
                                   Icons.mic,
                                   size: 40,
@@ -389,7 +378,9 @@ class _SelectedItemState extends State<SelectedItem>
           ),
         );
       },
-    );
+    ).then((_) {
+      _stopListening(); // Stop listening when the dialog is closed
+    });
   }
 
   @override
@@ -406,7 +397,7 @@ class _SelectedItemState extends State<SelectedItem>
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: Text("Selected Letter"),
+        // title: Text("Selected Letter"),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -429,10 +420,12 @@ class _SelectedItemState extends State<SelectedItem>
           children: [
             Positioned(
               top: MediaQuery.of(context).size.height * 0.35,
-              right: 90,
+              // right: 90,
               child: SizedBox(
-                height: 200, // Change this value to whatever height you need
-                width: 200, // Change this value to whatever width you need
+                height: MediaQuery.of(context).size.height *
+                    0.25, // Change this value to whatever height you need
+                width: MediaQuery.of(context).size.height *
+                    0.3, // Change this value to whatever width you need
                 child: Image.asset(
                   widget.lesson.imgPath, // Using widget.imgPath directly
                   fit: BoxFit
