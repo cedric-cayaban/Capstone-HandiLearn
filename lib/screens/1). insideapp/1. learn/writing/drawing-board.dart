@@ -735,6 +735,8 @@ class _DrawingScreenState extends State<DrawingScreen> {
         getGuidePoints(widget.lesson.type, characterKey, canvasSize);
 
     double spacer = MediaQuery.of(context).size.height * 0.3;
+    final lessonProvider = Provider.of<LessonProvider>(context);
+
     return SafeArea(
       child: Scaffold(
         appBar: null,
@@ -783,6 +785,10 @@ class _DrawingScreenState extends State<DrawingScreen> {
                                     builder: (_) => HandwritingScanning(
                                       word: widget.lesson.character,
                                       wordImage: widget.lesson.imgPath,
+                                      characterDone:
+                                          lessonProvider.ucharacterDone,
+                                      lessonField: widget.lessonField,
+                                      index: widget.index,
                                     ),
                                   ),
                                 );

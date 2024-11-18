@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
-import 'package:test_drawing/screens/1).%20insideapp/4.%20games/chooseGame.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/game_selection.dart';
 
 class Pictoword extends StatefulWidget {

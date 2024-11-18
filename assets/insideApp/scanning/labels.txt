@@ -1,5 +1,5 @@
-0 AT
-1 IN
-2 ON
-3 CAT
-4 DOG
+AT
+IN
+ON
+CAT
+DOG

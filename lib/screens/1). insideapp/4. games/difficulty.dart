@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/game_selection.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/letter%20search/letter_search.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/memory%20game/memory_game.dart';
+import 'package:test_drawing/screens/1).%20insideapp/4.%20games/modal/ins1.dart';
+import 'package:test_drawing/screens/1).%20insideapp/4.%20games/modal/ins2.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/pictoword/picto.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/quiz%20game/quiz.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/sliding%20puzzle/Sliding_puzzle.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/word%20search/word_search.dart';
-
 import 'package:test_drawing/screens/insideapp/4.%20games/modal/ins1.dart';
 import 'package:test_drawing/screens/insideapp/4.%20games/modal/ins2.dart';
-
 
 class DifficultyScreen extends StatefulWidget {
   DifficultyScreen({required this.game, super.key});
@@ -119,8 +119,8 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
                           });
                         },
                         children: [
-                          Ins1(),
-                          Ins2(),
+                          I2(),
+                          I1(),
                         ],
                       ),
                     ),

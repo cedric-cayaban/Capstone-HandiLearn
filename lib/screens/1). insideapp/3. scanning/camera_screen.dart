@@ -368,7 +368,7 @@ class _nameState extends State<CameraScreen> {
                               ),
                             );
                           } else {
-                            _showFailedDialog();
+                            // _showFailedDialog();
                           }
                         } on CameraException catch (e) {
                           debugPrint("Error occured while taking picture : $e");
