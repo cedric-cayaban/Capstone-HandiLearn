@@ -127,11 +127,9 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
             Navigator.of(context)
                 .pushReplacement(MaterialPageRoute(builder: (_) => Games()));
           },
-          icon: const Icon(
-            Icons.arrow_back,
-            size: 30,
-            color: Colors.black,
-          ),
+          icon: Image.asset(
+              height: MediaQuery.of(context).size.height * 0.045,
+              "assets/insideApp/close.png"),
         ),
       ),
       extendBodyBehindAppBar: true,

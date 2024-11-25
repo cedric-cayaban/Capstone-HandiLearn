@@ -14,7 +14,7 @@ class LetterSearchTip1 extends StatelessWidget {
           'Lets find the Letter',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w500,
-            fontSize: 26,
+            fontSize: 23,
           ),
         ),
         Gap(20),
@@ -31,7 +31,7 @@ class LetterSearchTip1 extends StatelessWidget {
                 '1.) There is a sign at the top center of the screen that shows what letter you need to find',
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w400,
-                  fontSize: 20,
+                  fontSize: MediaQuery.of(context).size.height * 0.05,
                 ),
               ),
             ),
@@ -56,7 +56,7 @@ class LetterSearchTip2 extends StatelessWidget {
             fontSize: 26,
           ),
         ),
-        Gap(20),
+        const Gap(10),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -71,7 +71,7 @@ class LetterSearchTip2 extends StatelessWidget {
                 '2). Tap the letter that is on the sign on the top of the screen',
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w400,
-                  fontSize: 19,
+                  fontSize: MediaQuery.of(context).size.height * 0.041,
                 ),
               ),
             ),
@@ -96,7 +96,7 @@ class LetterSearchTip3 extends StatelessWidget {
             fontSize: 26,
           ),
         ),
-        Gap(40),
+        Gap(10),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -110,7 +110,7 @@ class LetterSearchTip3 extends StatelessWidget {
                 '1.) Find all the letters that is needed at the bottom right of the screen to complete the game!!',
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w400,
-                  fontSize: 20,
+                  fontSize: MediaQuery.of(context).size.height * 0.05,
                 ),
               ),
             ),

@@ -93,15 +93,18 @@ class _WordSearchEasyState extends State<WordSearchEasy> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             IconButton(
-                              onPressed: _currentPage > 0 ? _previousPage : null,
+                              onPressed:
+                                  _currentPage > 0 ? _previousPage : null,
                               icon: Icon(Icons.arrow_back),
-                              color: _currentPage > 0 ? Colors.blue : Colors.grey,
+                              color:
+                                  _currentPage > 0 ? Colors.blue : Colors.grey,
                             ),
                             Text(' ${_currentPage + 1}'),
                             IconButton(
                               onPressed: _currentPage < 2 ? _nextPage : null,
                               icon: Icon(Icons.arrow_forward),
-                              color: _currentPage < 2 ? Colors.blue : Colors.grey,
+                              color:
+                                  _currentPage < 2 ? Colors.blue : Colors.grey,
                             ),
                           ],
                         ),
@@ -143,19 +146,18 @@ class _WordSearchEasyState extends State<WordSearchEasy> {
               top: 20,
               left: 10,
               child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => Games(),
-                    ));
-                  },
-                  icon: const Icon(
-                    color: Colors.black,
-                    Icons.arrow_back,
-                    size: 30,
-                  )),
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => Games(),
+                  ));
+                },
+                icon: Image.asset(
+                    height: MediaQuery.of(context).size.height * 0.045,
+                    "assets/insideApp/close.png"),
+              ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.04,
+              top: MediaQuery.of(context).size.height * 0.08,
               child:
                   Image.asset('assets/insideApp/games/word search/header.png'),
             ),
@@ -180,11 +182,10 @@ class _WordSearchEasyState extends State<WordSearchEasy> {
               ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.2,
+              top: MediaQuery.of(context).size.height * 0.25,
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.8,
-                height: size.height *
-                    0.45, // Set the height to 45% of screen height
+                height: size.height * 0.45,
                 padding: EdgeInsets.all(padding),
                 // margin: EdgeInsets.all(padding),
                 decoration: BoxDecoration(

@@ -58,10 +58,9 @@ class _MemoryGameState extends State<MemoryGame> {
               Navigator.of(context)
                   .pushReplacement(MaterialPageRoute(builder: (_) => Games()));
             },
-            icon: const Icon(
-              Icons.arrow_back,
-              size: 30,
-            ),
+            icon: Image.asset(
+                height: MediaQuery.of(context).size.height * 0.045,
+                "assets/insideApp/close.png"),
           ),
         ),
         extendBodyBehindAppBar: true,

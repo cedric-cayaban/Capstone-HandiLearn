@@ -68,8 +68,7 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
           type: QuickAlertType.success,
           title: "Congratulation!",
           text: 'You finished the puzzle',
-            confirmBtnColor: Colors.greenAccent.shade700,
-          
+          confirmBtnColor: Colors.greenAccent.shade700,
           onConfirmBtnTap: () {
             Navigator.of(context)
                 .pushReplacement(MaterialPageRoute(builder: (_) => Games()));
@@ -178,11 +177,9 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
             Navigator.of(context)
                 .pushReplacement(MaterialPageRoute(builder: (_) => Games()));
           },
-          icon: const Icon(
-            Icons.arrow_back,
-            size: 30,
-            color: Colors.white,
-          ),
+          icon: Image.asset(
+              height: MediaQuery.of(context).size.height * 0.045,
+              "assets/insideApp/close.png"),
         ),
       ),
       extendBodyBehindAppBar: true,

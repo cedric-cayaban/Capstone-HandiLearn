@@ -94,11 +94,13 @@ class _PictowordState extends State<Pictoword> with TickerProviderStateMixin {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.of(context)
                   .pushReplacement(MaterialPageRoute(builder: (_) => Games()));
             },
+            icon: Image.asset(
+                height: MediaQuery.of(context).size.height * 0.045,
+                "assets/insideApp/close.png"),
           ),
         ),
         extendBodyBehindAppBar: true,

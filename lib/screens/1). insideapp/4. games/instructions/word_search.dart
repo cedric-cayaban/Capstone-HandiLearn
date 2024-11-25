@@ -13,7 +13,7 @@ class WordSearchTip1 extends StatelessWidget {
           'Search the words',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w500,
-            fontSize: 25,
+            fontSize: 22,
           ),
         ),
         Gap(20),
@@ -23,7 +23,7 @@ class WordSearchTip1 extends StatelessWidget {
           '1.) Search for the words located at the bottom part of the screen to complete the game',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w400,
-            fontSize: 18.2,
+            fontSize: MediaQuery.of(context).size.height * 0.019,
           ),
         ),
       ],
@@ -42,7 +42,7 @@ class WordSearchTip2 extends StatelessWidget {
           'Swipe the word',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w500,
-            fontSize: 25,
+            fontSize: 22,
           ),
         ),
         Gap(20),
@@ -53,7 +53,7 @@ class WordSearchTip2 extends StatelessWidget {
           '2). Let go of your finger once you are finished swiping',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w400,
-            fontSize: 17.2,
+            fontSize: MediaQuery.of(context).size.height * 0.019,
           ),
         ),
       ],
@@ -72,7 +72,7 @@ class WordSearchTip3 extends StatelessWidget {
           'Look carefully!',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w500,
-            fontSize: 25,
+            fontSize: 22,
           ),
         ),
         Gap(40),
@@ -82,7 +82,7 @@ class WordSearchTip3 extends StatelessWidget {
           '1.) There are some words that overlap with other words, so look carefully young learner!!',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w400,
-            fontSize: 18,
+            fontSize: MediaQuery.of(context).size.height * 0.019,
           ),
         ),
       ],

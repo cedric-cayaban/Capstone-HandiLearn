@@ -148,19 +148,18 @@ class _WordSearchMediumState extends State<WordSearchMedium> {
               top: 20,
               left: 10,
               child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => Games(),
-                    ));
-                  },
-                  icon: const Icon(
-                    color: Colors.black,
-                    Icons.arrow_back,
-                    size: 30,
-                  )),
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => Games(),
+                  ));
+                },
+                icon: Image.asset(
+                    height: MediaQuery.of(context).size.height * 0.045,
+                    "assets/insideApp/close.png"),
+              ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.04,
+              top: MediaQuery.of(context).size.height * 0.08,
               child:
                   Image.asset('assets/insideApp/games/word search/header.png'),
             ),
@@ -185,7 +184,7 @@ class _WordSearchMediumState extends State<WordSearchMedium> {
               ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.2,
+              top: MediaQuery.of(context).size.height * 0.25,
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: size.height *

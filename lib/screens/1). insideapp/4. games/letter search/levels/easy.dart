@@ -268,16 +268,15 @@ class _LetterSearchEasyState extends State<LetterSearchEasy> {
               top: 20,
               left: 20,
               child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => Games(),
-                    ));
-                  },
-                  icon: const Icon(
-                    color: Colors.black,
-                    Icons.arrow_back,
-                    size: 30,
-                  )),
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => Games(),
+                  ));
+                },
+                icon: Image.asset(
+                    height: MediaQuery.of(context).size.height * 0.09,
+                    "assets/insideApp/close.png"),
+              ),
             ),
             // LETTER TO FIND
             Positioned(

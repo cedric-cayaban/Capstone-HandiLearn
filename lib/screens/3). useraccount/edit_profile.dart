@@ -104,7 +104,7 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    double spacer = MediaQuery.of(context).size.height * 0.06;
+    double spacer = MediaQuery.of(context).size.height * 0.04;
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -168,9 +168,9 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                           SizedBox(
                               height:
-                                  MediaQuery.of(context).size.height * 0.01),
+                                  MediaQuery.of(context).size.height * 0.02),
                           Container(
-                            height: 630,
+                            height: 610,
                             width: MediaQuery.of(context).size.width,
                             padding: const EdgeInsets.all(15.0),
                             decoration: BoxDecoration(
@@ -398,15 +398,14 @@ class _EditProfileState extends State<EditProfile> {
                                   ],
                                 ),
                                 const Text(
-                                  "Pin",
+                                  "Name",
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 TextField(
-                                  controller: pinController,
-                                  readOnly: true,
+                                  controller: nameController,
                                   decoration: const InputDecoration(
                                     filled: true,
                                     fillColor: Colors.white,
@@ -417,16 +416,16 @@ class _EditProfileState extends State<EditProfile> {
                                     hintText: 'Name',
                                   ),
                                 ),
-                                const Gap(10),
                                 const Text(
-                                  "Name",
+                                  "Pin",
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 TextField(
-                                  controller: nameController,
+                                  controller: pinController,
+                                  readOnly: true,
                                   decoration: const InputDecoration(
                                     filled: true,
                                     fillColor: Colors.white,

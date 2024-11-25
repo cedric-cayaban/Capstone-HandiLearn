@@ -141,14 +141,14 @@ class _LetterSearchMediumState extends State<LetterSearchMedium> {
     });
   }
 
-  // void dispose() {
-  //   // Reset the orientation to the default system orientation (or another specific one)
-  //   SystemChrome.setPreferredOrientations([
-  //     DeviceOrientation.portraitUp,
-  //     DeviceOrientation.portraitDown,
-  //   ]);
-  //   super.dispose();
-  // }
+  void dispose() {
+    // Reset the orientation to the default system orientation (or another specific one)
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
+  }
 
   void loadFinishModal() {
     QuickAlert.show(
@@ -280,19 +280,15 @@ class _LetterSearchMediumState extends State<LetterSearchMedium> {
               top: 20,
               left: 20,
               child: IconButton(
-                  onPressed: () {
-                    SystemChrome.setPreferredOrientations([
-                      DeviceOrientation.portraitDown,
-                      DeviceOrientation.portraitUp,
-                    ]);
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => Games(),
-                    ));
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    size: 30,
-                  )),
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => Games(),
+                  ));
+                },
+                icon: Image.asset(
+                    height: MediaQuery.of(context).size.height * 0.09,
+                    "assets/insideApp/close.png"),
+              ),
             ),
             // LETTER TO FIND
             Positioned(

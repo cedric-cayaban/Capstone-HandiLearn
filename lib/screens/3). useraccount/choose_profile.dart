@@ -94,7 +94,7 @@ class _ChooseProfileState extends State<ChooseProfile> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                  // mainAxisSize: MainAxisSize.min,
                   children: [
                     AppBar(
                       backgroundColor: Colors.transparent,
@@ -102,7 +102,7 @@ class _ChooseProfileState extends State<ChooseProfile> {
                       title: const Text(
                         'Verify Parent',
                         style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.w500),
+                            fontSize: 20, fontWeight: FontWeight.w500),
                       ),
                       centerTitle: true,
                       actions: [
@@ -115,9 +115,12 @@ class _ChooseProfileState extends State<ChooseProfile> {
                         ),
                       ],
                     ),
-                    const Gap(30),
-                    Image.asset('assets/loginRegister/lock.png'),
-                    const Gap(30),
+                    const Gap(20),
+                    Image.asset(
+                      //height: 100,
+                      'assets/loginRegister/lock.png',
+                    ),
+                    const Gap(20),
                     TextField(
                       obscureText: !_isPasswordVisible,
                       controller: passController,
@@ -144,7 +147,7 @@ class _ChooseProfileState extends State<ChooseProfile> {
                         ),
                       ),
                     ),
-                    const Gap(30),
+                    const Gap(20),
                     InkWell(
                       borderRadius: BorderRadius.circular(10),
                       onTap: () {
