@@ -52,7 +52,7 @@ class _ParentSettingsState extends State<ParentSettings> {
     print(items);
   }
 
-  Future<void> _deleteProfile(String profileId) async {
+  Future<void> deleteProfile(String profileId) async {
     try {
       await FirebaseFirestore.instance
           .collection('users')
@@ -183,7 +183,9 @@ class _ParentSettingsState extends State<ParentSettings> {
                                         builder: (context) => AlertDialog(
                                           title: const Text('Delete Profile'),
                                           content: const Text(
-                                              'Are you sure you want to delete this profile?'),
+                                            'Are you sure you want to delete this profile?',
+                                            style: TextStyle(fontSize: 15),
+                                          ),
                                           actions: [
                                             TextButton(
                                               onPressed: () {
@@ -205,7 +207,7 @@ class _ParentSettingsState extends State<ParentSettings> {
                                     },
                                     onDismissed: (direction) async {
                                       // If user confirmed, delete the profile
-                                      await _deleteProfile(
+                                      await deleteProfile(
                                           items[index]['profile id']);
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
@@ -266,8 +268,6 @@ class _ParentSettingsState extends State<ParentSettings> {
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(10)),
                                             ),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15),
                                             height: MediaQuery.of(context)
                                                     .size
                                                     .height *
@@ -276,226 +276,314 @@ class _ParentSettingsState extends State<ParentSettings> {
                                                     .size
                                                     .width *
                                                 0.7,
-                                            child: Row(
+                                            child: Stack(
+                                              alignment: Alignment.centerLeft,
                                               children: [
-                                                CircleAvatar(
-                                                  radius: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.035, // Adjust size to match the image’s
-                                                  backgroundImage: AssetImage(
-                                                    'assets/loginRegister/avatars/${items[index]['avatar']}.png',
+                                                Positioned(
+                                                  left: 20,
+                                                  child: CircleAvatar(
+                                                    radius: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .height *
+                                                        0.035, // Adjust size to match the image’s
+                                                    backgroundImage: AssetImage(
+                                                      'assets/loginRegister/avatars/${items[index]['avatar']}.png',
+                                                    ),
                                                   ),
                                                 ),
-                                                const Gap(10),
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                left: 12.0),
-                                                        child: Text(
-                                                          items[index]['name'],
-                                                          style:
-                                                              const TextStyle(
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight.w500,
+                                                Positioned(
+                                                  top: 0,
+                                                  right: 0,
+                                                  child: IconButton(
+                                                    onPressed: () async {
+                                                      await showDialog<bool>(
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            AlertDialog(
+                                                          title: const Text(
+                                                              'Delete Profile'),
+                                                          content: const Text(
+                                                            'Are you sure you want to delete this profile?',
+                                                            style: TextStyle(
+                                                                fontSize: 15),
+                                                          ),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop(); // Cancel
+                                                              },
+                                                              child: const Text(
+                                                                  'No'),
+                                                            ),
+                                                            TextButton(
+                                                              onPressed:
+                                                                  () async {
+                                                                await deleteProfile(
+                                                                    items[index]
+                                                                        [
+                                                                        'profile id']);
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                                ScaffoldMessenger.of(
+                                                                        context)
+                                                                    .showSnackBar(
+                                                                  SnackBar(
+                                                                    content: Text(
+                                                                        '${items[index]['name']} profile deleted'),
+                                                                  ),
+                                                                );
+                                                              },
+                                                              child: const Text(
+                                                                  'Yes'),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.delete_forever,
+                                                      color:
+                                                          Colors.red.shade500,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  top: 25,
+                                                  left: 80,
+                                                  child: SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.55,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 12.0),
+                                                          child: Text(
+                                                            items[index]
+                                                                ['name'],
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      const Gap(7),
-                                                      StreamBuilder<
-                                                          DocumentSnapshot>(
-                                                        stream: FirebaseFirestore
-                                                            .instance
-                                                            .collection('users')
-                                                            .doc(userId)
-                                                            .collection(
-                                                                'profiles')
-                                                            .doc(items[index]
-                                                                ['profile id'])
-                                                            .collection(
-                                                                'LessonsFinished')
-                                                            .doc(items[index]
-                                                                ['lesson id'])
-                                                            .snapshots(),
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          if (snapshot
-                                                                  .connectionState ==
-                                                              ConnectionState
-                                                                  .waiting) {
+                                                        const Gap(7),
+                                                        StreamBuilder<
+                                                            DocumentSnapshot>(
+                                                          stream: FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'users')
+                                                              .doc(userId)
+                                                              .collection(
+                                                                  'profiles')
+                                                              .doc(items[index][
+                                                                  'profile id'])
+                                                              .collection(
+                                                                  'LessonsFinished')
+                                                              .doc(items[index]
+                                                                  ['lesson id'])
+                                                              .snapshots(),
+                                                          builder: (context,
+                                                              snapshot) {
+                                                            if (snapshot
+                                                                    .connectionState ==
+                                                                ConnectionState
+                                                                    .waiting) {
+                                                              return LinearPercentIndicator(
+                                                                percent: 0,
+                                                                animation: true,
+                                                                animationDuration:
+                                                                    900,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .blueGrey
+                                                                        .shade100,
+                                                                linearGradient:
+                                                                    const LinearGradient(
+                                                                  colors: [
+                                                                    Color(
+                                                                        0xFFFFD700), // Adjust colors
+                                                                    Color(
+                                                                        0xFF00FF00),
+                                                                  ],
+                                                                ),
+                                                                lineHeight:
+                                                                    10, // Smaller height for a sleeker look
+                                                                barRadius:
+                                                                    const Radius
+                                                                        .circular(
+                                                                        5),
+                                                              );
+                                                            }
+
+                                                            if (!snapshot
+                                                                    .hasData ||
+                                                                !snapshot.data!
+                                                                    .exists) {
+                                                              return const Center(
+                                                                child: Text(
+                                                                    'Document does not exist'),
+                                                              );
+                                                            }
+
+                                                            int age = int.parse(
+                                                                items[index]
+                                                                    ['age']);
+
+                                                            List<int>
+                                                                accessibleCategories =
+                                                                [];
+                                                            List<int>
+                                                                subCategoriesMinus =
+                                                                []; // FOR MINUS IN THE LENGTH OF CATEGORYLIST[INDEX]
+                                                            if (age >= 2 &&
+                                                                age <= 3) {
+                                                              accessibleCategories =
+                                                                  [
+                                                                0
+                                                              ]; // Letters
+                                                              subCategoriesMinus =
+                                                                  [
+                                                                0,
+                                                                0,
+                                                                0,
+                                                                0
+                                                              ]; //
+                                                            } else if (age >=
+                                                                    4 &&
+                                                                age <= 5) {
+                                                              accessibleCategories =
+                                                                  [
+                                                                0,
+                                                                1,
+                                                                2
+                                                              ]; // Letters, Words, Numbers
+                                                              subCategoriesMinus =
+                                                                  [
+                                                                0,
+                                                                1,
+                                                                0,
+                                                                0
+                                                              ]; //
+                                                            } else if (age >=
+                                                                6) {
+                                                              accessibleCategories =
+                                                                  [
+                                                                0,
+                                                                1,
+                                                                2,
+                                                                3
+                                                              ]; // All categories
+                                                              subCategoriesMinus =
+                                                                  [0, 0, 0, 0];
+                                                            }
+
+                                                            double
+                                                                totalProgressValue =
+                                                                0.0;
+                                                            double
+                                                                totalExpectedValue =
+                                                                0.0;
+
+                                                            for (int categoryIndex =
+                                                                    0;
+                                                                categoryIndex <
+                                                                    categoryList
+                                                                        .length;
+                                                                categoryIndex++) {
+                                                              double
+                                                                  categoryProgressValue =
+                                                                  0.0;
+                                                              double
+                                                                  categoryExpectedValue =
+                                                                  0.0;
+
+                                                              for (int progressItem =
+                                                                      0;
+                                                                  progressItem <
+                                                                      categoryList[categoryIndex]
+                                                                              .length -
+                                                                          subCategoriesMinus[
+                                                                              categoryIndex];
+                                                                  progressItem++) {
+                                                                double
+                                                                    progress =
+                                                                    double.parse(snapshot
+                                                                            .data![categoryList[categoryIndex]
+                                                                                [progressItem]
+                                                                            .name] ??
+                                                                        '0');
+                                                                double total =
+                                                                    categoryList[categoryIndex][progressItem]
+                                                                            .total ??
+                                                                        0;
+                                                                categoryProgressValue +=
+                                                                    progress;
+                                                                categoryExpectedValue +=
+                                                                    total;
+                                                              }
+
+                                                              totalProgressValue +=
+                                                                  categoryProgressValue;
+                                                              totalExpectedValue +=
+                                                                  categoryExpectedValue;
+                                                            }
+
+                                                            double
+                                                                totalProgress =
+                                                                totalExpectedValue ==
+                                                                        0
+                                                                    ? 0
+                                                                    : totalProgressValue /
+                                                                        totalExpectedValue;
+
                                                             return LinearPercentIndicator(
-                                                              percent: 0,
+                                                              percent:
+                                                                  totalProgress,
                                                               animation: true,
                                                               animationDuration:
                                                                   900,
                                                               backgroundColor:
-                                                                  Colors
-                                                                      .blueGrey
-                                                                      .shade100,
+                                                                  Colors.grey
+                                                                      .shade300,
                                                               linearGradient:
                                                                   const LinearGradient(
                                                                 colors: [
                                                                   Color(
-                                                                      0xFFFFD700), // Adjust colors
+                                                                      0xFFFFD700),
                                                                   Color(
                                                                       0xFF00FF00),
                                                                 ],
                                                               ),
-                                                              lineHeight:
-                                                                  10, // Smaller height for a sleeker look
+                                                              lineHeight: 10,
                                                               barRadius:
                                                                   const Radius
                                                                       .circular(
                                                                       5),
                                                             );
-                                                          }
-
-                                                          if (!snapshot
-                                                                  .hasData ||
-                                                              !snapshot.data!
-                                                                  .exists) {
-                                                            return const Center(
-                                                              child: Text(
-                                                                  'Document does not exist'),
-                                                            );
-                                                          }
-
-                                                          int age = int.parse(
-                                                              items[index]
-                                                                  ['age']);
-
-                                                          List<int>
-                                                              accessibleCategories =
-                                                              [];
-                                                          List<int>
-                                                              subCategoriesMinus =
-                                                              []; // FOR MINUS IN THE LENGTH OF CATEGORYLIST[INDEX]
-                                                          if (age >= 2 &&
-                                                              age <= 3) {
-                                                            accessibleCategories =
-                                                                [0]; // Letters
-                                                            subCategoriesMinus =
-                                                                [0, 0, 0, 0]; //
-                                                          } else if (age >= 4 &&
-                                                              age <= 5) {
-                                                            accessibleCategories =
-                                                                [
-                                                              0,
-                                                              1,
-                                                              2
-                                                            ]; // Letters, Words, Numbers
-                                                            subCategoriesMinus =
-                                                                [0, 1, 0, 0]; //
-                                                          } else if (age >= 6) {
-                                                            accessibleCategories =
-                                                                [
-                                                              0,
-                                                              1,
-                                                              2,
-                                                              3
-                                                            ]; // All categories
-                                                            subCategoriesMinus =
-                                                                [0, 0, 0, 0];
-                                                          }
-
-                                                          double
-                                                              totalProgressValue =
-                                                              0.0;
-                                                          double
-                                                              totalExpectedValue =
-                                                              0.0;
-
-                                                          for (int categoryIndex =
-                                                                  0;
-                                                              categoryIndex <
-                                                                  categoryList
-                                                                      .length;
-                                                              categoryIndex++) {
-                                                            double
-                                                                categoryProgressValue =
-                                                                0.0;
-                                                            double
-                                                                categoryExpectedValue =
-                                                                0.0;
-
-                                                            for (int progressItem =
-                                                                    0;
-                                                                progressItem <
-                                                                    categoryList[categoryIndex]
-                                                                            .length -
-                                                                        subCategoriesMinus[
-                                                                            categoryIndex];
-                                                                progressItem++) {
-                                                              double progress =
-                                                                  double.parse(snapshot
-                                                                          .data![categoryList[categoryIndex]
-                                                                              [
-                                                                              progressItem]
-                                                                          .name] ??
-                                                                      '0');
-                                                              double total =
-                                                                  categoryList[categoryIndex]
-                                                                              [
-                                                                              progressItem]
-                                                                          .total ??
-                                                                      0;
-                                                              categoryProgressValue +=
-                                                                  progress;
-                                                              categoryExpectedValue +=
-                                                                  total;
-                                                            }
-
-                                                            totalProgressValue +=
-                                                                categoryProgressValue;
-                                                            totalExpectedValue +=
-                                                                categoryExpectedValue;
-                                                          }
-
-                                                          double totalProgress =
-                                                              totalExpectedValue ==
-                                                                      0
-                                                                  ? 0
-                                                                  : totalProgressValue /
-                                                                      totalExpectedValue;
-
-                                                          return LinearPercentIndicator(
-                                                            percent:
-                                                                totalProgress,
-                                                            animation: true,
-                                                            animationDuration:
-                                                                900,
-                                                            backgroundColor:
-                                                                Colors.grey
-                                                                    .shade300,
-                                                            linearGradient:
-                                                                const LinearGradient(
-                                                              colors: [
-                                                                Color(
-                                                                    0xFFFFD700),
-                                                                Color(
-                                                                    0xFF00FF00),
-                                                              ],
-                                                            ),
-                                                            lineHeight: 10,
-                                                            barRadius:
-                                                                const Radius
-                                                                    .circular(
-                                                                    5),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ],
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ],
