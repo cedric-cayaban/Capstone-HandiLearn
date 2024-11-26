@@ -21,8 +21,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
 
-  bool _isPasswordVisible = false; // For show password feature
+  final _formKey = GlobalKey<FormState>(); // Key to manage form state
+  bool _isPasswordVisible = false;
 
+  // Password Match Validation
   bool passwordConfirmed() {
     if (_confirmPasswordController.text.trim() ==
         _passwordController.text.trim()) {
@@ -37,42 +39,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
+  // Validate Form Before Creating Account
+  void _validateForm() {
+    if (_formKey.currentState!.validate() && passwordConfirmed()) {
+      createAccount();
+    }
+  }
+
+  // Create Account Logic
   Future createAccount() async {
-    if (passwordConfirmed()) {
-      try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim());
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
 
-        await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+      await FirebaseAuth.instance.currentUser?.sendEmailVerification();
 
-        final User? user = FirebaseAuth.instance.currentUser;
-        final _uid = user?.uid;
-        user!.reload();
-        UserData userInfo = UserData(
-            id: _uid!,
-            firstName: _firstNameController.text.trim(),
-            lastName: _lastNameController.text.trim(),
-            email: _emailController.text.trim());
+      final User? user = FirebaseAuth.instance.currentUser;
+      final _uid = user?.uid;
+      user!.reload();
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => VerifyEmail(
-              userData: userInfo,
-            ),
+      UserData userInfo = UserData(
+        id: _uid!,
+        firstName: _firstNameController.text.trim(),
+        lastName: _lastNameController.text.trim(),
+        email: _emailController.text.trim(),
+      );
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => VerifyEmail(
+            userData: userInfo,
           ),
-        );
-      } catch (error) {
-        QuickAlert.show(
-          context: context,
-          type: QuickAlertType.error,
-          title: 'Register Failed',
-          text: 'Invalid credentials',
-          confirmBtnColor: Colors.orange,
-        );
-        print(error);
-      }
+        ),
+      );
+    } catch (error) {
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        title: 'Register Failed',
+        text: 'Email already exists',
+        confirmBtnColor: Colors.orange,
+      );
+      print(error);
     }
   }
 
@@ -84,14 +95,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (_) => LoginScreen(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.arrow_back_ios)),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) => LoginScreen(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+          ),
         ),
         extendBodyBehindAppBar: true,
         body: Container(
@@ -103,185 +115,217 @@ class _RegisterScreenState extends State<RegisterScreen> {
               fit: BoxFit.fill,
             ),
           ),
-          child: Stack(
-            children: [
-              // Content
-              SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 60, left: 30, right: 30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Create',
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.black,
-                        ),
-                        textAlign: TextAlign.start,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 60, left: 30, right: 30),
+              child: Form(
+                key: _formKey, // Attach form key
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Create',
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black,
                       ),
-                      Text(
-                        'Account',
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.black,
-                        ),
-                        textAlign: TextAlign.start,
+                      textAlign: TextAlign.start,
+                    ),
+                    const Text(
+                      'Account',
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black,
                       ),
-                      const SizedBox(
-                        height: 22,
-                      ),
-                      TextField(
-                        controller: _firstNameController,
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(16),
-                            ),
-                          ),
-                          hintText: 'First Name',
-                        ),
-                      ),
-                      Gap(12),
-                      TextField(
-                        controller: _lastNameController,
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(16),
-                            ),
-                          ),
-                          hintText: 'Last Name',
-                        ),
-                      ),
-                      Gap(12),
-                      TextField(
-                        controller: _emailController,
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(16),
-                            ),
-                          ),
-                          hintText: 'Email',
-                        ),
-                      ),
-                      const Gap(12),
-                      TextField(
-                        controller: _passwordController,
-                        obscureText: !_isPasswordVisible,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(16),
-                            ),
-                          ),
-                          hintText: 'Password',
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isPasswordVisible = !_isPasswordVisible;
-                              });
-                            },
+                      textAlign: TextAlign.start,
+                    ),
+                    const SizedBox(height: 22),
+                    // First Name Field
+                    TextFormField(
+                      controller: _firstNameController,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(16),
                           ),
                         ),
+                        hintText: 'First Name',
                       ),
-                      const Gap(12),
-                      TextField(
-                        controller: _confirmPasswordController,
-                        obscureText: !_isPasswordVisible,
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(16),
-                            ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'First Name is required';
+                        }
+                        return null;
+                      },
+                    ),
+                    const Gap(12),
+                    // Last Name Field
+                    TextFormField(
+                      controller: _lastNameController,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(16),
                           ),
-                          hintText: 'Confirm Password',
+                        ),
+                        hintText: 'Last Name',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Last Name is required';
+                        }
+                        return null;
+                      },
+                    ),
+                    const Gap(12),
+                    // Email Field
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(16),
+                          ),
+                        ),
+                        hintText: 'Email',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Email is required';
+                        } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                          return 'Enter a valid email';
+                        }
+                        return null;
+                      },
+                    ),
+                    const Gap(12),
+                    // Password Field
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: !_isPasswordVisible,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(16),
+                          ),
+                        ),
+                        hintText: 'Password',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
                         ),
                       ),
-                      const Gap(12),
-                      Container(
-                        width: double
-                            .infinity, // Make the button fill the available width
-                        child: Material(
-                          borderRadius: BorderRadius.circular(
-                              10), // Set your desired border radius here
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(
-                                10), // Ensure the ripple effect respects the border radius
-                            onTap: createAccount,
-                            child: Container(
-                              width: double.infinity, // Expand to full width
-                              height: 45, // Fixed height
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFF10E119),
-                                    Color(0xFF18991E)
-                                  ], // Define your gradient colors
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                    10), // Set the same border radius as above
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Password is required';
+                        } else if (value.length < 6) {
+                          return 'Password must be at least 6 characters';
+                        }
+                        return null;
+                      },
+                    ),
+                    const Gap(12),
+                    // Confirm Password Field
+                    TextFormField(
+                      controller: _confirmPasswordController,
+                      obscureText: !_isPasswordVisible,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(16),
+                          ),
+                        ),
+                        hintText: 'Confirm Password',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Confirm Password is required';
+                        }
+                        return null;
+                      },
+                    ),
+                    const Gap(12),
+                    // Create Account Button
+                    Container(
+                      width: double.infinity,
+                      child: Material(
+                        borderRadius: BorderRadius.circular(10),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(10),
+                          onTap: _validateForm,
+                          child: Container(
+                            width: double.infinity,
+                            height: 45,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color(0xFF10E119),
+                                  Color(0xFF18991E)
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
                               ),
-                              child: const Text(
-                                'Create account',
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.white),
-                              ),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                          ),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Already have an account?',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => LoginScreen(),
-                                ),
-                              );
-                            },
                             child: const Text(
-                              'Login',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Color(0xFF41A345),
-                              ),
+                              'Create account',
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white),
                             ),
-                          )
-                        ],
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Already have an account?',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => LoginScreen(),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            'Login',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xFF41A345),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ),

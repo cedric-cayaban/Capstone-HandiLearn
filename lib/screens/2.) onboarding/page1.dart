@@ -30,8 +30,8 @@ class Page1 extends StatelessWidget {
                     'Welcome to',
                     style: GoogleFonts.poppins(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
                       height: 1.0,
                     ),
                   ),
@@ -49,8 +49,8 @@ class Page1 extends StatelessWidget {
                     '''personalizes the learning experience for your child, making education fun and engaging.''',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.black87,
                     ),
                   ),
                 ],

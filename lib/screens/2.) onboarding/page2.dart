@@ -30,8 +30,8 @@ class Page2 extends StatelessWidget {
                     'Create and Manage',
                     style: GoogleFonts.poppins(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
                       height: 1.0,
                     ),
                   ),
@@ -49,8 +49,8 @@ class Page2 extends StatelessWidget {
                     '''Track individual progress and personalize learning experiences.''',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.black87,
                     ),
                   ),
                 ],

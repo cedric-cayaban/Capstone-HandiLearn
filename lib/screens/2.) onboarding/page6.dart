@@ -31,8 +31,8 @@ class Page6 extends StatelessWidget {
                     'Mini',
                     style: GoogleFonts.poppins(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                      color: Colors.black87,
                       height: 1.0,
                     ),
                   ),
@@ -51,8 +51,8 @@ class Page6 extends StatelessWidget {
                     '''Review and reinforce learning in an engaging and interactive way''',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.black87,
                     ),
                   ),
                 ],
