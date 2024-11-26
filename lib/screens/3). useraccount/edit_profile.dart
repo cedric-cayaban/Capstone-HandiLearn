@@ -57,6 +57,7 @@ class _EditProfileState extends State<EditProfile> {
             .doc(widget.profileId) // Use the profile ID to locate the document
             .update({
           'name': nameController.text,
+          'pin': pinController.text,
           'age': (selectedIndex + 2).toString(),
           'avatar': (selectedAvatar + 1).toString(),
         });
@@ -438,7 +439,7 @@ class _EditProfileState extends State<EditProfile> {
                                   ),
                                   TextField(
                                     controller: pinController,
-                                    readOnly: true,
+                                    // readOnly: true,
                                     decoration: const InputDecoration(
                                       filled: true,
                                       fillColor: Colors.white,
