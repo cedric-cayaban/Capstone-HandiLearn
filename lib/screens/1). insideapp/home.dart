@@ -75,6 +75,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     String avatarUrl = Provider.of<UserProvider>(context, listen: false).avatar;
+    String avatarUrlImage =
+        Provider.of<UserProvider>(context, listen: false).avatarImage;
     String profileId = Provider.of<ProgressProvider>(context).profileId;
     String lessonId = Provider.of<ProgressProvider>(context).lessonId;
     int age = Provider.of<UserProvider>(context, listen: false).age;
@@ -188,9 +190,11 @@ class _HomeState extends State<Home> {
                                 CircleAvatar(
                                   radius:
                                       26, // Adjust size to match the image’s
-                                  backgroundImage: AssetImage(
-                                    'assets/loginRegister/avatars/$avatarUrl.png',
-                                  ),
+                                  backgroundImage: avatarUrl != ""
+                                      ? AssetImage(
+                                              'assets/loginRegister/avatars/$avatarUrl.png')
+                                          as ImageProvider // Provide a valid fallback asset
+                                      : NetworkImage(avatarUrlImage),
                                 ),
                                 const Gap(10),
                                 Expanded(

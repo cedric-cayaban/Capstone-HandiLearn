@@ -33,7 +33,10 @@ class DefaultFirebaseOptions {
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -47,28 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyA-SRD1gduWRSQxhJX_fc_7nhKFEFg_Kwc',
-    appId: '1:627564390619:web:8817783790dbb85e5004fe',
-    messagingSenderId: '627564390619',
-    projectId: 'handilearn-4cdfa',
-    authDomain: 'handilearn-4cdfa.firebaseapp.com',
-    storageBucket: 'handilearn-4cdfa.appspot.com',
+    apiKey: 'AIzaSyBFMa1_0Y_604Lfd7O8wwUAVRwcZwKaez0',
+    appId: '1:242093013943:web:535f7790a25d38124c0632',
+    messagingSenderId: '242093013943',
+    projectId: 'boardingbuddy-db2d7',
+    authDomain: 'boardingbuddy-db2d7.firebaseapp.com',
+    storageBucket: 'boardingbuddy-db2d7.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDwgFtOWgISELDVg5L374Hn1HG2M0HZ4-U',
-    appId: '1:627564390619:android:b96bf23f2083f7055004fe',
-    messagingSenderId: '627564390619',
-    projectId: 'handilearn-4cdfa',
-    storageBucket: 'handilearn-4cdfa.appspot.com',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyA-SRD1gduWRSQxhJX_fc_7nhKFEFg_Kwc',
-    appId: '1:627564390619:web:d85e1382b58c4d415004fe',
-    messagingSenderId: '627564390619',
-    projectId: 'handilearn-4cdfa',
-    authDomain: 'handilearn-4cdfa.firebaseapp.com',
-    storageBucket: 'handilearn-4cdfa.appspot.com',
+    apiKey: 'AIzaSyA84GRZI_4LPxiPXRJ7olUgZKejz5ncyyM',
+    appId: '1:242093013943:android:7b539f2a450de52f4c0632',
+    messagingSenderId: '242093013943',
+    projectId: 'boardingbuddy-db2d7',
+    storageBucket: 'boardingbuddy-db2d7.appspot.com',
   );
 }

@@ -30,7 +30,7 @@ class Page4 extends StatelessWidget {
                     'Learn to',
                     style: GoogleFonts.poppins(
                       fontSize: 20,
-                        fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w500,
                       color: Colors.black87,
                       height: 1.0,
                     ),
@@ -46,10 +46,10 @@ class Page4 extends StatelessWidget {
                   ),
                   const Gap(20),
                   Text(
-                    '''Start your journey in developing your reading skills with the use oof speech recognition''',
+                    '''Start your journey in developing your reading skills with the use of speech recognition.''',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
-                       fontWeight: FontWeight.w300,
+                      fontWeight: FontWeight.w300,
                       color: Colors.black87,
                     ),
                   ),
