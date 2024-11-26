@@ -175,7 +175,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                           itemBuilder: (context, index) => InkWell(
                             onTap: () {
                               print(widget.lessonTitle);
-                              if (activityNames[index] == "Pronounce") {
+                              if (activityNames[index] == "Reading") {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) =>
