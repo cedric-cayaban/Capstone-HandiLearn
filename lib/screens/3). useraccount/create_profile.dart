@@ -291,7 +291,8 @@ class _CreateProfileState extends State<CreateProfile> {
                                               decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
                                                 border: Border.all(
-                                                  color: selectedAvatar == index
+                                                  color: selectedAvatar ==
+                                                          index + 3
                                                       ? Colors.blue
                                                       : Colors.transparent,
                                                   width: 2,
