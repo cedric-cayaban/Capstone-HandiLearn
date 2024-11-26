@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:test_drawing/data/lessons.dart';
 import 'package:test_drawing/data/userAccount.dart';
@@ -26,8 +27,8 @@ class ActivityScreen extends StatefulWidget {
 }
 
 List<String> activityNames = [
-  'Pronounce',
-  'Write',
+  'Reading',
+  'Writing',
   'Mini Game',
 ];
 
@@ -202,8 +203,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                             },
                             child: Card(
                               margin: const EdgeInsets.symmetric(
-                                vertical: 8.0,
-                                horizontal: 16.0,
+                                vertical: 10.0,
+                                horizontal: 55.0,
                               ),
                               elevation: 4,
                               shape: RoundedRectangleBorder(
@@ -220,11 +221,11 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                     Radius.circular(10),
                                   ),
                                 ),
-                                height: 125,
+                                height: 190,
                                 child: Padding(
                                   padding: const EdgeInsets.only(
                                       top: 20, left: 20, right: 20),
-                                  child: Row(
+                                  child: Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: [
@@ -232,7 +233,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                         // Wrap the entire column to ensure it doesn't overflow
                                         child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                              CrossAxisAlignment.center,
                                           children: [
                                             Flexible(
                                               // Allows text to wrap if it overflows
@@ -248,14 +249,17 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                               ),
                                             ),
                                             const Gap(15),
+                                            Image.asset(
+                                                height: index > 0 ? 80 : 70,
+                                                'assets/insideApp/learnWriting/components/activity${index + 1}-img.png'),
+                                            const Gap(10),
                                             Flexible(
                                               // Allows the lesson name to wrap if it's too long
                                               child: Text(
                                                 activityNames[index],
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
                                                     color: Colors.white,
-                                                    fontSize:
-                                                        index >= 4 ? 27 : 30,
+                                                    fontSize: 27,
                                                     fontWeight: FontWeight.w500,
                                                     height: 1),
                                                 softWrap: true,
@@ -265,8 +269,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                           ],
                                         ),
                                       ),
-                                      Image.asset(
-                                          'assets/insideApp/learnWriting/components/activity${index + 1}-img.png'),
                                     ],
                                   ),
                                 ),
@@ -275,9 +277,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
                           ),
                         ),
                       ),
-                      Container(
-                        height: 50,
-                      )
                     ],
                   ),
                 ),

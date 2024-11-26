@@ -21,19 +21,19 @@ class _InstructionState extends State<Instruction> {
       children: [
         Text(
           'Look at the Picture!',
-          style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         Image.asset('assets/insideApp/scanning/insImage1.png'),
         //const Gap(10),
         Text(
           '1.1 The game will show you a picture of something fun! It could be a toy, or a book.',
           style:
-              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
+              GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.normal),
         ),
         Text(
           '1.2 Remember what it looks like. Can you see it in your mind?',
           style:
-              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
+              GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.normal),
         ),
       ],
     ),
@@ -42,18 +42,18 @@ class _InstructionState extends State<Instruction> {
       children: [
         Text(
           'Search Around!',
-          style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         Image.asset('assets/insideApp/scanning/insImage2.png'),
         Text(
           '2.1 Now it’s time to find that thing! Look around your room.',
           style:
-              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
+              GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.normal),
         ),
         Text(
           '2.2 You can ask a grown-up to help you look, too! It’s like a treasure hunt!',
           style:
-              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
+              GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.normal),
         ),
       ],
     ),
@@ -62,18 +62,18 @@ class _InstructionState extends State<Instruction> {
       children: [
         Text(
           'Time to Scan!',
-          style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         Image.asset('assets/insideApp/scanning/insImage3.png'),
         Text(
           '3.1 When you find the object, it’s time to use the Scan Button on the game.',
           style:
-              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
+              GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.normal),
         ),
         Text(
           '3.2 Hold your tablet or phone up to the object and press the button.',
           style:
-              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
+              GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.normal),
         ),
       ],
     ),
@@ -82,18 +82,18 @@ class _InstructionState extends State<Instruction> {
       children: [
         Text(
           'Learn Something New!',
-          style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         Image.asset('assets/insideApp/scanning/insImage4.png'),
         Text(
           '4.1 Hooray! After you scan, the game will tell you what the object is.',
           style:
-              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
+              GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.normal),
         ),
         Text(
           '4.2 You’ll hear a voice that tells you what it does and what it’s called. It’s like magic!',
           style:
-              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.normal),
+              GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.normal),
         ),
       ],
     ),
@@ -189,10 +189,10 @@ class _InstructionState extends State<Instruction> {
           Positioned(
             top: MediaQuery.of(context).size.height * 0.1,
             child: Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(13.0),
               child: Container(
-                height: 200,
-                width: MediaQuery.of(context).size.width * .90,
+                height: 100,
+                width: MediaQuery.of(context).size.width * .65,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
@@ -215,18 +215,7 @@ class _InstructionState extends State<Instruction> {
                         'Object Scanning Instruction',
                         style: TextStyle(
                             fontSize: 24, fontWeight: FontWeight.normal),
-                      ),
-                      Divider(
-                        height: 1,
-                        color: Colors.black,
-                      ),
-                      Text(
-                        textAlign: TextAlign.center,
-                        'Hey there, little explorer! Are you ready for a super fun game? '
-                        'Let’s go on a treasure hunt to find and learn about special things around you! '
-                        'Here’s how to play:',
-                        style: TextStyle(fontSize: 16),
-                      ),
+                      )
                     ],
                   ),
                 ),
@@ -234,9 +223,9 @@ class _InstructionState extends State<Instruction> {
             ),
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.35,
+            top: MediaQuery.of(context).size.height * 0.32,
             child: Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(13.0),
               child: Container(
                 height: 420,
                 width: MediaQuery.of(context).size.width * .80,
@@ -293,7 +282,7 @@ class _InstructionState extends State<Instruction> {
                           _currentPage != 3
                               ? Text(
                                   ' ${_currentPage + 1}',
-                                  style: TextStyle(fontSize: 15),
+                                  style: TextStyle(fontSize: 13),
                                 )
                               : TextButton(
                                   style: ButtonStyle(
@@ -358,7 +347,7 @@ class _InstructionState extends State<Instruction> {
             right: 5,
             child: Image.asset(
               'assets/insideApp/scanning/mascot.png',
-              height: 150,
+              height: 130,
               width: 200,
             ),
           ),

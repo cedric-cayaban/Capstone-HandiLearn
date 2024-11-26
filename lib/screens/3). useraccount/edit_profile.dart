@@ -185,401 +185,417 @@ class _EditProfileState extends State<EditProfile> {
                                 ),
                               ],
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      color: Colors.white,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.08,
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Column(
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                const Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 12.0),
-                                                  child: Text(
-                                                    'Learn Progress ',
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.w500,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        color: Colors.white,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.08,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Column(
+                                          children: [
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 12.0),
+                                                    child: Text(
+                                                      'Learn Progress ',
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                const Gap(7),
-                                                StreamBuilder<DocumentSnapshot>(
-                                                  stream: FirebaseFirestore
-                                                      .instance
-                                                      .collection('users')
-                                                      .doc(userId)
-                                                      .collection('profiles')
-                                                      .doc(widget.profileId)
-                                                      .collection(
-                                                          'LessonsFinished')
-                                                      .doc(widget.lessonId)
-                                                      .snapshots(),
-                                                  builder: (context, snapshot) {
-                                                    if (snapshot
-                                                            .connectionState ==
-                                                        ConnectionState
-                                                            .waiting) {
+                                                  const Gap(7),
+                                                  StreamBuilder<
+                                                      DocumentSnapshot>(
+                                                    stream: FirebaseFirestore
+                                                        .instance
+                                                        .collection('users')
+                                                        .doc(userId)
+                                                        .collection('profiles')
+                                                        .doc(widget.profileId)
+                                                        .collection(
+                                                            'LessonsFinished')
+                                                        .doc(widget.lessonId)
+                                                        .snapshots(),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .waiting) {
+                                                        return LinearPercentIndicator(
+                                                          percent: 0,
+                                                          // animation: true,
+                                                          // animationDuration: 900,
+                                                          backgroundColor:
+                                                              Colors.blueGrey
+                                                                  .shade100,
+                                                          linearGradient:
+                                                              const LinearGradient(
+                                                            colors: [
+                                                              Color(
+                                                                  0xFFFFD700), // Adjust colors
+                                                              Color(0xFF00FF00),
+                                                            ],
+                                                          ),
+                                                          lineHeight:
+                                                              15, // Smaller height for a sleeker look
+                                                          barRadius:
+                                                              const Radius
+                                                                  .circular(10),
+                                                        );
+                                                      }
+
+                                                      if (!snapshot.hasData ||
+                                                          !snapshot
+                                                              .data!.exists) {
+                                                        return const Center(
+                                                          child: Text(
+                                                              'Document does not exist'),
+                                                        );
+                                                      }
+
+                                                      int age =
+                                                          int.parse(widget.age);
+
+                                                      List<int>
+                                                          accessibleCategories =
+                                                          [];
+                                                      List<int>
+                                                          subCategoriesMinus =
+                                                          []; // FOR MINUS IN THE LENGTH OF CATEGORYLIST[INDEX]
+                                                      if (age >= 2 &&
+                                                          age <= 3) {
+                                                        accessibleCategories = [
+                                                          0
+                                                        ]; // Letters
+                                                        subCategoriesMinus = [
+                                                          0,
+                                                          0,
+                                                          0,
+                                                          0
+                                                        ]; //
+                                                      } else if (age >= 4 &&
+                                                          age <= 5) {
+                                                        accessibleCategories = [
+                                                          0,
+                                                          1,
+                                                          2
+                                                        ]; // Letters, Words, Numbers
+                                                        subCategoriesMinus = [
+                                                          0,
+                                                          1,
+                                                          0,
+                                                          0
+                                                        ]; //
+                                                      } else if (age >= 6) {
+                                                        accessibleCategories = [
+                                                          0,
+                                                          1,
+                                                          2,
+                                                          3
+                                                        ]; // All categories
+                                                        subCategoriesMinus = [
+                                                          0,
+                                                          0,
+                                                          0,
+                                                          0
+                                                        ];
+                                                      }
+
+                                                      double
+                                                          totalProgressValue =
+                                                          0.0;
+                                                      double
+                                                          totalExpectedValue =
+                                                          0.0;
+
+                                                      for (int categoryIndex =
+                                                              0;
+                                                          categoryIndex <
+                                                              categoryList
+                                                                  .length;
+                                                          categoryIndex++) {
+                                                        double
+                                                            categoryProgressValue =
+                                                            0.0;
+                                                        double
+                                                            categoryExpectedValue =
+                                                            0.0;
+
+                                                        for (int progressItem =
+                                                                0;
+                                                            progressItem <
+                                                                categoryList[
+                                                                            categoryIndex]
+                                                                        .length -
+                                                                    subCategoriesMinus[
+                                                                        categoryIndex];
+                                                            progressItem++) {
+                                                          double progress = double
+                                                              .parse(snapshot
+                                                                      .data![categoryList[
+                                                                              categoryIndex]
+                                                                          [
+                                                                          progressItem]
+                                                                      .name] ??
+                                                                  '0');
+                                                          double total =
+                                                              categoryList[categoryIndex]
+                                                                          [
+                                                                          progressItem]
+                                                                      .total ??
+                                                                  0;
+                                                          categoryProgressValue +=
+                                                              progress;
+                                                          categoryExpectedValue +=
+                                                              total;
+                                                        }
+
+                                                        totalProgressValue +=
+                                                            categoryProgressValue;
+                                                        totalExpectedValue +=
+                                                            categoryExpectedValue;
+                                                      }
+
+                                                      double totalProgress =
+                                                          totalExpectedValue ==
+                                                                  0
+                                                              ? 0
+                                                              : totalProgressValue /
+                                                                  totalExpectedValue;
+
                                                       return LinearPercentIndicator(
-                                                        percent: 0,
+                                                        percent: totalProgress,
                                                         // animation: true,
                                                         // animationDuration: 900,
                                                         backgroundColor: Colors
-                                                            .blueGrey.shade100,
+                                                            .grey.shade300,
                                                         linearGradient:
                                                             const LinearGradient(
                                                           colors: [
-                                                            Color(
-                                                                0xFFFFD700), // Adjust colors
+                                                            Color(0xFFFFD700),
                                                             Color(0xFF00FF00),
                                                           ],
                                                         ),
-                                                        lineHeight:
-                                                            15, // Smaller height for a sleeker look
+                                                        lineHeight: 15,
                                                         barRadius: const Radius
                                                             .circular(10),
                                                       );
-                                                    }
-
-                                                    if (!snapshot.hasData ||
-                                                        !snapshot
-                                                            .data!.exists) {
-                                                      return const Center(
-                                                        child: Text(
-                                                            'Document does not exist'),
-                                                      );
-                                                    }
-
-                                                    int age =
-                                                        int.parse(widget.age);
-
-                                                    List<int>
-                                                        accessibleCategories =
-                                                        [];
-                                                    List<int>
-                                                        subCategoriesMinus =
-                                                        []; // FOR MINUS IN THE LENGTH OF CATEGORYLIST[INDEX]
-                                                    if (age >= 2 && age <= 3) {
-                                                      accessibleCategories = [
-                                                        0
-                                                      ]; // Letters
-                                                      subCategoriesMinus = [
-                                                        0,
-                                                        0,
-                                                        0,
-                                                        0
-                                                      ]; //
-                                                    } else if (age >= 4 &&
-                                                        age <= 5) {
-                                                      accessibleCategories = [
-                                                        0,
-                                                        1,
-                                                        2
-                                                      ]; // Letters, Words, Numbers
-                                                      subCategoriesMinus = [
-                                                        0,
-                                                        1,
-                                                        0,
-                                                        0
-                                                      ]; //
-                                                    } else if (age >= 6) {
-                                                      accessibleCategories = [
-                                                        0,
-                                                        1,
-                                                        2,
-                                                        3
-                                                      ]; // All categories
-                                                      subCategoriesMinus = [
-                                                        0,
-                                                        0,
-                                                        0,
-                                                        0
-                                                      ];
-                                                    }
-
-                                                    double totalProgressValue =
-                                                        0.0;
-                                                    double totalExpectedValue =
-                                                        0.0;
-
-                                                    for (int categoryIndex = 0;
-                                                        categoryIndex <
-                                                            categoryList.length;
-                                                        categoryIndex++) {
-                                                      double
-                                                          categoryProgressValue =
-                                                          0.0;
-                                                      double
-                                                          categoryExpectedValue =
-                                                          0.0;
-
-                                                      for (int progressItem = 0;
-                                                          progressItem <
-                                                              categoryList[
-                                                                          categoryIndex]
-                                                                      .length -
-                                                                  subCategoriesMinus[
-                                                                      categoryIndex];
-                                                          progressItem++) {
-                                                        double progress = double
-                                                            .parse(snapshot
-                                                                    .data![categoryList[
-                                                                            categoryIndex]
-                                                                        [
-                                                                        progressItem]
-                                                                    .name] ??
-                                                                '0');
-                                                        double total = categoryList[
-                                                                        categoryIndex]
-                                                                    [
-                                                                    progressItem]
-                                                                .total ??
-                                                            0;
-                                                        categoryProgressValue +=
-                                                            progress;
-                                                        categoryExpectedValue +=
-                                                            total;
-                                                      }
-
-                                                      totalProgressValue +=
-                                                          categoryProgressValue;
-                                                      totalExpectedValue +=
-                                                          categoryExpectedValue;
-                                                    }
-
-                                                    double totalProgress =
-                                                        totalExpectedValue == 0
-                                                            ? 0
-                                                            : totalProgressValue /
-                                                                totalExpectedValue;
-
-                                                    return LinearPercentIndicator(
-                                                      percent: totalProgress,
-                                                      // animation: true,
-                                                      // animationDuration: 900,
-                                                      backgroundColor:
-                                                          Colors.grey.shade300,
-                                                      linearGradient:
-                                                          const LinearGradient(
-                                                        colors: [
-                                                          Color(0xFFFFD700),
-                                                          Color(0xFF00FF00),
-                                                        ],
-                                                      ),
-                                                      lineHeight: 15,
-                                                      barRadius:
-                                                          const Radius.circular(
-                                                              10),
-                                                    );
-                                                  },
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Text(
+                                    "Name",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  TextField(
+                                    controller: nameController,
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(16)),
+                                      ),
+                                      hintText: 'Name',
+                                    ),
+                                  ),
+                                  const Text(
+                                    "Pin",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  TextField(
+                                    controller: pinController,
+                                    readOnly: true,
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(16)),
+                                      ),
+                                      hintText: 'Name',
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    "Age",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: List.generate(5, (index) {
+                                      int displayNumber = index + 2;
+                                      return GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            selectedIndex = index;
+                                          });
+                                        },
+                                        child: CircleAvatar(
+                                          backgroundColor:
+                                              selectedIndex == index
+                                                  ? Colors.blue
+                                                  : Colors.white,
+                                          child: Text('$displayNumber'),
+                                        ),
+                                      );
+                                    }),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    "Avatar",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: List.generate(3, (index) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                selectedAvatar = index;
+                                              });
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                  color: selectedAvatar == index
+                                                      ? Colors.blue
+                                                      : Colors.transparent,
+                                                  width: 2,
                                                 ),
+                                              ),
+                                              child: CircleAvatar(
+                                                radius: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.042,
+                                                backgroundImage: AssetImage(
+                                                    'assets/loginRegister/avatars/${index + 1}.png'),
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: List.generate(3, (index) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                selectedAvatar = index + 3;
+                                              });
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                  color: selectedAvatar ==
+                                                          index + 3
+                                                      ? Colors.blue
+                                                      : Colors.transparent,
+                                                  width: 2,
+                                                ),
+                                              ),
+                                              child: CircleAvatar(
+                                                radius: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.042,
+                                                backgroundImage: AssetImage(
+                                                    'assets/loginRegister/avatars/${index + 4}.png'),
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.02),
+                                  Container(
+                                    width: double.infinity,
+                                    child: Material(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: InkWell(
+                                        borderRadius: BorderRadius.circular(10),
+                                        onTap: updateProfile,
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 45,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            gradient: const LinearGradient(
+                                              colors: [
+                                                Color(0xFF10E119),
+                                                Color(0xFF18991E)
                                               ],
                                             ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const Text(
-                                  "Name",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                TextField(
-                                  controller: nameController,
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(16)),
-                                    ),
-                                    hintText: 'Name',
-                                  ),
-                                ),
-                                const Text(
-                                  "Pin",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                TextField(
-                                  controller: pinController,
-                                  readOnly: true,
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(16)),
-                                    ),
-                                    hintText: 'Name',
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                const Text(
-                                  "Age",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: List.generate(5, (index) {
-                                    int displayNumber = index + 2;
-                                    return GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          selectedIndex = index;
-                                        });
-                                      },
-                                      child: CircleAvatar(
-                                        backgroundColor: selectedIndex == index
-                                            ? Colors.blue
-                                            : Colors.white,
-                                        child: Text('$displayNumber'),
-                                      ),
-                                    );
-                                  }),
-                                ),
-                                const SizedBox(height: 10),
-                                const Text(
-                                  "Avatar",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: List.generate(3, (index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              selectedAvatar = index;
-                                            });
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                color: selectedAvatar == index
-                                                    ? Colors.blue
-                                                    : Colors.transparent,
-                                                width: 2,
-                                              ),
+                                          child: Text(
+                                            'Save',
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
                                             ),
-                                            child: CircleAvatar(
-                                              radius: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.042,
-                                              backgroundImage: AssetImage(
-                                                  'assets/loginRegister/avatars/${index + 1}.png'),
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: List.generate(3, (index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              selectedAvatar = index + 3;
-                                            });
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                color:
-                                                    selectedAvatar == index + 3
-                                                        ? Colors.blue
-                                                        : Colors.transparent,
-                                                width: 2,
-                                              ),
-                                            ),
-                                            child: CircleAvatar(
-                                              radius: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.042,
-                                              backgroundImage: AssetImage(
-                                                  'assets/loginRegister/avatars/${index + 4}.png'),
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.02),
-                                Container(
-                                  width: double.infinity,
-                                  child: Material(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: InkWell(
-                                      borderRadius: BorderRadius.circular(10),
-                                      onTap: updateProfile,
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: 45,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          gradient: const LinearGradient(
-                                            colors: [
-                                              Color(0xFF10E119),
-                                              Color(0xFF18991E)
-                                            ],
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Text(
-                                          'Save',
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ],

@@ -399,22 +399,19 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   Future<File?> convertDrawingToImage() async {
     try {
-      // Set the width and height conditionally based on widget.type
-
+      
       final double contentWidth =
           (widget.lesson.type == 'word' || widget.lesson.type == 'cursive word')
               ? 800
               : 300;
       final double contentHeight =
-          widget.lesson.type == 'word' ? 300 : 300; // Original content height
-
-      // Ensure the final image is square
+          widget.lesson.type == 'word' ? 300 : 300; 
       final double squareSize =
           contentWidth > contentHeight ? contentWidth : contentHeight;
       final double paddingX = (squareSize - contentWidth) / 2;
       final double paddingY = (squareSize - contentHeight) / 2;
 
-      // Create a new image with padding if necessary
+     
       final recorder = ui.PictureRecorder();
       final canvas = Canvas(recorder,
           Rect.fromPoints(Offset(0, 0), Offset(squareSize, squareSize)));
@@ -424,22 +421,22 @@ class _DrawingScreenState extends State<DrawingScreen> {
         ..strokeCap = StrokeCap.round
         ..strokeWidth = 20.0;
 
-      // Shift the drawing to be centered with padding
+     
       canvas.translate(paddingX, paddingY);
 
-      // Draw only the points on the canvas
+     
       for (int i = 0; i < drawnPoints.length - 1; i++) {
         if (drawnPoints[i] != null && drawnPoints[i + 1] != null) {
           canvas.drawLine(drawnPoints[i]!, drawnPoints[i + 1]!, paint);
         }
       }
 
-      // End the recording and convert to image
+      
       final picture = recorder.endRecording();
       final image =
           await picture.toImage(squareSize.toInt(), squareSize.toInt());
 
-      // Convert to byte data and save the image
+     
       ByteData? byteData =
           await image.toByteData(format: ui.ImageByteFormat.png);
       if (byteData != null) {
@@ -455,13 +452,13 @@ class _DrawingScreenState extends State<DrawingScreen> {
   }
 
   bool isSpecificWordCheck(String targetWord, List<dynamic> output) {
-    // Define a map for valid predictions under 'word'
+   
     Map<String, List<String>> wordPredictions = {
       "pig": ["pig", "cat"],
       "bike": ["bike", "kite"],
     };
 
-    // Define a map for valid predictions under 'cursive word'
+   
     Map<String, List<String>> cursiveWordPredictions = {
       "cat": ["bike"],
       "dog": ["pig"],
@@ -501,7 +498,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
       if (resampledPoints.length < (wordGuidePoints.length * 0.90)) {
         setState(() {
-          isMatch = false; // Early exit if not enough points
+          isMatch = false; 
         });
         print("Not enough points, returning false.");
         return;
@@ -514,50 +511,50 @@ class _DrawingScreenState extends State<DrawingScreen> {
         return;
       }
 
-      // Preprocess the image before passing it to the model
+      
       File? preprocessedFile = await preprocessImage(imageFile);
       if (preprocessedFile == null) {
         print("Image preprocessing failed");
         return;
       }
 
-      // Run the model on the preprocessed image file
+      
       var output = await Tflite.runModelOnImage(
         path: preprocessedFile
-            .path, // Use the path of the preprocessed image file
-        threshold: 0.0, // Set the threshold to 0 to get all results
-        asynch: true, // Use asynchronous processing
+            .path, 
+        threshold: 0.0, 
+        asynch: true, 
       );
 
       if (output != null && output.isNotEmpty) {
-        // Sort the output by confidence level
+       
         output.sort((a, b) => b['confidence'].compareTo(a['confidence']));
 
-        // Print the top 3 predictions for debugging
+       
         print("Top 3 Predictions:");
         for (int i = 0; i < output.length && i < 3; i++) {
           print(
               "Prediction ${i + 1}: ${output[i]['label']} with confidence ${output[i]['confidence']}");
         }
 
-        // Checking if any of the top 3 labels matches the target character
+       
         bool matchFound = false;
 
         for (int i = 0; i < output.length && i < 3; i++) {
           String label = output[i]['label']
-              .split(' ')[1]; // Extract the character part of the label
+              .split(' ')[1]; 
           if (label == widget.lesson.character) {
             matchFound = true;
             break;
           }
         }
 
-        // Use isSpecificWordCheck to handle specific word cases like "pig"
+        
         if (!matchFound) {
           matchFound = isSpecificWordCheck(widget.lesson.character, output);
         }
 
-        // Update the state with the classification result
+        
         setState(() {
           _output = output;
           isMatch = matchFound;
@@ -570,40 +567,36 @@ class _DrawingScreenState extends State<DrawingScreen> {
     }
   }
 
-  // New preprocessing function
-  // Preprocess image: resize and normalize
+
   Future<File?> preprocessImage(File imageFile) async {
     try {
-      // Read the image file as bytes
+      
       Uint8List imageBytes = await imageFile.readAsBytes();
 
-      // Decode the image
       img.Image? originalImage = img.decodeImage(imageBytes);
 
-      // Ensure the original image is valid
       if (originalImage == null) {
         print('Error: Original image is null.');
-        return null; // Return null if the original image is invalid
+        return null;
       }
 
-      // Resize the image to 224x224
       img.Image resizedImage =
           img.copyResize(originalImage, width: 224, height: 224);
 
-      // Encode the resized image back to PNG format
+      // set to png
       Uint8List resizedBytes = img.encodePng(resizedImage);
 
-      // Create a temporary directory to save the preprocessed image
+      // temporaroy dir to save 
       final Directory tempDir = await Directory.systemTemp.createTemp();
       final File preprocessedFile =
           File('${tempDir.path}/preprocessed_image.png');
 
-      // Write the resized bytes to the new file
+
       await preprocessedFile.writeAsBytes(resizedBytes);
-      return preprocessedFile; // Return the preprocessed image file
+      return preprocessedFile;
     } catch (e) {
       print('Error in image preprocessing: $e');
-      return null; // Return null if there's an error
+      return null; 
     }
   }
 
@@ -631,7 +624,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   bool drawingChecker(
       List<Offset?> userPoints, List<Offset?> guidePoints, double threshold) {
-    // Function to split points into strokes based on null values
+   
 
     List<List<Offset>> userStrokes = splitIntoStrokes(userPoints);
     List<List<Offset>> guideStrokes = splitIntoStrokes(guidePoints);
@@ -640,28 +633,27 @@ class _DrawingScreenState extends State<DrawingScreen> {
     if (userStrokes.length < guideStrokes.length) {
       print(
           'Number of strokes does not match: ${userStrokes.length} vs ${guideStrokes.length}');
-      return false; // If the number of strokes is different, return false
+      return false; 
     } else if (userStrokes.length > guideStrokes.length) {
       print('Number of strokes exceed the correct amount');
-      return false; // If the number of strokes is different, return false
+      return false; 
     }
 
     for (int i = 0; i < guideStrokes.length; i++) {
       List<Offset> userStroke = userStrokes[i];
       List<Offset> guideStroke = guideStrokes[i];
 
-      // Check points in the stroke
       for (int j = 0; j < guideStroke.length; j++) {
         if (j < userStroke.length) {
-          // Compare user stroke and guide stroke points
+          // Comparison of user and guide stroke
           if ((userStroke[j] - guideStroke[j]).distance > threshold) {
             print(
                 'Point mismatch in stroke $i at index $j: ${userStroke[j]} vs ${guideStroke[j]}');
-            return false; // If any point in the stroke doesn't match, return false
+            return false;
           }
         } else {
-          // If user stroke is shorter, allow some flexibility with the last point
-          // Check the distance between the last user point and the remaining guide points
+          // for checking of the last point of the drawing if shorter
+          // consider correct based on the threshold
           final lastUserPoint = userStroke.last;
           for (int k = j; k < guideStroke.length; k++) {
             if ((lastUserPoint - guideStroke[k]).distance > threshold) {
@@ -669,12 +661,12 @@ class _DrawingScreenState extends State<DrawingScreen> {
               return false; // Mismatch if last point is too far from remaining guide points
             }
           }
-          // If we reach here, it means the last point is close enough, allow the match
+        
           break;
         }
       }
 
-      // Check if the last point of the user stroke is too far from the last guide stroke point
+      // Check if the last point of the user stroke is too far
       if (userStroke.length > guideStroke.length) {
         // Check distance between the last points
         if ((userStroke.last - guideStroke.last).distance > threshold) {

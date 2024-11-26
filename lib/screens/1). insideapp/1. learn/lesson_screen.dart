@@ -110,9 +110,10 @@ class _LessonScreenState extends State<LessonScreen> {
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30)),
                 ),
-                height: MediaQuery.of(context).size.height * 0.7,
+                height: MediaQuery.of(context).size.height * 0.65,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(
+                      top: 8.0, left: 8, right: 8, bottom: 50),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -307,9 +308,9 @@ class _LessonScreenState extends State<LessonScreen> {
                           ),
                         ),
                       ),
-                      Container(
-                        height: 50,
-                      )
+                      // Container(
+                      //   height: 50,
+                      // )
                     ],
                   ),
                 ),
