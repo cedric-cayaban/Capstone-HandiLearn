@@ -58,6 +58,7 @@ class _SetPinState extends State<SetPin> {
         'age': widget.profileData.age,
         'avatar': widget.profileData.avatar,
         'pin': pin,
+        'avatarImage' : widget.profileData.avatarImage,
       });
 
       String profileId = docRef.id;

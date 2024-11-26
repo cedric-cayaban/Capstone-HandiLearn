@@ -19,6 +19,8 @@ class ProfileData {
   String age;
   String avatar;
   String pin;
+  String avatarImage;
+
 
   ProfileData({
     required this.id,
@@ -27,6 +29,8 @@ class ProfileData {
     required this.age,
     required this.avatar,
     required this.pin,
+    required this.avatarImage,
+
   });
 }
 

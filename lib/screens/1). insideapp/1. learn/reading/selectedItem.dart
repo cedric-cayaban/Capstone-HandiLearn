@@ -91,7 +91,7 @@ class _SelectedItemState extends State<SelectedItem>
           print(result.recognizedWords.toLowerCase());
           print(widget.lesson.type);
           print(widget.lesson.character.toLowerCase());
-          if (widget.lesson.type == "word") {
+          if (widget.lesson.type == "number") {
             resultNumber =
                 convertNumberToWord(widget.lesson.character.toLowerCase());
           }

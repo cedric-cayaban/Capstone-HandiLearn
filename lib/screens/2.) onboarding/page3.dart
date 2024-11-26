@@ -30,7 +30,7 @@ class Page3 extends StatelessWidget {
                     'Learn to',
                     style: GoogleFonts.poppins(
                       fontSize: 20,
-                       fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w500,
                       color: Colors.black87,
                       height: 1.0,
                     ),
@@ -46,7 +46,7 @@ class Page3 extends StatelessWidget {
                   ),
                   const Gap(20),
                   Text(
-                    '''Develop your basic writing skills by tracing patterns of letters, numbers, and words ''',
+                    '''Develop your basic writing skills by tracing patterns of letters, numbers, and words. ''',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w300,

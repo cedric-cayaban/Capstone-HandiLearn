@@ -19,7 +19,6 @@ class Page6 extends StatelessWidget {
               fit: BoxFit.fill,
             ),
             const Gap(40),
-
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Column(
@@ -31,13 +30,12 @@ class Page6 extends StatelessWidget {
                     'Mini',
                     style: GoogleFonts.poppins(
                       fontSize: 20,
-                        fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w500,
                       color: Colors.black87,
                       height: 1.0,
                     ),
                   ),
-            const Gap(10),
-
+                  const Gap(10),
                   Text(
                     'Games',
                     style: GoogleFonts.lora(
@@ -48,7 +46,7 @@ class Page6 extends StatelessWidget {
                   ),
                   Gap(20),
                   Text(
-                    '''Review and reinforce learning in an engaging and interactive way''',
+                    '''Review and reinforce learning in an engaging and interactive way.''',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w300,

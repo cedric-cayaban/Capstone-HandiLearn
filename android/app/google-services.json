@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "242093013943",
+    "project_id": "boardingbuddy-db2d7",
+    "storage_bucket": "boardingbuddy-db2d7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242093013943:android:015f6b4cea3d965c4c0632",
+        "android_client_info": {
+          "package_name": "com.example.carpio_boardingbuddy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA84GRZI_4LPxiPXRJ7olUgZKejz5ncyyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242093013943:android:7b539f2a450de52f4c0632",
+        "android_client_info": {
+          "package_name": "com.example.test_drawing"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA84GRZI_4LPxiPXRJ7olUgZKejz5ncyyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

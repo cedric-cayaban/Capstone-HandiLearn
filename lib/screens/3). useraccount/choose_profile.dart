@@ -390,11 +390,25 @@ class _ChooseProfileState extends State<ChooseProfile> {
                                             shape: const CircleBorder(),
                                             child: GridTile(
                                               child: items[index]['avatar'] !=
-                                                      null
+                                                      ""
                                                   ? Image.asset(
                                                       'assets/loginRegister/avatars/${items[index]['avatar']}.png',
                                                     )
-                                                  : const CircularProgressIndicator(),
+                                                  : Container(
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: CircleAvatar(
+                                                          radius: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              .085,
+                                                          backgroundImage:
+                                                              NetworkImage(items[
+                                                                      index][
+                                                                  'avatarImage'])),
+                                                    ),
                                             ),
                                           ),
                                           Text(
