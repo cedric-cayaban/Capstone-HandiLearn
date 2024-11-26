@@ -249,6 +249,8 @@ class _ParentSettingsState extends State<ParentSettings> {
                                               name: items[index]['name'],
                                               age: items[index]['age'],
                                               avatar: items[index]['avatar'],
+                                              avatarImage: items[index]
+                                                  ['avatarImage'],
                                               pin: items[index]['pin'],
                                               profileId: items[index]
                                                   ['profile id'],
@@ -282,14 +284,21 @@ class _ParentSettingsState extends State<ParentSettings> {
                                                 Positioned(
                                                   left: 20,
                                                   child: CircleAvatar(
-                                                    radius: MediaQuery.of(
-                                                                context)
-                                                            .size
-                                                            .height *
-                                                        0.035, // Adjust size to match the image’s
-                                                    backgroundImage: AssetImage(
-                                                      'assets/loginRegister/avatars/${items[index]['avatar']}.png',
-                                                    ),
+                                                    radius:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.035,
+                                                    backgroundImage: items[
+                                                                    index]
+                                                                ['avatar'] !=
+                                                            ""
+                                                        ? AssetImage(
+                                                                'assets/loginRegister/avatars/${items[index]['avatar']}.png')
+                                                            as ImageProvider // Provide a valid fallback asset
+                                                        : NetworkImage(items[
+                                                                index][
+                                                            'avatarImage']), // Adjust size to match the image’s
                                                   ),
                                                 ),
                                                 Positioned(

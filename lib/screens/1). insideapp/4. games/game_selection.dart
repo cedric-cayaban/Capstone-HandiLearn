@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:test_drawing/provider/user_provider.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/difficulty.dart';
 
-
 import '../home.dart';
 
 class Games extends StatefulWidget {
@@ -134,7 +133,7 @@ class _GamesState extends State<Games> {
                                   );
                                 },
                                 child: Image.asset(
-                                    'assets/insideApp/games/object_odyssey.png'),
+                                    'assets/insideApp/games/quiz game.png'),
                               );
                             case 1:
                               return InkWell(

@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/game_selection.dart';
 
@@ -77,6 +79,164 @@ class _PictowordState extends State<Pictoword> with TickerProviderStateMixin {
     return lettersList.join();
   }
 
+  var gameInstruction = [
+    {
+      'title': 'Look at the Photos',
+      'text':
+          'At the top of the screen, you’ll see four photos. Look at them carefully to figure out what they have in common.',
+    },
+    {
+      'title': 'Guess the Word',
+      'text':
+          "Think about the word that describes all the photos. In this example, it could be the name of the animal in the pictures.",
+    },
+    {
+      'title': 'Choose the Letters',
+      'text':
+          "Below the photos, there are some letters. Tap on each letter to spell out the word you think is the answer.",
+    },
+    {
+      'title': 'Use Hints',
+      'text': "If you’re stuck, tap the 'Hint' button to get some help.",
+    },
+    {
+      'title': 'Clear if Needed',
+      'text':
+          "If you want to start over, tap the 'Clear' button to remove the letters and try again.",
+    },
+    {
+      'title': 'Have Fun!',
+      'text':
+          "Keep playing to guess more words and have fun learning new things!",
+    },
+  ];
+  final PageController _controller = PageController();
+  int _currentPage = 0;
+
+  void _nextPage() {
+    if (_currentPage < gameInstruction.length) {
+      _controller.nextPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _previousPage() {
+    if (_currentPage > 0) {
+      _controller.previousPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void loadInstructions() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            dialogBackgroundColor: Colors.white,
+          ),
+          child: AlertDialog(
+            backgroundColor: Colors.white,
+            contentPadding: EdgeInsets.all(16),
+            content: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setDialogState) {
+                return SingleChildScrollView(
+                  child: SizedBox(
+                    height: 350,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: PageView(
+                            controller: _controller,
+                            onPageChanged: (index) {
+                              setDialogState(() {
+                                _currentPage = index;
+                              });
+                            },
+                            children: [
+                              ...List.generate(gameInstruction.length, (index) {
+                                return Column(
+                                  // Align content to the start
+                                  children: [
+                                    Text(
+                                      gameInstruction[index]['title']!,
+                                      style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 23,
+                                      ),
+                                    ),
+                                    Gap(20),
+                                    Image.asset(
+                                      'assets/insideApp/games/2/picto${index + 1}.png',
+                                      width:
+                                          200, // Adjust image size to fit better
+                                      height: 100,
+                                      fit: BoxFit.fill,
+                                    ),
+                                    Gap(20),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        gameInstruction[index]['text']!,
+                                        style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }),
+                              // WordSearchTip1(),
+                              // WordSearchTip2(),
+                              // WordSearchTip3(),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            IconButton(
+                              onPressed:
+                                  _currentPage > 0 ? _previousPage : null,
+                              icon: Icon(Icons.arrow_back),
+                              color:
+                                  _currentPage > 0 ? Colors.blue : Colors.grey,
+                            ),
+                            Text(' ${_currentPage + 1}'),
+                            IconButton(
+                              onPressed: _currentPage < gameInstruction.length
+                                  ? _nextPage
+                                  : null,
+                              icon: Icon(Icons.arrow_forward),
+                              color: _currentPage < gameInstruction.length - 1
+                                  ? Colors.blue
+                                  : Colors.grey,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    ).then((_) {
+      // Reset the current page to 0 when the dialog is closed
+      setState(() {
+        _currentPage = 0;
+      });
+    });
+  }
+
   @override
   void dispose() {
     // Dispose all individual animation controllers
@@ -102,6 +262,26 @@ class _PictowordState extends State<Pictoword> with TickerProviderStateMixin {
                 height: MediaQuery.of(context).size.height * 0.045,
                 "assets/insideApp/close.png"),
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                loadInstructions();
+              },
+              icon: Container(
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Image.asset(
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      "assets/insideApp/games/instruction.png"),
+                ),
+              ),
+            ),
+          ],
         ),
         extendBodyBehindAppBar: true,
         body: Container(

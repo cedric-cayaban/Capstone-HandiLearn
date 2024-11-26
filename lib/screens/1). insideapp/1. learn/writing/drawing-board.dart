@@ -263,10 +263,21 @@ class _DrawingScreenState extends State<DrawingScreen> {
   bool isFinished = false;
 
   void sayTheSound() async {
+    String toUpper = widget.lesson.character.toUpperCase();
     try {
       await _audioPlayer.play(
-        AssetSource(
-            'insideApp/learnReading/audio/${widget.lesson.character}.mp3'),
+        AssetSource('insideApp/learnReading/audio/${toUpper}.mp3'),
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void sayTheSoundWord() async {
+    String toLower = widget.lesson.character.toLowerCase();
+    try {
+      await _audioPlayer.play(
+        AssetSource('insideApp/learnReading/audio/${toLower}.mp3'),
       );
     } catch (e) {
       print(e);
@@ -399,19 +410,16 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   Future<File?> convertDrawingToImage() async {
     try {
-      
       final double contentWidth =
           (widget.lesson.type == 'word' || widget.lesson.type == 'cursive word')
               ? 800
               : 300;
-      final double contentHeight =
-          widget.lesson.type == 'word' ? 300 : 300; 
+      final double contentHeight = widget.lesson.type == 'word' ? 300 : 300;
       final double squareSize =
           contentWidth > contentHeight ? contentWidth : contentHeight;
       final double paddingX = (squareSize - contentWidth) / 2;
       final double paddingY = (squareSize - contentHeight) / 2;
 
-     
       final recorder = ui.PictureRecorder();
       final canvas = Canvas(recorder,
           Rect.fromPoints(Offset(0, 0), Offset(squareSize, squareSize)));
@@ -421,22 +429,18 @@ class _DrawingScreenState extends State<DrawingScreen> {
         ..strokeCap = StrokeCap.round
         ..strokeWidth = 20.0;
 
-     
       canvas.translate(paddingX, paddingY);
 
-     
       for (int i = 0; i < drawnPoints.length - 1; i++) {
         if (drawnPoints[i] != null && drawnPoints[i + 1] != null) {
           canvas.drawLine(drawnPoints[i]!, drawnPoints[i + 1]!, paint);
         }
       }
 
-      
       final picture = recorder.endRecording();
       final image =
           await picture.toImage(squareSize.toInt(), squareSize.toInt());
 
-     
       ByteData? byteData =
           await image.toByteData(format: ui.ImageByteFormat.png);
       if (byteData != null) {
@@ -452,13 +456,11 @@ class _DrawingScreenState extends State<DrawingScreen> {
   }
 
   bool isSpecificWordCheck(String targetWord, List<dynamic> output) {
-   
     Map<String, List<String>> wordPredictions = {
       "pig": ["pig", "cat"],
       "bike": ["bike", "kite"],
     };
 
-   
     Map<String, List<String>> cursiveWordPredictions = {
       "cat": ["bike"],
       "dog": ["pig"],
@@ -498,7 +500,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
       if (resampledPoints.length < (wordGuidePoints.length * 0.90)) {
         setState(() {
-          isMatch = false; 
+          isMatch = false;
         });
         print("Not enough points, returning false.");
         return;
@@ -511,50 +513,41 @@ class _DrawingScreenState extends State<DrawingScreen> {
         return;
       }
 
-      
       File? preprocessedFile = await preprocessImage(imageFile);
       if (preprocessedFile == null) {
         print("Image preprocessing failed");
         return;
       }
 
-      
       var output = await Tflite.runModelOnImage(
-        path: preprocessedFile
-            .path, 
-        threshold: 0.0, 
-        asynch: true, 
+        path: preprocessedFile.path,
+        threshold: 0.0,
+        asynch: true,
       );
 
       if (output != null && output.isNotEmpty) {
-       
         output.sort((a, b) => b['confidence'].compareTo(a['confidence']));
 
-       
         print("Top 3 Predictions:");
         for (int i = 0; i < output.length && i < 3; i++) {
           print(
               "Prediction ${i + 1}: ${output[i]['label']} with confidence ${output[i]['confidence']}");
         }
 
-       
         bool matchFound = false;
 
         for (int i = 0; i < output.length && i < 3; i++) {
-          String label = output[i]['label']
-              .split(' ')[1]; 
+          String label = output[i]['label'].split(' ')[1];
           if (label == widget.lesson.character) {
             matchFound = true;
             break;
           }
         }
 
-        
         if (!matchFound) {
           matchFound = isSpecificWordCheck(widget.lesson.character, output);
         }
 
-        
         setState(() {
           _output = output;
           isMatch = matchFound;
@@ -567,10 +560,8 @@ class _DrawingScreenState extends State<DrawingScreen> {
     }
   }
 
-
   Future<File?> preprocessImage(File imageFile) async {
     try {
-      
       Uint8List imageBytes = await imageFile.readAsBytes();
 
       img.Image? originalImage = img.decodeImage(imageBytes);
@@ -586,17 +577,16 @@ class _DrawingScreenState extends State<DrawingScreen> {
       // set to png
       Uint8List resizedBytes = img.encodePng(resizedImage);
 
-      // temporaroy dir to save 
+      // temporaroy dir to save
       final Directory tempDir = await Directory.systemTemp.createTemp();
       final File preprocessedFile =
           File('${tempDir.path}/preprocessed_image.png');
-
 
       await preprocessedFile.writeAsBytes(resizedBytes);
       return preprocessedFile;
     } catch (e) {
       print('Error in image preprocessing: $e');
-      return null; 
+      return null;
     }
   }
 
@@ -624,8 +614,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   bool drawingChecker(
       List<Offset?> userPoints, List<Offset?> guidePoints, double threshold) {
-   
-
     List<List<Offset>> userStrokes = splitIntoStrokes(userPoints);
     List<List<Offset>> guideStrokes = splitIntoStrokes(guidePoints);
 
@@ -633,10 +621,10 @@ class _DrawingScreenState extends State<DrawingScreen> {
     if (userStrokes.length < guideStrokes.length) {
       print(
           'Number of strokes does not match: ${userStrokes.length} vs ${guideStrokes.length}');
-      return false; 
+      return false;
     } else if (userStrokes.length > guideStrokes.length) {
       print('Number of strokes exceed the correct amount');
-      return false; 
+      return false;
     }
 
     for (int i = 0; i < guideStrokes.length; i++) {
@@ -661,7 +649,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
               return false; // Mismatch if last point is too far from remaining guide points
             }
           }
-        
+
           break;
         }
       }
@@ -832,7 +820,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             // WORD SOUND
                             const Gap(20),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: sayTheSoundWord,
                               child: Column(
                                 children: [
                                   Container(

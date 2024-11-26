@@ -53,6 +53,7 @@ class _SelectedItemState extends State<SelectedItem>
 
   @override
   void initState() {
+    print(widget.lesson.character);
     super.initState();
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 800),

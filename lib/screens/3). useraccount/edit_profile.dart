@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:test_drawing/screens/1).%20insideapp/5.%20progress/categoryList.dart';
 import 'package:test_drawing/screens/1).%20insideapp/5.%20progress/progressScreen.dart';
 import 'package:test_drawing/screens/3).%20useraccount/choose_profile.dart';
@@ -16,6 +21,7 @@ class EditProfile extends StatefulWidget {
     required this.name,
     required this.age,
     required this.avatar,
+    required this.avatarImage,
     required this.profileId,
     required this.lessonId,
     required this.pin,
@@ -25,6 +31,7 @@ class EditProfile extends StatefulWidget {
   final String name;
   final String age;
   final String avatar;
+  final String avatarImage;
   final String profileId;
   final String lessonId;
   final String pin;
@@ -43,24 +50,68 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController pinController = TextEditingController();
   String name = '';
   String userId = FirebaseAuth.instance.currentUser!.uid;
+  String avatar = "";
+  String url = "";
 
   void updateProfile() async {
-    if (selectedAvatar != -1 &&
-        selectedIndex != -1 &&
-        nameController.text.isNotEmpty) {
+    print(selectedAvatar);
+    // print(image);
+
+    print(selectedIndex);
+
+    print(nameController.text);
+
+    if ((selectedAvatar != -1 || image != "") &&
+        nameController.text != "" &&
+        pinController.text != "" &&
+        pinController.text.length == 4) {
+      if (image != null) {
+        final imageTemporary = File(image!.path);
+        final User? user = _auth.currentUser;
+        final _uid = user?.uid;
+
+        String imageName = nameController.text + _uid!;
+
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('profileImage')
+            .child('$imageName.jpg');
+        await ref.putFile(imageTemporary);
+
+        url = await ref.getDownloadURL();
+      }
+
       try {
-        // Update the profile document in Firestore
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userId) // Ensure to have the parent user document reference
-            .collection('profiles')
-            .doc(widget.profileId) // Use the profile ID to locate the document
-            .update({
-          'name': nameController.text,
-          'pin': pinController.text,
-          'age': (selectedIndex + 2).toString(),
-          'avatar': (selectedAvatar + 1).toString(),
-        });
+        if (selectedAvatar == -1) {
+          // Update the profile document in Firestore
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userId) // Ensure to have the parent user document reference
+              .collection('profiles')
+              .doc(
+                  widget.profileId) // Use the profile ID to locate the document
+              .update({
+            'name': nameController.text,
+            'pin': pinController.text,
+            'age': (selectedIndex + 2).toString(),
+            'avatar': "",
+            'avatarImage': url,
+          });
+        } else {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userId) // Ensure to have the parent user document reference
+              .collection('profiles')
+              .doc(
+                  widget.profileId) // Use the profile ID to locate the document
+              .update({
+            'name': nameController.text,
+            'pin': pinController.text,
+            'age': (selectedIndex + 2).toString(),
+            'avatar': (selectedAvatar + 1).toString(),
+            'avatarImage': "",
+          });
+        }
 
         // Navigate back to the ChooseProfile screen or provide feedback
         Navigator.of(context).pushReplacement(
@@ -70,8 +121,37 @@ class _EditProfileState extends State<EditProfile> {
         print('Error updating profile: $error');
       }
     } else {
-      print('Provide all inputs');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please fill up all the requirements"),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
+  }
+
+  File? image;
+
+  Future<void> _pickedImageGallery() async {
+    try {
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (pickedFile != null) {
+        print('pask pickedfile');
+        image = File(pickedFile.path);
+        selectedAvatar = -1;
+        setState(() {});
+      } else {
+        print("No image selected.");
+      }
+    } catch (e) {
+      print("Error picking image: $e");
+    }
+
+    print('nakakapask');
+    print(selectedAvatar);
+    print(image);
   }
 
   @override
@@ -80,6 +160,7 @@ class _EditProfileState extends State<EditProfile> {
     nameController.text = widget.name;
     pinController.text = widget.pin;
     name = widget.name;
+    avatar = widget.avatarImage;
 
     // Initialize selectedIndex based on the age
     selectedIndex =
@@ -142,11 +223,14 @@ class _EditProfileState extends State<EditProfile> {
                             ),
                             child: CircleAvatar(
                               radius: 35,
-                              backgroundImage: selectedAvatar != -1
-                                  ? AssetImage(
-                                      'assets/loginRegister/avatars/${selectedAvatar + 1}.png')
-                                  : const AssetImage(
-                                      'assets/loginRegister/avatars/1.png'),
+                              backgroundImage: image != null &&
+                                      selectedAvatar == -1
+                                  ? FileImage(image!) as ImageProvider
+                                  : (selectedAvatar >= 0
+                                      ? AssetImage(
+                                              'assets/loginRegister/avatars/${selectedAvatar + 1}.png')
+                                          as ImageProvider
+                                      : NetworkImage(avatar)),
                             ),
                           ),
                           const SizedBox(height: 5),
@@ -439,6 +523,8 @@ class _EditProfileState extends State<EditProfile> {
                                   ),
                                   TextField(
                                     controller: pinController,
+                                    keyboardType: TextInputType.number,
+                                    maxLength: 4,
                                     // readOnly: true,
                                     decoration: const InputDecoration(
                                       filled: true,
@@ -447,7 +533,7 @@ class _EditProfileState extends State<EditProfile> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(16)),
                                       ),
-                                      hintText: 'Name',
+                                      hintText: 'Pin',
                                     ),
                                   ),
                                   const SizedBox(height: 10),
@@ -526,35 +612,73 @@ class _EditProfileState extends State<EditProfile> {
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
-                                        children: List.generate(3, (index) {
-                                          return GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                selectedAvatar = index + 3;
-                                              });
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                  color: selectedAvatar ==
-                                                          index + 3
-                                                      ? Colors.blue
-                                                      : Colors.transparent,
-                                                  width: 2,
+                                        children: List.generate(
+                                          3, // Generate 3 elements
+                                          (index) {
+                                            if (index == 2) {
+                                              // For the 3rd container
+                                              return GestureDetector(
+                                                onTap: _pickedImageGallery,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    border: Border.all(
+                                                      color: selectedAvatar ==
+                                                              index + 3
+                                                          ? Colors.blue
+                                                          : Colors.blueGrey,
+                                                      width: 2,
+                                                    ),
+                                                  ),
+                                                  child: CircleAvatar(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    radius:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.042,
+                                                    child: Icon(
+                                                      Icons.photo,
+                                                      color: Colors.blueGrey,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                              child: CircleAvatar(
-                                                radius: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.042,
-                                                backgroundImage: AssetImage(
-                                                    'assets/loginRegister/avatars/${index + 4}.png'),
-                                              ),
-                                            ),
-                                          );
-                                        }),
+                                              );
+                                            } else {
+                                              // For the other containers
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    selectedAvatar = index +
+                                                        3; // Update selected avatar
+                                                  });
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    border: Border.all(
+                                                      color: selectedAvatar ==
+                                                              index + 3
+                                                          ? Colors.blue
+                                                          : Colors.transparent,
+                                                      width: 2,
+                                                    ),
+                                                  ),
+                                                  child: CircleAvatar(
+                                                    radius:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.042,
+                                                    backgroundImage: AssetImage(
+                                                        'assets/loginRegister/avatars/${index + 4}.png'),
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        ),
                                       ),
                                     ],
                                   ),

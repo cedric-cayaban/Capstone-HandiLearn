@@ -13,7 +13,7 @@
     </intent>
 </queries>
     <application
-        android:label="test_drawing"
+        android:label="HandiLearn"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true"

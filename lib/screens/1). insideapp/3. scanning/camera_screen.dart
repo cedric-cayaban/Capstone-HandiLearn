@@ -87,6 +87,13 @@ class _nameState extends State<CameraScreen> {
               children: [
                 Image.asset(
                     'assets/insideApp/scanning/objects/$_randomNumber.gif'),
+                Text(
+                  labels[_randomNumber],
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
             actions: [

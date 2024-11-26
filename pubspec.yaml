@@ -58,6 +58,13 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.14.1
+
+flutter_launcher_icons: 
+  android: true
+  image_path: "assets/final.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/final.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -85,6 +92,7 @@ flutter:
     - assets/insideApp/games/
     - assets/insideApp/games/letter search/
     - assets/insideApp/games/memory game/
+    - assets/insideApp/games/quiz/
     - assets/insideApp/games/2/
     - assets/insideApp/games/word search/
     - assets/insideApp/games/sliding puzzle/

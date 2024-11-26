@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/game_selection.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/memory%20game/game_utils.dart';
@@ -45,6 +47,159 @@ class _MemoryGameState extends State<MemoryGame> {
     _game.initGame();
   }
 
+  var gameInstruction = [
+    {
+      'title': 'Look at the Cards',
+      'text':
+          'All the cards start face down. Tap to flip them and find matching pictures!',
+    },
+    {
+      'title': 'Tap to Flip',
+      'text':
+          "Tap on a card with a question mark to flip it over and see what’s underneath.",
+    },
+    {
+      'title': 'Find the Match',
+      'text':
+          "Try to remember where each picture is and find two cards that match. For example, look for two cards with the same letter or character.",
+    },
+    {
+      'title': 'Keep Going',
+      'text':
+          "Once you find a matching pair, they’ll stay face-up. Keep flipping cards to find all the pairs.",
+    },
+    {
+      'title': 'Have Fun!',
+      'text': "Keep matching until all the pairs are found. Good luck!",
+    },
+  ];
+  final PageController _controller = PageController();
+  int _currentPage = 0;
+
+  void _nextPage() {
+    if (_currentPage < gameInstruction.length) {
+      _controller.nextPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _previousPage() {
+    if (_currentPage > 0) {
+      _controller.previousPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void loadInstructions() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            dialogBackgroundColor: Colors.white,
+          ),
+          child: AlertDialog(
+            backgroundColor: Colors.white,
+            contentPadding: EdgeInsets.all(16),
+            content: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setDialogState) {
+                return SingleChildScrollView(
+                  child: SizedBox(
+                    height: 350,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: PageView(
+                            controller: _controller,
+                            onPageChanged: (index) {
+                              setDialogState(() {
+                                _currentPage = index;
+                              });
+                            },
+                            children: [
+                              ...List.generate(gameInstruction.length, (index) {
+                                return Column(
+                                  // Align content to the start
+                                  children: [
+                                    Text(
+                                      gameInstruction[index]['title']!,
+                                      style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 23,
+                                      ),
+                                    ),
+                                    Gap(20),
+                                    Image.asset(
+                                      'assets/insideApp/games/memory game/memory${index + 1}.png',
+                                      width:
+                                          200, // Adjust image size to fit better
+                                      height: 100,
+                                      fit: BoxFit.fill,
+                                    ),
+                                    Gap(20),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        gameInstruction[index]['text']!,
+                                        style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }),
+                              // WordSearchTip1(),
+                              // WordSearchTip2(),
+                              // WordSearchTip3(),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            IconButton(
+                              onPressed:
+                                  _currentPage > 0 ? _previousPage : null,
+                              icon: Icon(Icons.arrow_back),
+                              color:
+                                  _currentPage > 0 ? Colors.blue : Colors.grey,
+                            ),
+                            Text(' ${_currentPage + 1}'),
+                            IconButton(
+                              onPressed: _currentPage < gameInstruction.length
+                                  ? _nextPage
+                                  : null,
+                              icon: Icon(Icons.arrow_forward),
+                              color: _currentPage < gameInstruction.length - 1
+                                  ? Colors.blue
+                                  : Colors.grey,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    ).then((_) {
+      // Reset the current page to 0 when the dialog is closed
+      setState(() {
+        _currentPage = 0;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -62,6 +217,26 @@ class _MemoryGameState extends State<MemoryGame> {
                 height: MediaQuery.of(context).size.height * 0.045,
                 "assets/insideApp/close.png"),
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                loadInstructions();
+              },
+              icon: Container(
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Image.asset(
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      "assets/insideApp/games/instruction.png"),
+                ),
+              ),
+            ),
+          ],
         ),
         extendBodyBehindAppBar: true,
         body: Stack(

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:test_drawing/screens/1).%20insideapp/4.%20games/game_selection.dart';
+import 'package:test_drawing/screens/1).%20insideapp/4.%20games/instructions/word_search.dart';
 
 class Quiz extends StatefulWidget {
   Quiz({required this.difficulty, super.key});
@@ -15,7 +18,7 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
   late List<String> options = [];
   late String correctAnswer;
   String? selectedOption;
-  AnimationController? _controller;
+  AnimationController? _animationController;
   Animation<Color?>? _colorAnimation;
   int tries = 2;
   late int tileNum;
@@ -31,14 +34,14 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    _animationController = AnimationController(
       duration: Duration(milliseconds: 200),
       vsync: this,
     );
     _colorAnimation = ColorTween(
       begin: Colors.blueAccent,
       end: Colors.redAccent,
-    ).animate(_controller!);
+    ).animate(_animationController!);
     initializeGame();
   }
 
@@ -64,7 +67,7 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _animationController?.dispose();
     super.dispose();
   }
 
@@ -108,12 +111,161 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
       );
     } else {
       setState(() => selectedOption = option);
-      _controller?.forward().then((_) {
-        _controller?.reverse().then((_) {
+      _animationController?.forward().then((_) {
+        _animationController?.reverse().then((_) {
           checkAnswer(option);
         });
       });
     }
+  }
+
+  var gameInstruction = [
+    {
+      'title': 'Read the Question',
+      'text':
+          'At the top of the screen, you’ll see a question. Read it carefully to find out what letter it’s asking about.',
+    },
+    {
+      'title': 'Choose the Answer',
+      'text':
+          "Below the question, you’ll see two colored boxes with letters. Tap on the box with the letter you think is the correct answer",
+    },
+    {
+      'title': 'Tries Left',
+      'text':
+          "You have a few tries to get the right answer! Look at the bottom of the screen to see how many tries you have left.",
+    },
+    {
+      'title': 'Have Fun!',
+      'text':
+          "Keep playing to guess more words and have fun learning new things!",
+    },
+  ];
+  final PageController _controller = PageController();
+  int _currentPage = 0;
+
+  void _nextPage() {
+    if (_currentPage < gameInstruction.length) {
+      _controller.nextPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _previousPage() {
+    if (_currentPage > 0) {
+      _controller.previousPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void loadInstructions() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            dialogBackgroundColor: Colors.white,
+          ),
+          child: AlertDialog(
+            backgroundColor: Colors.white,
+            contentPadding: EdgeInsets.all(16),
+            content: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setDialogState) {
+                return SingleChildScrollView(
+                  child: SizedBox(
+                    height: 350,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: PageView(
+                            controller: _controller,
+                            onPageChanged: (index) {
+                              setDialogState(() {
+                                _currentPage = index;
+                              });
+                            },
+                            children: [
+                              ...List.generate(gameInstruction.length, (index) {
+                                return Column(
+                                  // Align content to the start
+                                  children: [
+                                    Text(
+                                      gameInstruction[index]['title']!,
+                                      style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 23,
+                                      ),
+                                    ),
+                                    Gap(20),
+                                    Image.asset(
+                                      'assets/insideApp/games/quiz/quiz${index + 1}.png',
+                                      width:
+                                          200, // Adjust image size to fit better
+                                      height: 100,
+                                      fit: BoxFit.fill,
+                                    ),
+                                    Gap(20),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        gameInstruction[index]['text']!,
+                                        style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }),
+                              // WordSearchTip1(),
+                              // WordSearchTip2(),
+                              // WordSearchTip3(),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            IconButton(
+                              onPressed:
+                                  _currentPage > 0 ? _previousPage : null,
+                              icon: Icon(Icons.arrow_back),
+                              color:
+                                  _currentPage > 0 ? Colors.blue : Colors.grey,
+                            ),
+                            Text(' ${_currentPage + 1}'),
+                            IconButton(
+                              onPressed: _currentPage < gameInstruction.length
+                                  ? _nextPage
+                                  : null,
+                              icon: Icon(Icons.arrow_forward),
+                              color: _currentPage < gameInstruction.length - 1
+                                  ? Colors.blue
+                                  : Colors.grey,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    ).then((_) {
+      // Reset the current page to 0 when the dialog is closed
+      setState(() {
+        _currentPage = 0;
+      });
+    });
   }
 
   @override
@@ -131,6 +283,26 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
               height: MediaQuery.of(context).size.height * 0.045,
               "assets/insideApp/close.png"),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              loadInstructions();
+            },
+            icon: Container(
+              height: 80,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Image.asset(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    "assets/insideApp/games/instruction.png"),
+              ),
+            ),
+          ),
+        ],
       ),
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -252,8 +424,7 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
             ),
           ),
           Positioned(
-            bottom: MediaQuery.of(context).size.height * .08,
-            left: 30,
+            top: MediaQuery.of(context).size.height * .37,
             child: Text(
               'Tries left: $tries',
               style: TextStyle(
