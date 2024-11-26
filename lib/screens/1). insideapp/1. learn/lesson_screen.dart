@@ -37,6 +37,8 @@ class _LessonScreenState extends State<LessonScreen> {
     super.initState();
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
