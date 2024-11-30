@@ -53,6 +53,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
   bool isMatch = false;
   bool checkPressed = false;
   bool isLoading = true;
+  int starRating = 0;
 
   Map<String, dynamic> guidePoints = {};
   final GlobalKey _drawingAreaKey = GlobalKey(); // Key for the drawing area
@@ -148,7 +149,15 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
     String checkAsset;
     if (isMatch) {
-      checkAsset = 'assets/insideApp/learnWriting/components/dancing.gif';
+      if (starRating == 3) {
+        checkAsset = 'assets/insideApp/learnWriting/components/3-star.gif';
+      } else if (starRating == 2) {
+        checkAsset = 'assets/insideApp/learnWriting/components/2-star.gif';
+      } else if (starRating == 1) {
+        checkAsset = 'assets/insideApp/learnWriting/components/1-star.gif';
+      } else {
+        checkAsset = 'assets/insideApp/learnWriting/components/dancing.gif';
+      }
     } else {
       checkAsset = 'assets/insideApp/learnWriting/components/error.gif';
     }
@@ -667,6 +676,102 @@ class _DrawingScreenState extends State<DrawingScreen> {
     return true; // All strokes and points match
   }
 
+  bool drawingCheckerWithRating(
+      List<Offset?> userPoints,
+      List<Offset?> guidePoints,
+      double threshold,
+      double highThreshold,
+      double mediumThreshold,
+      Function(int) updateRating) {
+    // Keep the original logic for determining correctness
+    List<List<Offset>> userStrokes = splitIntoStrokes(userPoints);
+    List<List<Offset>> guideStrokes = splitIntoStrokes(guidePoints);
+
+    if (userStrokes.length < guideStrokes.length) {
+      print(
+          'Number of strokes does not match: ${userStrokes.length} vs ${guideStrokes.length}');
+      return false;
+    } else if (userStrokes.length > guideStrokes.length) {
+      print('Number of strokes exceed the correct amount');
+      return false;
+    }
+
+    double totalDeviation = 0.0; // Track total deviation for star rating
+    int pointCount = 0; // Track total points compared for rating calculation
+
+    for (int i = 0; i < guideStrokes.length; i++) {
+      List<Offset> userStroke = userStrokes[i];
+      List<Offset> guideStroke = guideStrokes[i];
+
+      for (int j = 0; j < guideStroke.length; j++) {
+        if (j < userStroke.length) {
+          // Check threshold for correctness
+          if ((userStroke[j] - guideStroke[j]).distance > threshold) {
+            print(
+                'Point mismatch in stroke $i at index $j: ${userStroke[j]} vs ${guideStroke[j]}');
+            return false; // Incorrect drawing
+          }
+
+          // Calculate deviation for rating
+          totalDeviation += (userStroke[j] - guideStroke[j]).distance;
+          pointCount++;
+        } else {
+          // Check last point of user stroke against remaining guide points
+          final lastUserPoint = userStroke.last;
+          for (int k = j; k < guideStroke.length; k++) {
+            if ((lastUserPoint - guideStroke[k]).distance > threshold) {
+              print('User stroke $i is too short and far from guide stroke $k');
+              return false; // Incorrect drawing
+            }
+
+            // Calculate deviation for remaining points
+            totalDeviation += (lastUserPoint - guideStroke[k]).distance;
+            pointCount++;
+          }
+          break;
+        }
+      }
+
+      // Handle extra points in user stroke
+      if (userStroke.length > guideStroke.length) {
+        for (int j = guideStroke.length; j < userStroke.length; j++) {
+          double deviation = (userStroke[j] - guideStroke.last).distance;
+          if (deviation > threshold) {
+            print('User stroke $i exceeds the endpoint of guide stroke $i');
+            return false; // Incorrect drawing
+          }
+
+          // Calculate deviation for extra points
+          totalDeviation += deviation;
+          pointCount++;
+        }
+      }
+    }
+
+    // If we reach here, the drawing is correct
+    print('Drawing matches the guide points.');
+
+    // Calculate average deviation for rating
+    double averageDeviation = totalDeviation / pointCount;
+
+    // Determine star rating based on deviation thresholds
+    int rating;
+    if (averageDeviation <= highThreshold) {
+      rating = 3; // 3 stars for high accuracy
+    } else if (averageDeviation <= mediumThreshold) {
+      rating = 2; // 2 stars for medium accuracy
+    } else {
+      rating = 1; // 1 star for low accuracy
+    }
+
+    print('rating is ${rating}');
+
+    // Update the rating using the callback
+    updateRating(rating);
+
+    return true; // Drawing is correct
+  }
+
   List<Offset?> resamplePoints(List<Offset?> points, double interval) {
     List<Offset?> resampledPoints = [];
     if (points.isEmpty) return resampledPoints;
@@ -907,7 +1012,14 @@ class _DrawingScreenState extends State<DrawingScreen> {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                        await classifyDrawing(guidePointsForLetter);
+                        // await classifyDrawing(guidePointsForLetter);
+                        isMatch = drawingChecker(
+                            resampledPoints,
+                            getGuidePoints(
+                                widget.lesson.type, characterKey, canvasSize),
+                            widget.lesson.type == 'word'
+                                ? 140
+                                : 100); // Threshold
                         checkPressed = true;
 
                         setState(() {
@@ -1085,14 +1197,32 @@ class _DrawingScreenState extends State<DrawingScreen> {
                                     getGuidePoints(widget.lesson.type,
                                         characterKey, canvasSize);
 
-                                isMatch = drawingChecker(
-                                    resampledPoints,
-                                    getGuidePoints(widget.lesson.type,
-                                        characterKey, canvasSize),
-                                    widget.lesson.type == 'cursive'
-                                        ? 140
-                                        : 100); // Threshold
+                                // isMatch = drawingChecker(
+                                //     resampledPoints,
+                                //     getGuidePoints(widget.lesson.type,
+                                //         characterKey, canvasSize),
+                                //     widget.lesson.type == 'cursive'
+                                //         ? 140
+                                //         : 100); // Threshold
 
+                                isMatch = drawingCheckerWithRating(
+                                  resampledPoints,
+                                  getGuidePoints(widget.lesson.type,
+                                      characterKey, canvasSize),
+                                  widget.lesson.type == 'cursive'
+                                      ? 140
+                                      : 100, // Threshold for correctness
+                                  widget.lesson.type == 'cursive'
+                                      ? 50
+                                      : 15, // High threshold for 3 stars
+                                  widget.lesson.type == 'cursive'
+                                      ? 100
+                                      : 30, // Medium threshold for 2 stars
+                                  (int rating) {
+                                    starRating =
+                                        rating; // Update the star rating using callback
+                                  },
+                                );
                                 setState(() {
                                   loadPopUpModal(isMatch);
                                 });

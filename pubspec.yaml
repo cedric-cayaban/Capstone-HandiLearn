@@ -60,7 +60,7 @@ dev_dependencies:
     sdk: flutter
   flutter_launcher_icons: ^0.14.1
 
-flutter_launcher_icons: 
+flutter_launcher_icons:
   android: true
   image_path: "assets/final.png"
   adaptive_icon_background: "#ffffff"
