@@ -150,11 +150,11 @@ class _DrawingScreenState extends State<DrawingScreen> {
     String checkAsset;
     if (isMatch) {
       if (starRating == 3) {
-        checkAsset = 'assets/insideApp/learnWriting/components/3-star.gif';
+        checkAsset = 'assets/insideApp/learnWriting/components/3-star.png';
       } else if (starRating == 2) {
-        checkAsset = 'assets/insideApp/learnWriting/components/2-star.gif';
+        checkAsset = 'assets/insideApp/learnWriting/components/2-star.png';
       } else if (starRating == 1) {
-        checkAsset = 'assets/insideApp/learnWriting/components/1-star.gif';
+        checkAsset = 'assets/insideApp/learnWriting/components/1-star.png';
       } else {
         checkAsset = 'assets/insideApp/learnWriting/components/dancing.gif';
       }

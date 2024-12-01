@@ -11,7 +11,7 @@ List<List<Progress>> categoryList = [
   // WORDS
   [
     Progress(name: 'Words_Reading', total: 10),
-    Progress(name: 'Words_Writing', total: 10),
+    Progress(name: 'Words_Writing', total: 20),
     Progress(name: 'Cursive Words_Writing', total: 10),
   ],
 
