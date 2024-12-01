@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,26 +21,42 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
   late int gridSize;
   late int tileCount; // Total number of tiles based on grid size
   late String fullImageAsset;
+  List<String> puzzleEasy = ['A', 'B', 'C', 'D', 'E'];
+  List<String> puzzleNormal = ['a', 'b', 'c', 'd', 'e'];
+  List<String> puzzleHard = ['PIG', 'CAT', 'KITE', 'ORANGE', 'APPLE'];
+  late String randomItem;
 
   @override
   void initState() {
     super.initState();
-    // Set the grid size and tile count based on difficulty
-    gridSize = widget.difficulty == 'Easy'
-        ? 2
-        : widget.difficulty == 'Normal'
-            ? 3
-            : 3;
+
+    _randomItems();
+
+    gridSize = widget.difficulty != 'Hard' ? 2 : 3;
     tileCount = gridSize * gridSize;
+    _initializePuzzle();
+  }
+
+  void _randomItems() {
+    final random = Random();
+    List<String> puzzleList;
+    String difficultyPath;
+
     if (widget.difficulty == 'Easy') {
-      fullImageAsset = 'assets/insideApp/games/sliding puzzle/2by2/b.png';
+      puzzleList = puzzleEasy;
+      difficultyPath = 'EASY';
     } else if (widget.difficulty == 'Normal') {
-      fullImageAsset = 'assets/insideApp/games/sliding puzzle/3by3/b.png';
+      puzzleList = puzzleNormal;
+      difficultyPath = 'NORMAL';
     } else {
-      fullImageAsset = 'assets/insideApp/games/sliding puzzle/4by4/b.png';
+      puzzleList = puzzleHard;
+      difficultyPath = 'HARD';
     }
 
-    _initializePuzzle();
+    int randomIndex = random.nextInt(puzzleList.length);
+    randomItem = puzzleList[randomIndex];
+    fullImageAsset =
+        'assets/insideApp/games/sliding puzzle/$difficultyPath/$randomItem.png';
   }
 
   void _initializePuzzle() {
@@ -106,7 +124,7 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
     // Set the image asset path based on tile index
     if (widget.difficulty == "Hard") {
       String imageAsset =
-          'assets/insideApp/games/sliding puzzle/4by4/b${tiles[tileIndex]}.png';
+          'assets/insideApp/games/sliding puzzle/HARD/$randomItem${tiles[tileIndex] + 1}.png';
       return GestureDetector(
         onTap: () => _moveTile(tileIndex), // Move tile when tapped
         child: Container(
@@ -127,9 +145,25 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
               borderRadius: BorderRadius.circular(10)),
         ),
       );
+    } else if (widget.difficulty == "Normal") {
+      String imageAsset =
+          'assets/insideApp/games/sliding puzzle/NORMAL/$randomItem${tiles[tileIndex] + 1}.png';
+      return GestureDetector(
+        onTap: () => _moveTile(tileIndex), // Move tile when tapped
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white, width: 1.0),
+            image: DecorationImage(
+              image: AssetImage(imageAsset),
+              fit: BoxFit.fill,
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      );
     } else {
       String imageAsset =
-          'assets/insideApp/games/sliding puzzle/${gridSize}by${gridSize}/b${tiles[tileIndex]}.png';
+          'assets/insideApp/games/sliding puzzle/EASY/$randomItem${tiles[tileIndex] + 1}.png';
       return GestureDetector(
         onTap: () => _moveTile(tileIndex), // Move tile when tapped
         child: Container(
@@ -391,7 +425,13 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: Image.asset(fullImageAsset),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(25),
+                  child: Image.asset(
+                    fullImageAsset,
+                    fit: BoxFit.fill,
+                  ),
+                ),
               ),
             ),
           ),

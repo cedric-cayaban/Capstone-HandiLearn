@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:test_drawing/data/userAccount.dart';
 import 'package:test_drawing/screens/3).%20useraccount/login.dart';
 import 'package:test_drawing/screens/3).%20useraccount/register.dart';
@@ -165,7 +166,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(10),
                     onTap: () async {
-                      FirebaseAuth.instance.currentUser!.delete();
+                      await FirebaseAuth.instance.currentUser!.delete();
                       Navigator.pop(context);
                       Navigator.of(context).push(
                         MaterialPageRoute(
@@ -204,8 +205,15 @@ class _VerifyEmailState extends State<VerifyEmail> {
   }
 
   void resendEmail() async {
-    await FirebaseAuth.instance.currentUser!.reload();
-    await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+    try {
+      await FirebaseAuth.instance.currentUser!.reload();
+      await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+    } catch (e) {
+      QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text: "Please check your email");
+    }
   }
 
   @override
@@ -298,7 +306,8 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 ),
                 SizedBox(height: 0), // No extra space between buttons
                 TextButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await FirebaseAuth.instance.currentUser!.delete();
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (_) => LoginScreen()),
                     );

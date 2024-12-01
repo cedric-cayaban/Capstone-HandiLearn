@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,6 +24,107 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
   Animation<Color?>? _colorAnimation;
   int tries = 2;
   late int tileNum;
+  var items;
+
+  var questions = [
+    //EASY
+    {
+      "difficulty": "Easy",
+      "options": ['A', 'B'],
+      "questions": '''I am the first letter on the alphabet. Who am I?''',
+      "answer": 'A',
+    },
+    {
+      "difficulty": "Easy",
+      "options": ['C', 'B'],
+      "questions": '''I am the second letter on the alphabet. Who am I?''',
+      "answer": 'B',
+    },
+    {
+      "difficulty": "Easy",
+      "options": ['A', 'C'],
+      "questions": '''I am the third letter on the alphabet. Who am I?''',
+      "answer": 'C',
+    },
+    {
+      "difficulty": "Easy",
+      "options": ['D', 'B'],
+      "questions": '''I am the fourth letter on the alphabet. Who am I?''',
+      "answer": 'D',
+    },
+    {
+      "difficulty": "Easy",
+      "options": ['A', 'E'],
+      "questions": '''I am the fifth letter on the alphabet. Who am I?''',
+      "answer": 'E',
+    },
+    //NORMAL
+    {
+      "difficulty": "Normal",
+      "options": ['J', 'K', 'A', 'E'],
+      "questions": '''I am the tenth letter of the alphabet. Who am I?''',
+      "answer": 'J',
+    },
+    {
+      "difficulty": "Normal",
+      "options": ['E', 'F', 'A', 'E'],
+      "questions": '''I am the fifth letter of the alphabet. Who am I?''',
+      "answer": 'E',
+    },
+    {
+      "difficulty": "Normal",
+      "options": ['M', 'A', 'H', 'N'],
+      "questions": '''I am the thirteenth letter of the alphabet. Who am I?''',
+      "answer": 'M',
+    },
+    {
+      "difficulty": "Normal",
+      "options": ['A', 'E', 'O', 'P'],
+      "questions": '''I am the fifteenth letter of the alphabet. Who am I?''',
+      "answer": 'O',
+    },
+    {
+      "difficulty": "Normal",
+      "options": ['A', 'E', 'T', 'S'],
+      "questions": '''I am the nineteenth letter of the alphabet. Who am I?''',
+      "answer": 'S',
+    },
+    //HARD
+    {
+      "difficulty": "Hard",
+      "options": ['Apple', 'Banana', 'Grapes', 'Mango'],
+      "questions": '''I am a red fruit that keeps the doctor away. Who am I?''',
+      "answer": 'Apple',
+    },
+    {
+      "difficulty": "Hard",
+      "options": ['Orange', 'Peach', 'Plum', 'Lemon'],
+      "questions":
+          '''I am a citrus fruit that shares my name with a color. Who am I?''',
+      "answer": 'Orange',
+    },
+    {
+      "difficulty": "Hard",
+      "options": ['Pig', 'Cow', 'Sheep', 'Horse'],
+      "questions":
+          '''I am a farm animal known for my curly tail and oinking sound. Who am I?''',
+      "answer": 'Pig',
+    },
+    {
+      "difficulty": "Hard",
+      "options": ['Dog', 'Wolf', 'Fox', 'Lion'],
+      "questions":
+          '''I am known as man's best friend and love to bark. Who am I?''',
+      "answer": 'Dog',
+    },
+    {
+      "difficulty": "Hard",
+      "options": ['Cat', 'Rabbit', 'Squirrel', 'Hamster'],
+      "questions":
+          '''I am a pet that loves to purr and chase mice. Who am I?''',
+      "answer": 'Cat',
+    },
+  ];
 
   // List of colors for options
   List<Color> optionColors = [
@@ -42,26 +145,32 @@ class _QuizState extends State<Quiz> with SingleTickerProviderStateMixin {
       begin: Colors.blueAccent,
       end: Colors.redAccent,
     ).animate(_animationController!);
-    initializeGame();
+    initializeGame(widget.difficulty);
   }
 
-  void initializeGame() {
-    if (widget.difficulty == "Easy") {
+  void initializeGame(String difficulty) {
+    final random = Random();
+    if (difficulty == "Easy") {
       tileNum = 2;
-      options = ["B", "A"];
-      question = '''I am the first letter on the alphabet. Who am I?''';
-      correctAnswer = "A";
-    } else if (widget.difficulty == "Normal") {
-      tileNum = 4;
-      options = ["G", "A", "B", "E"];
-      question = '''I am the first letter on the alphabet. Who am I?''';
-      correctAnswer = "A";
     } else {
       tileNum = 4;
-      options = ["APPLE", "ORANGE", "PEAR", "BERRY"];
-      question =
-          '''I'm a sweet, crunchy fruit. You find me in pies and juice. Who Am I?''';
-      correctAnswer = "APPLE";
+    }
+
+    // Filter questions based on the selected difficulty
+    var filteredQuestions =
+        questions.where((q) => q['difficulty'] == difficulty).toList();
+
+    // Pick a random question from the filtered list
+    if (filteredQuestions.isNotEmpty) {
+      int randomIndex = random.nextInt(filteredQuestions.length);
+      var questionDisplay = filteredQuestions[randomIndex];
+
+      print(questionDisplay); // Debug: Display the selected question
+      question = questionDisplay["questions"].toString();
+      options = questionDisplay["options"] as List<String>;
+      correctAnswer = questionDisplay["answer"].toString();
+    } else {
+      print('No questions available for the selected difficulty: $difficulty');
     }
   }
 
