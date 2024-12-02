@@ -36,38 +36,100 @@ class _PictowordState extends State<Pictoword> with TickerProviderStateMixin {
     letters = generateRandomLetters().split('');
   }
 
+  List<Map<String, dynamic>> questions = [
+    // Easy
+    {
+      "difficulty": "Easy",
+      "imagePicto": "assets/insideApp/games/2/cat.png",
+      "hint": "I am a pet that purrs and chases mice. Who am I?",
+      "answer": "CAT",
+    },
+    {
+      "difficulty": "Easy",
+      "imagePicto": "assets/insideApp/games/2/dog.png",
+      "hint": "I love barking and wagging my tail. Who am I?",
+      "answer": "DOG",
+    },
+    {
+      "difficulty": "Easy",
+      "imagePicto": "assets/insideApp/games/2/pig.png",
+      "hint": "I roll in mud and say 'oink.' Who am I?",
+      "answer": "PIG",
+    },
+    // Normal
+    {
+      "difficulty": "Normal",
+      "imagePicto": "assets/insideApp/games/2/bike.png",
+      "hint": "I have two wheels, and you pedal me. What am I?",
+      "answer": "BIKE",
+    },
+    {
+      "difficulty": "Normal",
+      "imagePicto": "assets/insideApp/games/2/kite.png",
+      "hint": "I fly high in the sky with strings. What am I?",
+      "answer": "KITE",
+    },
+    {
+      "difficulty": "Normal",
+      "imagePicto": "assets/insideApp/games/2/bag.png",
+      "hint": "I carry your books and lunch. What am I?",
+      "answer": "BAG",
+    },
+    // Hard
+    {
+      "difficulty": "Hard",
+      "imagePicto": "assets/insideApp/games/2/apple.png",
+      "hint": "I am a fruit that keeps the doctor away. What am I?",
+      "answer": "APPLE",
+    },
+    {
+      "difficulty": "Hard",
+      "imagePicto": "assets/insideApp/games/2/book.png",
+      "hint": "I contain knowledge and stories. What am I?",
+      "answer": "BOOK",
+    },
+    {
+      "difficulty": "Hard",
+      "imagePicto": "assets/insideApp/games/2/chair.png",
+      "hint": "You sit on me every day. What am I?",
+      "answer": "CHAIR",
+    },
+  ];
+
   void initializeGame() {
-    // Set correctAnswer and other properties based on difficulty
-    if (widget.difficulty == "Easy") {
-      correctAnswer = "PIG";
-      tilesNum = 3;
-      imagePicto = "assets/insideApp/games/2/pig.png";
-      hint =
-          "This animal loves to roll in the mud and says 'oink oink!' Can you guess what it is?";
-    } else if (widget.difficulty == "Normal") {
-      correctAnswer = "BAG";
-      tilesNum = 6;
-      imagePicto = "assets/insideApp/games/2/bag.png";
-      hint =
-          "You carry your lunch and books in this. It hangs over your shoulder. What could it be?";
+    final random = Random();
+
+    // Filter questions by difficulty
+    var filteredQuestions =
+        questions.where((q) => q['difficulty'] == widget.difficulty).toList();
+
+    // Pick a random question
+    if (filteredQuestions.isNotEmpty) {
+      int randomIndex = random.nextInt(filteredQuestions.length);
+      var selectedQuestion = filteredQuestions[randomIndex];
+
+      correctAnswer = selectedQuestion["answer"]!;
+      imagePicto = selectedQuestion["imagePicto"]!;
+      hint = selectedQuestion["hint"]!;
+      tilesNum = widget.difficulty == "Easy"
+          ? 3
+          : widget.difficulty == "Normal"
+              ? 6
+              : 8;
     } else {
-      correctAnswer = "BIKE";
-      tilesNum = 8;
-      imagePicto = "assets/insideApp/games/2/bike.png";
-      hint =
-          "With two wheels, you can pedal fast and wear a helmet for safety. What is it?";
+      print('No questions available for the selected difficulty.');
     }
   }
 
   String generateRandomLetters() {
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     final random = Random();
     String randomLetters = correctAnswer;
     Set<String> usedLetters = correctAnswer.split('').toSet();
 
-    // Generate unique random letters until reaching tilesNum
+    // Generate unique letters
     while (randomLetters.length < tilesNum) {
-      String letter = letters[random.nextInt(letters.length)];
+      String letter = alphabet[random.nextInt(alphabet.length)];
       if (!usedLetters.contains(letter)) {
         randomLetters += letter;
         usedLetters.add(letter);
@@ -398,8 +460,11 @@ class _PictowordState extends State<Pictoword> with TickerProviderStateMixin {
     );
   }
 
+  // Track the indexes of the used letters
+  Set<int> usedIndexes = {};
+
   Widget buildLetterBox(int index, String letter) {
-    bool isUsed = usedLetters.contains(letter);
+    bool isUsed = usedIndexes.contains(index);
 
     // Initialize the animation for this tile if it doesn't exist
     if (!_animationControllers.containsKey(index)) {
@@ -419,6 +484,8 @@ class _PictowordState extends State<Pictoword> with TickerProviderStateMixin {
           : () {
               if (blankTiles.contains(null)) {
                 placeLetterInBlankTile(letter);
+                usedIndexes
+                    .add(index); // Mark this specific letter index as used
 
                 // Trigger the animation for the tapped tile only
                 _animationControllers[index]!
@@ -513,8 +580,15 @@ class _PictowordState extends State<Pictoword> with TickerProviderStateMixin {
     setState(() {
       String? letter = blankTiles[index];
       if (letter != null) {
+        // Remove letter from usedLetters and reset its index in usedIndexes
         usedLetters.remove(letter);
         blankTiles[index] = null;
+
+        // Find the index of the letter in the original letter list and remove it from usedIndexes
+        int originalIndex = letters.indexOf(letter);
+        if (originalIndex != -1) {
+          usedIndexes.remove(originalIndex);
+        }
       }
     });
   }
@@ -523,6 +597,7 @@ class _PictowordState extends State<Pictoword> with TickerProviderStateMixin {
     setState(() {
       blankTiles = List<String?>.filled(correctAnswer.length, null);
       usedLetters.clear();
+      usedIndexes.clear(); // Reset all used indexes
     });
   }
 }

@@ -473,19 +473,39 @@ class _SlidingPuzzleState extends State<SlidingPuzzle> {
               ),
             ),
           ),
+          // Positioned(
+          //   bottom: 16.0,
+          //   right: 20.0,
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //         color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          //     child: IconButton(
+          //       onPressed: _initializePuzzle, // Shuffle and restart the puzzle
+          //       icon: Icon(Icons.shuffle),
+          //       color: Colors.black,
+          //     ),
+          //   ),
+          // ),
           Positioned(
             bottom: 16.0,
             right: 20.0,
             child: Container(
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              child: IconButton(
-                onPressed: _initializePuzzle, // Shuffle and restart the puzzle
-                icon: Icon(Icons.shuffle),
-                color: Colors.black,
+                  color: Colors.blueAccent,
+                  borderRadius: BorderRadius.circular(10)),
+              child: TextButton(
+                onPressed: _initializePuzzle,
+                child: Text(
+                  'Shuffle again',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ),
+
           // Positioned(
           //   bottom: 16.0,
           //   right: 20.0,

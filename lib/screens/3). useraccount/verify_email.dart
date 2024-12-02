@@ -225,9 +225,28 @@ class _VerifyEmailState extends State<VerifyEmail> {
           elevation: 0,
           leading: IconButton(
             onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => RegisterScreen()),
+              QuickAlert.show(
+                context: context,
+                type: QuickAlertType.error,
+                title: 'Account will be deleted',
+                text: 'Are you sure you want to go back?',
+                onConfirmBtnTap: () {
+                  FirebaseAuth.instance.currentUser!.delete();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (_) => RegisterScreen()),
+                  );
+                },
+                cancelBtnText: "No",
+                confirmBtnText: "Yes",
+                showCancelBtn: true,
+                onCancelBtnTap: () {
+                  Navigator.of(context).pop();
+                },
               );
+              // Navigator.of(context).pushReplacement(
+              //   MaterialPageRoute(builder: (_) => RegisterScreen()),
+              // );
             },
             icon: const Icon(Icons.arrow_back_ios),
           ),
@@ -307,9 +326,28 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 SizedBox(height: 0), // No extra space between buttons
                 TextButton(
                   onPressed: () async {
-                    await FirebaseAuth.instance.currentUser!.delete();
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (_) => LoginScreen()),
+                    // await FirebaseAuth.instance.currentUser!.delete();
+                    // Navigator.of(context).pushReplacement(
+                    //   MaterialPageRoute(builder: (_) => LoginScreen()),
+                    // );
+                    QuickAlert.show(
+                      context: context,
+                      type: QuickAlertType.error,
+                      title: 'Account will be deleted',
+                      text: 'Are you sure you want to go back?',
+                      onConfirmBtnTap: () {
+                        FirebaseAuth.instance.currentUser!.delete();
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (_) => RegisterScreen()),
+                        );
+                      },
+                      cancelBtnText: "No",
+                      confirmBtnText: "Yes",
+                      showCancelBtn: true,
+                      onCancelBtnTap: () {
+                        Navigator.of(context).pop();
+                      },
                     );
                   },
                   child: Text('Back to login'),
