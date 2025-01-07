@@ -176,7 +176,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                             onTap: () {
                               print(widget.lessonTitle);
                               if (activityNames[index] == "Reading") {
-                                Navigator.of(context).push(
+                                Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         ReadingCharacterSelection(
@@ -188,7 +188,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                   ),
                                 );
                               } else {
-                                Navigator.of(context).push(
+                                Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         CharacterSelectionScreen(

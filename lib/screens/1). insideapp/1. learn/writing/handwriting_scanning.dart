@@ -249,13 +249,12 @@ class _HandwritingScanningState extends State<HandwritingScanning> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Transform.rotate(
-          angle: math.pi / 2, // Rotates the dialog by 45 degrees
-          child: Theme(
-            data: Theme.of(context).copyWith(
-              dialogBackgroundColor:
-                  Colors.white, // Change to your desired color
-            ),
+        return Theme(
+          data: Theme.of(context).copyWith(
+            dialogBackgroundColor: Colors.white, // Change to your desired color
+          ),
+          child: Transform.rotate(
+            angle: math.pi / 2, // Rotates the dialog by 45 degrees
             child: AlertDialog(
               content: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -303,15 +302,18 @@ class _HandwritingScanningState extends State<HandwritingScanning> {
           elevation: 0.0,
           leading: SizedBox(),
           actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (_) => Home()));
-                },
-                icon: Icon(
-                  Icons.arrow_upward,
-                  color: Colors.white,
-                ))
+            Transform.rotate(
+              angle: 3.14 / 2,
+              child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (_) => Home()));
+                  },
+                  icon: Icon(
+                    Icons.home,
+                    color: Colors.white,
+                  )),
+            )
           ],
         ),
         extendBodyBehindAppBar: true,

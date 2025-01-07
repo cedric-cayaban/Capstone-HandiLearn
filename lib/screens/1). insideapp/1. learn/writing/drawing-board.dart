@@ -218,7 +218,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             Navigator.of(context).pop();
                             var nextLesson =
                                 widget.forNextLesson[widget.index + 1];
-                            Navigator.of(context).push(
+                            Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) => DrawingScreen(
                                   lessonNumber: widget.lessonNumber,

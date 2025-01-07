@@ -156,7 +156,7 @@ class _LetterSelectionsScreenState extends State<CharacterSelectionScreen> {
                             return InkWell(
                               onTap: isUnlocked
                                   ? () {
-                                      Navigator.of(context).push(
+                                      Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                           builder: (context) => DrawingScreen(
                                             lessonNumber: widget.lessonNumber,

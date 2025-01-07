@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  flutter_plugin_android_lifecycle: ^2.0.22 
   animated_path: ^0.0.2
   animated_splash_screen: ^1.3.0
   audioplayers: ^6.1.0

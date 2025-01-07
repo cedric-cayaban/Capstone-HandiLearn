@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:test_drawing/data/userAccount.dart';
 import 'package:test_drawing/objects/lesson.dart';
 import 'package:test_drawing/provider/lesson_provider.dart';
+import 'package:test_drawing/screens/1).%20insideapp/1.%20learn/activity_screen.dart';
+import 'package:test_drawing/screens/1).%20insideapp/1.%20learn/lesson_screen.dart';
 import 'package:test_drawing/screens/1).%20insideapp/1.%20learn/writing/drawing-board.dart';
 import 'package:test_drawing/screens/1).%20insideapp/1.%20learn/reading/selectedItem.dart';
 
@@ -42,6 +44,16 @@ class _ReadingCharacterSelection extends State<ReadingCharacterSelection> {
     // int characterDone = int.parse(ucharacterDone);
     final lessonProvider = Provider.of<LessonProvider>(context);
 
+    List<String> lessonTitles = [
+      'Capital Letters',
+      'Small Letters',
+      'Words',
+      'Numbers',
+      'Capital Cursives',
+      'Small Cursives',
+      'Cursive Words'
+    ];
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -69,7 +81,15 @@ class _ReadingCharacterSelection extends State<ReadingCharacterSelection> {
                       : Colors.black,
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
+                  // Navigator.pop(context);
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => ActivityScreen(
+                          lesson: widget.lesson,
+                          lessonTitle: lessonTitles[widget.lessonNumber],
+                          lessonNumber: widget.lessonNumber),
+                    ),
+                  );
                 },
               ),
             ),

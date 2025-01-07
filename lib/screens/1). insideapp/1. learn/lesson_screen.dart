@@ -37,8 +37,6 @@ class _LessonScreenState extends State<LessonScreen> {
     super.initState();
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -151,7 +149,7 @@ class _LessonScreenState extends State<LessonScreen> {
                                         // || index == 4
                                         ) {
                                       LastActivity = index.toString();
-                                      Navigator.of(context).push(
+                                      Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                           builder: (context) => ActivityScreen(
                                             lesson: lessonData[index],
@@ -161,7 +159,7 @@ class _LessonScreenState extends State<LessonScreen> {
                                         ),
                                       );
                                     } else {
-                                      Navigator.of(context).push(
+                                      Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               CharacterSelectionScreen(
